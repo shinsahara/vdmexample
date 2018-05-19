@@ -1,0 +1,22 @@
+init
+set exception
+set static
+set profile
+read AnalysedObject.vdmpp
+read AnalyserCommon.vdmpp
+read GetRoutineName.vpp
+read Sequence.vdmpp
+read VDMUtil.vpp		
+read Analyser.vdmpp	
+read Character.vdmpp 
+read GetRoutineName_Test.vpp
+read GetRoutineName_Test2.vpp
+read String.vdmpp
+read io.vpp		
+read ../Wizard/common_as.vdmpp		
+read ../Wizard/contextinfo.vdmpp
+read ../Wizard/rep.vdmpp	
+read ../Wizard/wizard.vpp	
+debug new GetRoutineName().GetRoutineNames()
+tcov write vdm.tc
+rtinfo vdm.tc

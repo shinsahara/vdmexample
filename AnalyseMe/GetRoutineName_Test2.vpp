@@ -1,0 +1,389 @@
+class C5
+
+values
+V1 = F2();
+V2 = OP2();
+
+operations
+public OP1 : () ==> ()
+OP1() == (
+	dcl b : bool;
+	if F2() then (
+		b := OP2();
+		b := C6`OP3();
+		b := C6`F2(1,-1,b)
+		)
+	else
+		skip;
+)
+pre F1()
+post F2();
+
+public OP2 : () ==> bool
+OP2() == return true;
+
+public OP3 : () ==> bool
+OP3() == return true;
+
+OP4 : int ==> int
+OP4(i) == 
+	cases i :
+	1,3,5	-> return F4(i),
+	2,3,6	-> return F5(i),
+	others	-> return F4(i) + F5(i)
+	end;
+
+public OP5 : () ==> int
+OP5() == (
+	dcl sum : int := 0;
+	for all e in set F6() do (
+		sum := sum + e
+	);
+	return sum
+);
+
+OP6 : () ==> seq of int
+OP6() ==(
+	dcl s : seq of int := [];
+	for e in F7() do (
+		s := [F3(e)] ^ s
+	);
+	return s
+);
+
+OP7 : () ==> set of int
+OP7() ==(
+	dcl s : set of int := {};
+	for all e in set F6() do (
+		s := {F3(e)} union s
+	);
+	return s
+);
+
+functions
+public F1 : () +> bool
+F1() == 
+	def m = F2() in
+	let n = F2() in
+	m and n;
+
+functions
+public F2 : () +> bool
+F2() == let r = true in r;
+
+F3 : int +> int
+F3(i) ==
+	let - = {e | e in set F6() & F4(e) = 0} in
+	cases i :
+	1,3,5	-> F4(i),
+	2,3,6	-> F5(i),
+	others	-> F4(i) + F5(i)
+	end;
+
+static public F4 : int -> int
+F4(i) == i mod 2;
+
+static public F5 : int -> int
+F5(i) == i mod 3;
+
+static public F6 : () -> set of nat
+F6() == {1,2,3,4,5};
+
+F7 : () -> seq of nat
+F7() == [1,2,3,4,5];
+
+F8 : () +> set of int
+F8() == {e * 2 | e in set F6() & C5`F4(e) = 0};
+
+F9 : () +> seq of int
+F9() == [F7()(i) * 2 | i in set inds C5`F7() & F4(F7()(i)) = 0];
+
+FA : () +> map int to int
+FA() == 
+	let m1 = {F5(3) |-> F4(5)},
+		m2 = {e |-> e * 2 | e in set F6() & e in set F6()}
+	in m1 ++ m2;
+
+public FB : () -> int
+FB() ==
+	let e in set F6() be st F4(e) = 0
+	in e;
+
+FC : () -> bool
+FC() ==
+	let r1 = forall e in set F6() & F5(e) <> 4,
+		r2 = exists e in set F6() & F3(e) <> 2,
+		r3 = exists1 e in set F6() & F4(e) <> 0
+	in r1 and r2 and r3;
+
+map_inter: (map nat to nat) * (map nat to nat) -> map nat to nat
+map_inter (m1,m2) ==
+	(dom m1 inter dom m2) <: m1
+pre 
+	forall d in set dom m1 inter dom m2 & m1(d) = m2(d)
+post 
+	dom RESULT = dom m1 inter dom m2;
+
+map_inter2 (m1,m2: map nat to nat) m: map nat to nat
+pre 
+	forall d in set dom m1 inter dom m2 & m1(d) = m2(d)
+post
+	dom m = dom m1 inter dom m2 and
+	forall d in set dom m & m(d) = m1(d);
+
+map_disj (m1:map nat to nat,m2:map nat to nat) res : map nat to nat ==
+	(dom m1 inter dom m2) <-: m1 munion
+	(dom m1 inter dom m2) <-: m2
+pre 
+	forall d in set dom m1 inter dom m2 & m1(d) = m2(d)
+post 
+	dom res = (dom m1 union dom m2) \ (dom m1 inter dom m2) and
+	forall d in set dom res & res(d) = m1(d) or res(d) = m2(d);
+
+static public Sum[@T]: seq of @T ->  @T
+Sum(s) == SumAux[@T](s)(0)
+pre
+	is_(s, seq of real);
+
+static SumAux[@T] : seq of @T -> @T -> @T
+SumAux(s)(sum) ==
+	if s = [] then
+		sum
+	else
+		SumAux[@T](tl s)(sum + hd s)
+measure length_measure;
+
+static length_measure[@T] : seq of @T -> nat
+length_measure(s) == len s;
+
+end C5
+
+class C6
+
+types
+public Rec ::
+	f1 : C5
+	f2 : int;
+
+instance variables
+iNum : int := 0;
+
+functions
+static public F2 : nat * int * bool +> bool
+F2(n, i, b) == let r = abs n = i and b in r;
+
+F3 : () +> int
+F3() ==
+	let r1 = mk_Rec(new C5(),2),
+		r2 = mu(r1, f2 |-> C7`F1())
+	in
+	r2.f1.OP5();
+
+F4 : () +> map int to int
+F4() == 
+	let c = new C5() in
+	{c.OP5() |-> c.FB(), 1 |-> 2, 2 |-> 3, 3 |-> 4};
+
+F5 : () -> seq of int
+F5() == [1,2,3];
+
+operations
+public C6 : int ==> C6
+C6(i) == (
+	iNum := i;
+	return self
+);
+
+static public OP3 : () ==> bool
+OP3() == 
+	def - = F2(1,2,true) in
+	let c = new C5(),
+		r1 = F2(1,3,false) in
+	return 
+		if r1 then
+			c.FB() = 1
+		else
+			c.OP5() = 2;
+
+public OP4 : () ==> int
+OP4() ==
+	let s1 union s2 = dom F4(),
+		m1 munion m2 = F4(),
+		{e1, e2} = rng F4(),
+		[e3, e4] = F5(),
+		[e5] ^ e6 = F5(),
+		{e7 |-> e8, e9 |-> e10} = F4()
+	in 
+	if s1 = {} and s2 = {} then
+		return e1+e2+e3+e4+e5+e6(1)+e7+e8+e9+e10
+	elseif m1 = {|->} and m2 = {|->} then
+		return e1+e2
+	else
+		return 0;
+		
+end C6
+
+
+class C7
+
+instance variables
+iVal : int := 0;
+
+functions
+static public F1 : () -> int
+F1() == 0;
+
+operations
+public C7 : int ==> C7
+C7(i) == (
+	iVal := self.OP4(i);
+);
+
+OP2 : () ==> int
+OP2() == (
+	if iVal = 0 then exit F1()
+	elseif iVal >= 10 then exit 10
+	else return 3
+);
+
+OP3 : () ==> int
+OP3() == self.OP2();
+
+OP4 : int ==> int
+OP4(n) == (
+	dcl i : int := 0;
+	trap <exception> with return OP3() in
+	while i <= OP5(n) do (
+		i := i + 1;
+		OP2()
+	)
+);
+
+OP5 : int ==> int
+OP5(i) == return i + 3;
+
+public OP6 : () ==> int
+OP6() == (
+	|| (iVal := OP4(2), iVal := OP3(), iVal := OP2());
+	return iVal
+);
+
+OP7 : int ==> int
+OP7(n) == (
+	dcl i : int := 0;
+	always return OP3() in
+	while i <= OP5(n) do (
+		i := i + 1;
+		OP2()
+	)
+);
+
+OP8 : int ==> int
+OP8(n) == (
+	dcl i : int := 0;
+	tixe {
+	<exception1> |-> return OP3(),
+	<exception2> |-> return OP6()
+	} in 
+	while i <= OP5(n) do (
+		i := i + 1;
+		OP2()
+	)
+);
+
+OP9 : () ==> int
+OP9() ==
+	let t = mk_(1,2) in
+	return t.#1 + t.#2;
+
+end C7
+
+
+class C8
+
+functions
+public F1 : () -> set of int
+F1() == {1,2,3};
+
+public F2 : () -> C7
+F2() == new C7(1);
+
+public F3 : () -> C6
+F3() == new C6(2);
+
+public F4 : () +> bool
+F4() ==
+	let list = [1,2,3] in
+	forall i, j : int & i < j => list(i) <= list(j);
+
+F5 : () -> set of int
+F5() ==
+	{C5`F5(i) | i : int & i mod 2 = 0}
+post
+	RESULT = {C5`F5(i) | i : int & i mod 2 = 0};
+
+operations
+public OP1 : () ==> set of int
+OP1() ==
+	let s1 union - = F1()
+	in return s1;
+
+public OP2 : () ==> bool
+OP2() ==
+	let b1 = isofbaseclass(C6, F3()),
+		b2 = isofclass(C7, F2()),
+		b3 = samebaseclass(F2(), F3()),
+		b4 = sameclass(F2(), F3())
+	in return b1 and b2 and b3 and b4;
+
+public OP3 : () ==> set of int
+OP3() ==
+	def i : set of int = F1() in
+	return i;
+
+end C8
+
+class Buffer
+
+values
+public BufferSize = 5
+
+types
+public T = int | char;
+
+instance variables
+buf: seq of T := []
+
+operations
+public Put: T ==> ()
+Put (item) ==
+	buf := buf ^ [item]
+pre
+	len buf < BufferSize;
+
+public Get: () ==> T
+Get () ==
+	let item = hd buf in
+	( buf := tl buf;
+	return item )
+pre
+	len buf > 0;
+	
+public ReadItem: () ==> T
+ReadItem () ==
+	return hd buf
+pre
+	len buf > 0;
+
+public Full: () ==> bool
+Full () ==
+	return len buf = BufferSize;
+
+sync
+	mutex(all);
+	per Put =>
+		#act(Put) - #fin(Get) < BufferSize;
+	per Get =>
+		#act(Put) - #fin(Get) > 0;
+
+end Buffer

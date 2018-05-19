@@ -1,0 +1,29 @@
+class C0
+
+(1) 下記の、errs句のF2, F3が抽出できていない？
+OP2(i,j : int) 
+	ext rd iNum
+		wr iSum
+pre
+	F2(i) mod 2 = 0
+post
+	F4() = 4
+errs E1 : F2(j) > 3	-> F3();
+
+
+class C1
+
+(2) 下記のcalculate、giveResultは、class C2で定義されているが、C1で使われていることが、表示されていない。
+public factorial : nat ==> nat
+factorial(n) ==
+	if n = 0 then return 1
+	else (
+		dcl m : C2 := new C2();
+		m.calculate(1,n);
+		start(m);
+		result:= m.giveResult();
+		return result
+	)
+	
+
+class C2

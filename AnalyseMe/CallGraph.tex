@@ -1,0 +1,94 @@
+\documentclass[a4paper,10pt]{jsarticle}
+%\documentclass[a4paper,10pt]{jsbook}
+
+\usepackage[dvipdfm]{graphicx, color}
+%\usepackage{folha}
+\graphicspath{{image/}}
+
+\usepackage{color}
+\usepackage{array}
+\usepackage{longtable}
+\usepackage{alltt}
+\usepackage{graphics}
+\usepackage{vpp-nms}
+%\usepackage{vpp}
+\usepackage{makeidx}
+\makeindex
+
+\usepackage{colortbl}
+
+\usepackage[dvipdfm,bookmarks=true,bookmarksnumbered=true,colorlinks,plainpages=true]{hyperref}
+
+%\AtBeginDvi{\special{pdf:tounicode 90ms-RKSJ-UCS2}}
+\AtBeginDvi{\special{pdf:tounicode EUC-UCS2}}
+
+\definecolor{covered}{rgb}{0,0,0}      %black
+\definecolor{not-covered}{rgb}{1,0,0}  %red
+
+\setcounter{secnumdepth}{6}
+\makeatletter
+\renewcommand{\paragraph}{\@startsection{paragraph}{4}{\z@}%
+  {1.5\Cvs \@plus.5\Cdp \@minus.2\Cdp}%
+  {.5\Cvs \@plus.3\Cdp}%
+  {\reset@font\normalsize\bfseries}}
+\makeatother
+
+\renewcommand{\sf}{\sffamily \color{blue}}
+
+\newcommand{\syou}{\texttt{<}}
+\newcommand{\dai}{\texttt{>}}
+
+%\include{Title}
+
+%\pagestyle{empty}
+\usepackage{fancyhdr}
+\usepackage{lastpage} 
+  \pagestyle{fancy} 
+   \let\origtitle\title 
+  \renewcommand{\title}[1]{\lfoot{#1}\origtitle{#1}}
+
+  \rfoot{\today}
+  \rhead{[\ \scshape\oldstylenums{\thepage}\ / %
+      \scshape\oldstylenums{\pageref{LastPage}}\ ]}
+  \cfoot{}
+
+
+\begin{document}
+
+% the title page
+\title{CallGraph}
+\author{Shin Sahara\\\\
+SCSK Corporation,\\
+Hosei University\\
+}
+%\institute{\pgldk \and \chessnl}
+\date{\mbox{}}
+\maketitle
+
+%\TaoReport{ガードコマンド・モデル}{\today}{タオベアーズ}{佐原伸}
+%\setlength{\baselineskip}{12pt plus .1pt}
+%\tolerance 10000
+\tableofcontents
+%\thispagestyle{empty} 
+
+%\include{Abstract}
+\include{AnalyserCommon.vdmpp}
+\include{Analyser.vdmpp}
+\include{AnalysedObject.vdmpp}	
+
+%\begin{thebibliography}{9}
+\section{bibliography}
+VDM++\cite{CSK2007PP}
+
+\bibliographystyle{jplain}
+%\bibliography{/Users/sahara/svnw/sahara}
+\bibliography{/Users/sahara/bib/saharaUTF8}
+%\bibliography{/Users/ssahara/svnwork/sahara}
+
+%\end{thebibliography}
+
+%\newpage
+%\addcontentsline{toc}{section}{Index}
+\printindex
+
+\end{document}

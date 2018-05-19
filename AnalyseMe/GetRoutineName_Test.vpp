@@ -1,0 +1,259 @@
+class C0
+
+types
+N = nat
+inv n == n <= 10 and n <= 20;
+
+functions
+static public isAscendingTotalOrder [@T]: (@T * @T -> bool) -> seq of @T -> bool
+isAscendingTotalOrder (-)(s) ==
+	forall i,j  in set inds s & i < j  => F3() or s(i) = s(j);
+
+static public F1 : () +> bool
+F1() == F2() => F3() or false;
+
+static public F2 : () +> bool
+F2() == let r = true in r;
+
+static public F2 : int +> int
+F2(n) == n * 2
+pre n <= 100;
+
+static public F3 : () +> bool
+F3() == iota x in set {true, false} & x = true;
+
+static public F4 : () +> int
+F4() == let i in set {F2(3), 2, 3} in i;
+
+instance variables
+iNum : int := 999;
+iSum : int := 0;
+
+operations
+public OP1 : () ==> int
+OP1() == (
+	dcl s : int := 0;
+	for i = F2(3) to F2(4) by 2 do
+		s := s + i * 2;
+	return s
+);
+
+OP2(i,j : int) 
+	ext rd iNum
+		wr iSum
+pre
+	F2(i) mod 2 = 0
+post
+	F4() = 4
+errs E1 : F2(j) > 3	-> F3();
+
+OP3(i,j : int) == (
+	iSum := F4() + F2(3)
+)
+ext rd iNum
+	wr iSum
+pre
+	F2(i) mod 2 = 0
+post
+	F4() = 4
+errs E1 : F2(j) > 3	-> F3();
+
+OP4 : int ==> int
+OP4(i) == is not yet specified
+pre
+	pre_F2(i);
+
+OP5 : () ==> token * int
+OP5() == (
+	def w = mk_token(F2(3)) in
+	return mk_(w, F4())
+);
+
+OP6 : () ==> set of int
+OP6() ==
+	let - = {1,2,3} in
+	if pre_(F2, 2) then
+		return {F2(2),F4()}
+	else
+		return {OP4(1), F4()};
+		
+end C0
+
+class C1
+instance variables
+	result : nat := 5;
+	
+operations
+public factorial : nat ==> nat
+factorial(n) ==
+	if n = 0 then return 1
+	else (
+		dcl m : C2 := new C2();
+		m.calculate(1,n);
+		start(m);
+		result:= m.giveResult();
+		return result
+	)
+		
+end C1
+
+class C2
+instance variables
+	i : nat1 := 1;
+	j : nat1 := 2;
+	k : nat1 := 1;
+	result : nat1 := 1 
+	
+operations
+	public calculate : nat1 * nat1 ==> ()
+	calculate (first, last) ==
+		(i := first; j := last);
+		
+	doit : () ==> ()
+	doit() ==
+	(
+		if i = j then result := i
+		else (
+			dcl p : C2;
+			dcl q : C2;
+			p := new C2();
+			q := new C2();
+			start(new C2());start(new C2());
+			startlist({new C2(), new C2()});
+			k := (i + j) div 2;
+			-- division with rounding down
+			p.calculate(i,k);
+			q.calculate(k+1,j);
+			result := p.giveResult() * q.giveResult ()
+		)
+	);
+	
+	public giveResult : () ==> nat1
+	giveResult() ==
+		return result;
+		
+sync
+	-- cyclic constraints allowing only the
+	-- sequence calculate; doit; giveResult
+	
+	per doit => #fin (calculate) > #act(doit);
+	per giveResult => #fin (doit) > #act (giveResult);
+	per calculate => #fin (giveResult) = #act (calculate)
+	
+thread
+	doit();
+	
+end C2
+
+class C3
+
+types
+public
+T = T1 | T2 | T3;
+
+public
+T1 :: a : nat
+      b : char;
+
+public
+T2 :: a : char
+      b : nat;
+
+public
+T3 :: a : bool
+      b : char
+      c : nat;
+
+functions
+public
+fn: T +> nat
+fn(t) == cases true:
+           (is_T1(t)) -> t.a,
+           (is_T2(t)) -> t.b,
+           (is_T3(t)) -> t.c
+         end;
+
+fn_n: T +> nat
+fn_n(t) == cases true:
+             (is_T1(t)) -> narrow_(ft1(), T1).a,
+             (is_T2(t)) -> narrow_(ft2(), T2).b,
+             (is_T3(t)) -> narrow_(ft3(), T3).c
+         end;
+
+ft1 : () -> T1
+ft1() == mk_T1(1,'a');
+
+ft2 : () -> T2
+ft2() == mk_T2('b', 2);
+
+ft3 : () -> T3
+ft3() == mk_T3(true, 'c', 3);
+
+end C3
+
+class C4
+
+types
+public SmallNat = nat
+inv N == N < 100;
+
+instance variables
+public i : nat := 3;
+public y : nat := 4;
+
+operations
+public C4 : nat * nat ==> C4
+C4(n1, n2) == atomic (
+	i := f1(n1,n2);
+	y := f1(n2,n1)
+);
+
+public f1 : nat * nat==> nat
+f1(m,n) == return m div n
+pre n <> 0 and inv_SmallNat(n)
+post f3(i, n, RESULT);
+
+public t : nat * nat ==> bool
+t(m,n) == 
+	let p1 = pre_f1(m, n),
+	--let p1 = f4(n),
+		  d = m div n,
+		  p2 = post_f1(m,n,d)
+		  --p2 = f3(m,n,d)
+	in
+	return p1 and p2;
+
+operations
+public f2 : nat==> nat
+f2(n) ==
+	(dcl r : nat := n;
+	while inv_SmallNat(r) do
+		r := r + 5;
+	return r);
+	
+functions
+public  f4 : nat -> bool
+f4(n) ==
+	n <> 0 and inv_SmallNat(n);
+	
+public f3 : nat * nat * nat -> bool
+f3(m, n, r) == r = m div n;
+
+operations
+OP1: () ==> nat
+OP1() == (
+	[
+	ext wr i : nat
+		rd y : nat
+	pre i < y
+	post
+		f2(i) < f2(y) and
+		forall i in set {i,...,y} & f1(i,y) < f1(y,i)
+	];
+	if samebaseclass(new C2(),new C3()) then
+		return i
+	else
+		return i+1 
+);
+
+end C4

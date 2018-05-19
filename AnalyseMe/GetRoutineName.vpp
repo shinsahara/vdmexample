@@ -1,0 +1,49 @@
+class GetRoutineName is subclass of Analyser
+
+operations
+public GetRoutineNames : () ==> ()
+GetRoutineNames() == (
+	def wSortedClassName_seq = getTargetClassName_seq();
+		wOutputLevel = getOutputLevel();
+		wAnalysedObject = new AnalysedObject(wOutputLevel, 0);
+		- = printHeader(wSortedClassName_seq);
+		- = getCallTreeOfClasses(wAnalysedObject, wSortedClassName_seq);
+		- = wAnalysedObject.CleanCallGraphData();
+		- = getCallTreeOfClasses(wAnalysedObject, wSortedClassName_seq)
+	in
+		prCallTree(wAnalysedObject) 
+);
+
+getCallTreeOfClasses : AnalysedObject * seq of IdentifierName ==> seq of AnalysedObject
+getCallTreeOfClasses(anAnalysedObject, aClassName_seq) == 
+	let r = conc [analyseClass(anAnalysedObject, aClassName_seq(i)) | i in set inds aClassName_seq] in 
+	return r;
+
+getTargetClassName_seq : () ==> seq of IdentifierName
+getTargetClassName_seq() ==
+	def mk_(b1, wExclusioClassName_set) = io.freadval[set of IdentifierName]("exclusionClasses.txt");
+		mk_(b2, wInclusionClassName_set) = io.freadval[set of IdentifierName]("inclusionClasses.txt");
+		wAllClassNames = iWzd.allClassNames();
+		wClassName_set = 
+			if wInclusionClassName_set = nil and wExclusioClassName_set = nil then
+				wAllClassNames
+			elseif wExclusioClassName_set = nil then
+				{e | e in set wAllClassNames union wInclusionClassName_set}
+			elseif wInclusionClassName_set = nil then
+				{e | e in set wAllClassNames \ wExclusioClassName_set}
+			else
+				{e | e in set wAllClassNames union wInclusionClassName_set \ wExclusioClassName_set};
+		wClassName_seq = util.set2seq[IdentifierName](wClassName_set)
+	in 
+	if not (b1 and b2) then
+		error -- "Contents of exclusionClasses.txt or inclusionClasses.txt is not VDM expression."
+	else
+		return 
+			Sequence`sort[IdentifierName](lambda x : IdentifierName, y : IdentifierName & String`LE(x,y))(wClassName_seq);
+
+getOutputLevel : () ==> nat
+getOutputLevel() ==
+	def mk_(-, wOutputLevel) = io.freadval[nat]("option.txt") in
+	return wOutputLevel;
+
+end GetRoutineName

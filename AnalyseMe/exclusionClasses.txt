@@ -1,0 +1,9 @@
+{
+"VDMUtil",  "IO", 
+"Character", "String", "Sequence",
+"VDMToolsWizard", "REP", "CI",
+"AnalysedObject", "Analyser", "AnalyserCommon", "AS", "GetRoutineName",
+"C4",
+"C5", "C7", "C8","Buffer", 
+"C6",  "C2", "C3"
+}

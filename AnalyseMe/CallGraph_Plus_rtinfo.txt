@@ -1,0 +1,433 @@
+Initializing specification ... done
+[  ]
+>> d new GetRoutineName().GetRoutineNames()
++++ CallGraph +++[ 0 ]	mk_( 26, 52, "GetRoutineNames" )
+-C1[ 1, 48 ]	mk_( 46, 58, "analyseClass" )
+--F1[ 7, 14, 24, 25 ]	mk_( 103, 53, "analyseExplFnDef" )
+----F2[ 15, 25, 28, 29 ]	mk_( 209, 65, "analyseExpr" )
+--F2[ 15, 25, 28, 29 ]	mk_( 103, 53, "analyseExplFnDef" )
+--Sum[ 32, 33 ]	mk_( 103, 53, "analyseExplFnDef" )
+--SumAux[ 33, 37, 38, 42 ]	mk_( 103, 53, "analyseExplFnDef" )
+----sum[ 38, 40, 42 ]	mk_( 209, 65, "analyseExpr" )
+--length_measure[ 43, 45, 46 ]	mk_( 103, 53, "analyseExplFnDef" )
+--OP1[ 4, 5 ]	mk_( 145, 52, "analyseExplOpDef" )
+------F1[ 7, 14, 24, 25 ]	mk_( 209, 65, "analyseExpr" )
+--------OP2[ 8, 17, 18 ]	mk_( 209, 65, "analyseExpr" )
+--------OP3[ 9, 20, 21 ]	mk_( 268, 53, "analyseFieldSelectExpr" )
+----F1[ 7, 14, 24, 25 ]	mk_( 209, 65, "analyseExpr" )
+----F2[ 15, 25, 28, 29 ]	mk_( 209, 65, "analyseExpr" )
+--OP2[ 8, 17, 18 ]	mk_( 145, 52, "analyseExplOpDef" )
+--OP3[ 9, 20, 21 ]	mk_( 145, 52, "analyseExplOpDef" )
+-Character[ 1, 58, 61, 64, 67, 70, 73, 76, 79, 81 ]	mk_( 46, 58, "analyseClass" )
+--GE[ 75, 76 ]	mk_( 103, 53, "analyseExplFnDef" )
+-----Character[ 1, 58, 61, 64, 67, 70, 73, 76, 79, 81 ]	mk_( 209, 65, "analyseExpr" )
+-----c1[ 58, 61, 64, 67, 70, 73, 76, 79 ]	mk_( 209, 65, "analyseExpr" )
+----c2[ 58, 61, 64, 67, 70, 73, 76, 79 ]	mk_( 209, 65, "analyseExpr" )
+--GT[ 69, 70 ]	mk_( 103, 53, "analyseExplFnDef" )
+-----Character[ 1, 58, 61, 64, 67, 70, 73, 76, 79, 81 ]	mk_( 209, 65, "analyseExpr" )
+-----c1[ 58, 61, 64, 67, 70, 73, 76, 79 ]	mk_( 209, 65, "analyseExpr" )
+----c2[ 58, 61, 64, 67, 70, 73, 76, 79 ]	mk_( 209, 65, "analyseExpr" )
+--LE[ 63, 64 ]	mk_( 103, 53, "analyseExplFnDef" )
+-----Character[ 1, 58, 61, 64, 67, 70, 73, 76, 79, 81 ]	mk_( 209, 65, "analyseExpr" )
+-----c1[ 58, 61, 64, 67, 70, 73, 76, 79 ]	mk_( 209, 65, "analyseExpr" )
+----c2[ 58, 61, 64, 67, 70, 73, 76, 79 ]	mk_( 209, 65, "analyseExpr" )
+--LT[ 57, 58 ]	mk_( 103, 53, "analyseExplFnDef" )
+-----Character[ 1, 58, 61, 64, 67, 70, 73, 76, 79, 81 ]	mk_( 209, 65, "analyseExpr" )
+-----c1[ 58, 61, 64, 67, 70, 73, 76, 79 ]	mk_( 209, 65, "analyseExpr" )
+----c2[ 58, 61, 64, 67, 70, 73, 76, 79 ]	mk_( 209, 65, "analyseExpr" )
+--GE2[ 76, 78, 79 ]	mk_( 103, 53, "analyseExplFnDef" )
+--GT2[ 70, 72, 73 ]	mk_( 103, 53, "analyseExplFnDef" )
+-----Character[ 1, 58, 61, 64, 67, 70, 73, 76, 79, 81 ]	mk_( 209, 65, "analyseExpr" )
+-----c2[ 58, 61, 64, 67, 70, 73, 76, 79 ]	mk_( 209, 65, "analyseExpr" )
+----c1[ 58, 61, 64, 67, 70, 73, 76, 79 ]	mk_( 209, 65, "analyseExpr" )
+--LE2[ 64, 66, 67 ]	mk_( 103, 53, "analyseExplFnDef" )
+--LT2[ 58, 60, 61, 67, 73, 79 ]	mk_( 103, 53, "analyseExplFnDef" )
+--asDigit[ 27, 28 ]	mk_( 103, 53, "analyseExplFnDef" )
+-----isDigit[ 29, 42, 43, 49 ]	mk_( 209, 65, "analyseExpr" )
+-----c[ 28, 29, 30, 36, 37, 38, 43, 46, 49, 52, 55 ]	mk_( 209, 65, "analyseExpr" )
+--isDigit[ 29, 42, 43, 49 ]	mk_( 103, 53, "analyseExplFnDef" )
+--isLetter[ 45, 46, 49 ]	mk_( 103, 53, "analyseExplFnDef" )
+--asDictOrder[ 35, 36, 61 ]	mk_( 103, 53, "analyseExplFnDef" )
+-----c[ 28, 29, 30, 36, 37, 38, 43, 46, 49, 52, 55 ]	mk_( 209, 65, "analyseExpr" )
+--isCapitalLetter[ 51, 52 ]	mk_( 103, 53, "analyseExplFnDef" )
+--isLetterOrDigit[ 48, 49 ]	mk_( 103, 53, "analyseExplFnDef" )
+--isLowercaseLetter[ 54, 55 ]	mk_( 103, 53, "analyseExplFnDef" )
+-GetRoutineName[ 1, 412 ]	mk_( 46, 58, "analyseClass" )
+--printf[ 352, 353, 384 ]	mk_( 103, 53, "analyseExplFnDef" )
+--GetName[ 100, 114, 127, 143, 156, 169, 263, 265, 267, 295, 349, 350 ]	mk_( 103, 53, "analyseExplFnDef" )
+--analyseFnm[ 63, 72, 73 ]	mk_( 103, 53, "analyseExplFnDef" )
+-----analyseExplFnDef[ 75, 94, 95 ]	mk_( 209, 65, "analyseExpr" )
+-----analyseImplFnDef[ 77, 111, 112 ]	mk_( 209, 65, "analyseExpr" )
+-----analyseExtExplFnDef[ 79, 121, 122 ]	mk_( 209, 65, "analyseExpr" )
+--analyseOpm[ 69, 83, 84 ]	mk_( 103, 53, "analyseExplFnDef" )
+-----analyseExplOpDef[ 86, 137, 138 ]	mk_( 209, 65, "analyseExpr" )
+-----analyseImplOpDef[ 88, 153, 154 ]	mk_( 209, 65, "analyseExpr" )
+-----analyseExtExplOpDef[ 90, 163, 164 ]	mk_( 209, 65, "analyseExpr" )
+--getIndents[ 364, 386, 387 ]	mk_( 103, 53, "analyseExplFnDef" )
+--prCallTree[ 26, 46, 103, 116, 129, 145, 158, 171, 209, 268, 297, 361, 362 ]	mk_( 103, 53, "analyseExplFnDef" )
+--GetName_Set[ 346, 347 ]	mk_( 103, 53, "analyseExplFnDef" )
+--analyseExpr[ 106, 107, 132, 133, 148, 149, 174, 175, 182, 195, 198, 199, 242, 252, 253, 255, 270, 285, 290, 314, 343 ]	mk_( 103, 53, "analyseExplFnDef" )
+--analyseFnms[ 55, 60, 61 ]	mk_( 103, 53, "analyseExplFnDef" )
+--analyseOpms[ 56, 66, 67 ]	mk_( 103, 53, "analyseExplFnDef" )
+--analyseStmt[ 189, 216, 217, 279, 305, 315, 318, 330 ]	mk_( 103, 53, "analyseExplFnDef" )
+--analyseExprs[ 193, 194, 243 ]	mk_( 103, 53, "analyseExplFnDef" )
+--analyseFnBody[ 105, 131, 179, 180 ]	mk_( 103, 53, "analyseExplFnDef" )
+-----analyseExpr[ 106, 107, 132, 133, 148, 149, 174, 175, 182, 195, 198, 199, 242, 252, 253, 255, 270, 285, 290, 314, 343 ]	mk_( 209, 65, "analyseExpr" )
+-----body[ 96, 105, 123, 131, 139, 147, 165, 173, 181, 182, 188, 189 ]	mk_( 268, 53, "analyseFieldSelectExpr" )
+--analyseIfExpr[ 205, 245, 246 ]	mk_( 103, 53, "analyseExplFnDef" )
+--analyseIfStmt[ 231, 307, 308 ]	mk_( 103, 53, "analyseExplFnDef" )
+--analyseOpBody[ 147, 173, 186, 187 ]	mk_( 103, 53, "analyseExplFnDef" )
+-----analyseStmt[ 189, 216, 217, 279, 305, 315, 318, 330 ]	mk_( 209, 65, "analyseExpr" )
+-----body[ 96, 105, 123, 131, 139, 147, 165, 173, 181, 182, 188, 189 ]	mk_( 268, 53, "analyseFieldSelectExpr" )
+--isRoutineName[ 393, 394, 405, 406, 408 ]	mk_( 103, 53, "analyseExplFnDef" )
+--analyseLetStmt[ 225, 302, 303 ]	mk_( 103, 53, "analyseExplFnDef" )
+--analyseCallStmt[ 227, 292, 293 ]	mk_( 103, 53, "analyseExplFnDef" )
+--isExclusionName[ 381, 399, 400 ]	mk_( 103, 53, "analyseExplFnDef" )
+--analyseApplyExpr[ 203, 237, 238 ]	mk_( 103, 53, "analyseExplFnDef" )
+--analyseBlockStmt[ 221, 272, 273 ]	mk_( 103, 53, "analyseExplFnDef" )
+--analyseExplFnDef[ 75, 94, 95 ]	mk_( 103, 53, "analyseExplFnDef" )
+--analyseExplOpDef[ 86, 137, 138 ]	mk_( 103, 53, "analyseExplFnDef" )
+--analyseImplFnDef[ 77, 111, 112 ]	mk_( 103, 53, "analyseExplFnDef" )
+--analyseImplOpDef[ 88, 153, 154 ]	mk_( 103, 53, "analyseExplFnDef" )
+--analyseAssignStmt[ 223, 282, 283 ]	mk_( 103, 53, "analyseExplFnDef" )
+--analyseBlockStmts[ 275, 277, 278 ]	mk_( 103, 53, "analyseExplFnDef" )
+--analyseElseifExpr[ 334, 338, 339 ]	mk_( 103, 53, "analyseExplFnDef" )
+--analyseElseifStmt[ 324, 328, 329 ]	mk_( 103, 53, "analyseExplFnDef" )
+----analyseStmt[ 189, 216, 217, 279, 305, 315, 318, 330 ]	mk_( 209, 65, "analyseExpr" )
+--analyseReturnStmt[ 229, 287, 288 ]	mk_( 103, 53, "analyseExplFnDef" )
+--analyseDefinitions[ 48, 53, 54 ]	mk_( 103, 53, "analyseExplFnDef" )
+--analyseElseifExprs[ 254, 332, 333 ]	mk_( 103, 53, "analyseExplFnDef" )
+--analyseElseifStmts[ 316, 322, 323 ]	mk_( 103, 53, "analyseExplFnDef" )
+--analyseExtExplFnDef[ 79, 121, 122 ]	mk_( 103, 53, "analyseExplFnDef" )
+--analyseExtExplOpDef[ 90, 163, 164 ]	mk_( 103, 53, "analyseExplFnDef" )
+--analyseFieldSelectExpr[ 207, 257, 258 ]	mk_( 103, 53, "analyseExplFnDef" )
+--analyseClass[ 33, 37, 38 ]	mk_( 145, 52, "analyseExplOpDef" )
+--GetRoutineNames[ 15, 16 ]	mk_( 145, 52, "analyseExplOpDef" )
+--getCallTreeOfClasses[ 27, 31, 32 ]	mk_( 145, 52, "analyseExplOpDef" )
+-----r[ 29, 33, 34, 48, 50, 57, 58, 63, 64, 69, 70, 104, 109, 117, 119, 130, 135, 146, 151, 159, 161, 172, 177, 195, 196, 201, 214, 219, 235, 279, 280, 298, 300, 324, 325, 334, 335 ]	mk_( 209, 65, "analyseExpr" )
+-Sequence[ 22, 14, 104, 114, 116, 313 ]	mk_( 46, 58, "analyseClass" )
+--Sum[ 32, 33, 18, 19 ]	mk_( 103, 53, "analyseExplFnDef" )
+--Zip[ 301, 302 ]	mk_( 103, 53, "analyseExplFnDef" )
+-----s1[ 93, 94, 108, 109, 116, 302, 307, 308 ]	mk_( 209, 65, "analyseExpr" )
+----s2[ 93, 94, 108, 109, 114, 302, 307, 308 ]	mk_( 209, 65, "analyseExpr" )
+--Span[ 193, 194, 198 ]	mk_( 103, 53, "analyseExplFnDef" )
+--Zip2[ 302, 306, 307, 309 ]	mk_( 103, 53, "analyseExplFnDef" )
+--drop[ 179, 180 ]	mk_( 103, 53, "analyseExplFnDef" )
+--fmap[ 212, 213 ]	mk_( 103, 53, "analyseExplFnDef" )
+--last[ 209, 210 ]	mk_( 103, 53, "analyseExplFnDef" )
+--sort[ 22, 76, 77, 81, 83, 87, 90 ]	mk_( 103, 53, "analyseExplFnDef" )
+--take[ 165, 166 ]	mk_( 103, 53, "analyseExplFnDef" )
+--Foldl[ 218, 220, 223 ]	mk_( 103, 53, "analyseExplFnDef" )
+--Foldr[ 226, 228, 231 ]	mk_( 103, 53, "analyseExplFnDef" )
+--Index[ 248, 249 ]	mk_( 103, 53, "analyseExplFnDef" )
+--Merge[ 107, 108, 114, 116 ]	mk_( 103, 53, "analyseExplFnDef" )
+--Unzip[ 287, 288, 292 ]	mk_( 103, 53, "analyseExplFnDef" )
+--SubSeq[ 206, 207 ]	mk_( 103, 53, "analyseExplFnDef" )
+--SumAux[ 33, 37, 38, 42, 19, 23, 24, 28 ]	mk_( 103, 53, "analyseExplFnDef" )
+----sum[ 38, 40, 42, 24, 26, 28, 51, 53, 54 ]	mk_( 209, 65, "analyseExpr" )
+--filter[ 138, 215, 216 ]	mk_( 103, 53, "analyseExplFnDef" )
+--Product[ 34, 35 ]	mk_( 103, 53, "analyseExplFnDef" )
+--RestSeq[ 280, 284, 285 ]	mk_( 103, 53, "analyseExplFnDef" )
+--compact[ 270, 271 ]	mk_( 103, 53, "analyseExplFnDef" )
+--flatten[ 267, 268 ]	mk_( 103, 53, "analyseExplFnDef" )
+--IndexAux[ 251, 253, 254, 261 ]	mk_( 103, 53, "analyseExplFnDef" )
+--InsertAt[ 119, 120, 124 ]	mk_( 103, 53, "analyseExplFnDef" )
+--RemoveAt[ 127, 128, 131 ]	mk_( 103, 53, "analyseExplFnDef" )
+--UpdateAt[ 157, 158, 162 ]	mk_( 103, 53, "analyseExplFnDef" )
+--freverse[ 273, 274 ]	mk_( 103, 53, "analyseExplFnDef" )
+--isMember[ 234, 235, 237, 244 ]	mk_( 103, 53, "analyseExplFnDef" )
+--DropWhile[ 182, 183, 187 ]	mk_( 103, 53, "analyseExplFnDef" )
+--IndexAll2[ 264, 265 ]	mk_( 103, 53, "analyseExplFnDef" )
+--RemoveDup[ 135, 136, 138 ]	mk_( 103, 53, "analyseExplFnDef" )
+--TakeWhile[ 168, 169, 173 ]	mk_( 103, 53, "analyseExplFnDef" )
+--isOrdered[ 92, 93, 104 ]	mk_( 103, 53, "analyseExplFnDef" )
+--GetAverage[ 47, 48 ]	mk_( 103, 53, "analyseExplFnDef" )
+--ProductAux[ 35, 39, 40, 42 ]	mk_( 103, 53, "analyseExplFnDef" )
+--isAnyMember[ 241, 242, 244 ]	mk_( 103, 53, "analyseExplFnDef" )
+--lengthUnzip[ 296, 298, 299 ]	mk_( 103, 53, "analyseExplFnDef" )
+--Permutations[ 276, 277, 280 ]	mk_( 103, 53, "analyseExplFnDef" )
+--RemoveMember[ 143, 144, 146, 154 ]	mk_( 103, 53, "analyseExplFnDef" )
+--GetAverageAux[ 48, 50, 51, 53 ]	mk_( 103, 53, "analyseExplFnDef" )
+--RemoveMembers[ 150, 151, 154 ]	mk_( 103, 53, "analyseExplFnDef" )
+--length_measure[ 43, 45, 46, 29, 31, 32, 56, 141, 282 ]	mk_( 103, 53, "analyseExplFnDef" )
+--isAscendingOrder[ 68, 69 ]	mk_( 103, 53, "analyseExplFnDef" )
+--isDescendingOrder[ 72, 73 ]	mk_( 103, 53, "analyseExplFnDef" )
+--ascendingOrderSort[ 86, 87 ]	mk_( 103, 53, "analyseExplFnDef" )
+--descendingOrderSort[ 89, 90 ]	mk_( 103, 53, "analyseExplFnDef" )
+--isAscendingTotalOrder[ 58, 60, 70 ]	mk_( 103, 53, "analyseExplFnDef" )
+--isDescendingTotalOrder[ 63, 65, 74 ]	mk_( 103, 53, "analyseExplFnDef" )
+-String[ 22, 1, 7, 40, 54, 58, 61, 64, 67, 70, 73, 152 ]	mk_( 46, 58, "analyseClass" )
+--GE[ 75, 76, 69, 70 ]	mk_( 103, 53, "analyseExplFnDef" )
+-----String[ 22, 1, 7, 40, 54, 58, 61, 64, 67, 70, 73, 152 ]	mk_( 209, 65, "analyseExpr" )
+-----s1[ 93, 94, 108, 109, 116, 302, 307, 308, 40, 43, 44, 58, 61, 64, 67, 70, 73 ]	mk_( 209, 65, "analyseExpr" )
+----s2[ 93, 94, 108, 109, 114, 302, 307, 308, 40, 43, 44, 58, 61, 64, 67, 70, 73 ]	mk_( 209, 65, "analyseExpr" )
+--GT[ 69, 70, 63, 64 ]	mk_( 103, 53, "analyseExplFnDef" )
+-----String[ 22, 1, 7, 40, 54, 58, 61, 64, 67, 70, 73, 152 ]	mk_( 209, 65, "analyseExpr" )
+-----s1[ 93, 94, 108, 109, 116, 302, 307, 308, 40, 43, 44, 58, 61, 64, 67, 70, 73 ]	mk_( 209, 65, "analyseExpr" )
+----s2[ 93, 94, 108, 109, 114, 302, 307, 308, 40, 43, 44, 58, 61, 64, 67, 70, 73 ]	mk_( 209, 65, "analyseExpr" )
+--LE[ 63, 64, 22, 57, 58 ]	mk_( 103, 53, "analyseExplFnDef" )
+-----String[ 22, 1, 7, 40, 54, 58, 61, 64, 67, 70, 73, 152 ]	mk_( 209, 65, "analyseExpr" )
+-----s1[ 93, 94, 108, 109, 116, 302, 307, 308, 40, 43, 44, 58, 61, 64, 67, 70, 73 ]	mk_( 209, 65, "analyseExpr" )
+----s2[ 93, 94, 108, 109, 114, 302, 307, 308, 40, 43, 44, 58, 61, 64, 67, 70, 73 ]	mk_( 209, 65, "analyseExpr" )
+--LT[ 57, 58, 39, 40, 49, 51, 54, 67 ]	mk_( 103, 53, "analyseExplFnDef" )
+-----String[ 22, 1, 7, 40, 54, 58, 61, 64, 67, 70, 73, 152 ]	mk_( 209, 65, "analyseExpr" )
+-----s1[ 93, 94, 108, 109, 116, 302, 307, 308, 40, 43, 44, 58, 61, 64, 67, 70, 73 ]	mk_( 209, 65, "analyseExpr" )
+----s2[ 93, 94, 108, 109, 114, 302, 307, 308, 40, 43, 44, 58, 61, 64, 67, 70, 73 ]	mk_( 209, 65, "analyseExpr" )
+--GE2[ 76, 78, 79, 70, 72, 73 ]	mk_( 103, 53, "analyseExplFnDef" )
+--GT2[ 70, 72, 73, 64, 66, 67 ]	mk_( 103, 53, "analyseExplFnDef" )
+----String[ 22, 1, 7, 40, 54, 58, 61, 64, 67, 70, 73, 152 ]	mk_( 209, 65, "analyseExpr" )
+----s2[ 93, 94, 108, 109, 114, 302, 307, 308, 40, 43, 44, 58, 61, 64, 67, 70, 73 ]	mk_( 209, 65, "analyseExpr" )
+----s1[ 93, 94, 108, 109, 116, 302, 307, 308, 40, 43, 44, 58, 61, 64, 67, 70, 73 ]	mk_( 209, 65, "analyseExpr" )
+--LE2[ 64, 66, 67, 58, 60, 61 ]	mk_( 103, 53, "analyseExplFnDef" )
+--LT2[ 58, 60, 61, 67, 73, 79, 40, 42, 43 ]	mk_( 103, 53, "analyseExplFnDef" )
+--Index[ 248, 249, 75, 76 ]	mk_( 103, 53, "analyseExplFnDef" )
+-----c[ 28, 29, 30, 36, 37, 38, 43, 46, 49, 52, 55, 394, 395, 76, 79, 82, 102, 106, 129, 131 ]	mk_( 209, 65, "analyseExpr" )
+--SubStr[ 88, 97, 98 ]	mk_( 103, 53, "analyseExplFnDef" )
+--length[ 15, 17, 18, 95, 98, 125, 137, 138, 150 ]	mk_( 103, 53, "analyseExplFnDef" )
+--subStr[ 93, 95 ]	mk_( 103, 53, "analyseExplFnDef" )
+--GetToken[ 100, 101, 118 ]	mk_( 103, 53, "analyseExplFnDef" )
+--getLines[ 108, 109 ]	mk_( 103, 53, "analyseExplFnDef" )
+-----getLinesAux[ 110, 112, 113, 124 ]	mk_( 209, 65, "analyseExpr" )
+--indexAll[ 78, 79, 86 ]	mk_( 103, 53, "analyseExplFnDef" )
+-----c[ 28, 29, 30, 36, 37, 38, 43, 46, 49, 52, 55, 394, 395, 76, 79, 82, 102, 106, 129, 131 ]	mk_( 209, 65, "analyseExpr" )
+--isDigits[ 27, 28 ]	mk_( 103, 53, "analyseExplFnDef" )
+-----isSomeString[ 24, 25, 28, 31, 34, 37 ]	mk_( 209, 65, "analyseExpr" )
+-----Character[ 1, 58, 61, 64, 67, 70, 73, 76, 79, 81, 395, 14, 28, 31, 34, 49, 51 ]	mk_( 209, 65, "analyseExpr" )
+--isSpaces[ 36, 37 ]	mk_( 103, 53, "analyseExplFnDef" )
+-----isSomeString[ 24, 25, 28, 31, 34, 37 ]	mk_( 209, 65, "analyseExpr" )
+--DropToken[ 104, 105, 119 ]	mk_( 103, 53, "analyseExplFnDef" )
+--IndexAll2[ 264, 265, 79, 81, 82 ]	mk_( 103, 53, "analyseExplFnDef" )
+-----c[ 28, 29, 30, 36, 37, 38, 43, 46, 49, 52, 55, 394, 395, 76, 79, 82, 102, 106, 129, 131 ]	mk_( 209, 65, "analyseExpr" )
+--asInteger[ 6, 7 ]	mk_( 103, 53, "analyseExplFnDef" )
+-----String[ 22, 1, 7, 40, 54, 58, 61, 64, 67, 70, 73, 152 ]	mk_( 209, 65, "analyseExpr" )
+--isInclude[ 84, 85 ]	mk_( 103, 53, "analyseExplFnDef" )
+--isLetters[ 30, 31 ]	mk_( 103, 53, "analyseExplFnDef" )
+-----isSomeString[ 24, 25, 28, 31, 34, 37 ]	mk_( 209, 65, "analyseExpr" )
+-----Character[ 1, 58, 61, 64, 67, 70, 73, 76, 79, 81, 395, 14, 28, 31, 34, 49, 51 ]	mk_( 209, 65, "analyseExpr" )
+--lengthNil[ 20, 21 ]	mk_( 103, 53, "analyseExplFnDef" )
+--getLinesAux[ 110, 112, 113, 124 ]	mk_( 103, 53, "analyseExplFnDef" )
+----line[ 113, 115, 124 ]	mk_( 209, 65, "analyseExpr" )
+--AsIntegerAux[ 7, 9, 10, 14 ]	mk_( 103, 53, "analyseExplFnDef" )
+----sum[ 38, 40, 42, 24, 26, 28, 51, 53, 54, 10, 12, 14 ]	mk_( 209, 65, "analyseExpr" )
+------AsIntegerAux[ 7, 9, 10, 14 ]	mk_( 209, 65, "analyseExpr" )
+--isSomeString[ 24, 25, 28, 31, 34, 37 ]	mk_( 103, 53, "analyseExplFnDef" )
+--isLetterOrDigits[ 33, 34 ]	mk_( 103, 53, "analyseExplFnDef" )
+-----isSomeString[ 24, 25, 28, 31, 34, 37 ]	mk_( 209, 65, "analyseExpr" )
+-----Character[ 1, 58, 61, 64, 67, 70, 73, 76, 79, 81, 395, 14, 28, 31, 34, 49, 51 ]	mk_( 209, 65, "analyseExpr" )
+--index[ 128, 129 ]	mk_( 145, 52, "analyseExplOpDef" )
+--subStrFill[ 135, 137 ]	mk_( 145, 52, "analyseExplOpDef" )
+(no return value)
+>> tcov write vdm.tc
+>> rtinfo vdm.tc
+    0%      0  C1`F1
+    0%      0  C1`F2
+    0%      0  C1`OP1
+    0%      0  C1`OP2
+    0%      0  C1`OP3
+    0%      0  C1`Sum
+    0%      0  C1`SumAux
+    0%      0  C1`length_measure
+    0%      0  CI`Push
+    0%      0  CI`GetPos
+    0%      0  CI`SetPos
+    0%      0  CI`GetPidM
+    0%      0  CI`SetPidM
+    0%      0  CI`SplitCid
+    0%      0  CI`CreateCid
+    0%      0  CI`GetFilePos
+    0%      0  CI`PushCGType
+    0%      0  CI`ConvCid2Fid
+    0%      0  CI`ConvCid2Nid
+    0%      0  CI`GetCidAtPos
+    0%      0  CI`GetLocation
+    0%      0  CI`GetTypeInfo
+    0%      0  CI`HasPidMInfo
+    0%      0  CI`HasTypeInfo
+    0%      0  CI`PointCloser
+    0%      0  CI`SetTypeInfo
+    0%      0  CI`ResetCGTable
+    0%      0  CI`ResetIPTable
+    0%      0  CI`ResetTCTable
+    0%      0  CI`SetBreakable
+    0%      0  CI`GetFidForFile
+    0%      0  CI`IsTypeChecked
+    0%      0  CI`PushCGPosType
+    0%      0  CI`SetBreakpoint
+    0%      0  CI`UseContextTab
+    0%      0  CI`GetJSSTypeInfo
+    0%      0  CI`IsAValidFileId
+    0%      0  CI`IsCidBreakable
+    0%      0  CI`SetJSSTypeInfo
+    0%      0  CI`RemoveBreakpoint
+    0%      0  CI`UpdateStateSigma
+    0%      0  CI`GetFileLineColPos
+    0%      0  CI`IsAValidContextId
+    0%      0  CI`IsBreakpointAtCid
+    0%      0  CI`GetTestCoverageInfo
+    0%      0  CI`IncTestCoverageInfo
+    0%      0  CI`FindPosInContextInfo
+  100%    408  IO`echo
+  100%    842  IO`fecho
+    0%      0  IO`ferror
+    0%      0  IO`freadval
+    0%      0  IO`writeval
+    0%      0  IO`fwriteval
+    0%      0  String`GE
+    0%      0  String`GT
+  100%     20  String`LE
+  100%      4  String`LT
+    0%      0  String`GE2
+    0%      0  String`GT2
+  100%     20  String`LE2
+   88%     24  String`LT2
+    0%      0  String`Index
+    0%      0  String`index
+    0%      0  String`SubStr
+    0%      0  String`length
+    0%      0  String`subStr
+    0%      0  String`GetToken
+    0%      0  String`getLines
+    0%      0  String`indexAll
+    0%      0  String`isDigits
+    0%      0  String`isSpaces
+    0%      0  String`DropToken
+    0%      0  String`IndexAll2
+    0%      0  String`asInteger
+    0%      0  String`isInclude
+    0%      0  String`isLetters
+    0%      0  String`lengthNil
+    0%      0  String`subStrFill
+    0%      0  String`getLinesAux
+    0%      0  String`AsIntegerAux
+    0%      0  String`isSomeString
+    0%      0  String`isLetterOrDigits
+    0%    462  VDMUtil`P
+    0%      0  VDMUtil`cast
+    0%      0  VDMUtil`clone
+    0%     69  VDMUtil`set2seq
+    0%      0  VDMUtil`classname
+    0%      0  VDMUtil`get_file_pos
+    0%      0  VDMUtil`seq_of_char2val
+    0%    997  VDMUtil`val2seq_of_char
+    0%      0  Sequence`Sum
+    0%      0  Sequence`Zip
+    0%      0  Sequence`Span
+    0%      0  Sequence`Zip2
+    0%      0  Sequence`drop
+    0%      0  Sequence`fmap
+    0%      0  Sequence`last
+  100%     86  Sequence`sort
+    0%      0  Sequence`take
+    0%      0  Sequence`Foldl
+    0%      0  Sequence`Foldr
+    0%      0  Sequence`Index
+    0%      0  Sequence`Merge
+    0%      0  Sequence`Unzip
+    0%      0  Sequence`SubSeq
+    0%      0  Sequence`SumAux
+    0%      0  Sequence`filter
+    0%      0  Sequence`Product
+    0%      0  Sequence`RestSeq
+    0%      0  Sequence`compact
+    0%      0  Sequence`flatten
+    0%      0  Sequence`IndexAux
+    0%      0  Sequence`InsertAt
+    0%      0  Sequence`RemoveAt
+    0%      0  Sequence`UpdateAt
+    0%      0  Sequence`freverse
+    0%      0  Sequence`isMember
+    0%      0  Sequence`DropWhile
+    0%      0  Sequence`IndexAll2
+    0%      0  Sequence`RemoveDup
+    0%      0  Sequence`TakeWhile
+    0%      0  Sequence`isOrdered
+    0%      0  Sequence`GetAverage
+    0%      0  Sequence`ProductAux
+    0%      0  Sequence`isAnyMember
+    0%      0  Sequence`lengthUnzip
+    0%      0  Sequence`Permutations
+    0%      0  Sequence`RemoveMember
+    0%      0  Sequence`GetAverageAux
+    0%      0  Sequence`RemoveMembers
+    0%      0  Sequence`length_measure
+    0%      0  Sequence`isAscendingOrder
+    0%      0  Sequence`isDescendingOrder
+    0%      0  Sequence`ascendingOrderSort
+    0%      0  Sequence`descendingOrderSort
+    0%      0  Sequence`isAscendingTotalOrder
+    0%      0  Sequence`isDescendingTotalOrder
+    0%      0  Character`GE
+    0%      0  Character`GT
+    0%      0  Character`LE
+  100%     38  Character`LT
+    0%      0  Character`GE2
+    0%      0  Character`GT2
+    0%      0  Character`LE2
+  100%     38  Character`LT2
+    0%      0  Character`asDigit
+  100%    131  Character`isDigit
+  100%    119  Character`isLetter
+   80%     76  Character`asDictOrder
+  100%    157  Character`isCapitalLetter
+  100%    131  Character`isLetterOrDigit
+    0%      0  Character`isLowercaseLetter
+  100% 307904  AnalysedObject`concat
+  100%    943  AnalysedObject`DecLevel
+  100%    308  AnalysedObject`GetLevel
+  100%    956  AnalysedObject`IncLevel
+    0%      0  AnalysedObject`SetLevel
+  100%     16  AnalysedObject`ClearLevel
+  100%    306  AnalysedObject`GetLineNum
+  100%      9  AnalysedObject`SetTokenInfo
+  100%      5  AnalysedObject`AnalysedObject
+  100%    156  AnalysedObject`SetName2LineNum
+  100%    215  GetRoutineName`printf
+  100%    142  GetRoutineName`GetName
+   33%    131  GetRoutineName`analyseFnm
+   33%      8  GetRoutineName`analyseOpm
+  100%    258  GetRoutineName`getIndents
+  100%    258  GetRoutineName`prCallTree
+    0%      0  GetRoutineName`GetName_Set
+  100%    642  GetRoutineName`analyseExpr
+  100%      5  GetRoutineName`analyseFnms
+  100%      5  GetRoutineName`analyseOpms
+  100%     19  GetRoutineName`analyseStmt
+  100%      5  GetRoutineName`analyseClass
+  100%     84  GetRoutineName`analyseExprs
+   83%    131  GetRoutineName`analyseFnBody
+  100%     13  GetRoutineName`analyseIfExpr
+   96%      1  GetRoutineName`analyseIfStmt
+   83%      8  GetRoutineName`analyseOpBody
+  100%    155  GetRoutineName`isRoutineName
+  100%      2  GetRoutineName`analyseLetStmt
+  100%      1  GetRoutineName`GetRoutineNames
+    0%      0  GetRoutineName`analyseCallStmt
+  100%    258  GetRoutineName`isExclusionName
+  100%     84  GetRoutineName`analyseApplyExpr
+  100%      4  GetRoutineName`analyseBlockStmt
+  100%    131  GetRoutineName`analyseExplFnDef
+  100%      8  GetRoutineName`analyseExplOpDef
+    0%      0  GetRoutineName`analyseImplFnDef
+    0%      0  GetRoutineName`analyseImplOpDef
+  100%      2  GetRoutineName`analyseAssignStmt
+  100%      4  GetRoutineName`analyseBlockStmts
+  100%      4  GetRoutineName`analyseElseifExpr
+    0%      0  GetRoutineName`analyseElseifStmt
+  100%      5  GetRoutineName`analyseReturnStmt
+  100%      5  GetRoutineName`analyseDefinitions
+  100%     13  GetRoutineName`analyseElseifExprs
+  100%      1  GetRoutineName`analyseElseifStmts
+    0%      0  GetRoutineName`analyseExtExplFnDef
+    0%      0  GetRoutineName`analyseExtExplOpDef
+  100%      1  GetRoutineName`getCallTreeOfClasses
+  100%      3  GetRoutineName`analyseFieldSelectExpr
+    0%     30  VDMToolsWizard`classAST
+    0%      0  VDMToolsWizard`classASTs
+    0%     26  VDMToolsWizard`allClassNames
+    0%     30  VDMToolsWizard`classToFileMap
+    0%     30  VDMToolsWizard`docTokenInfoSeq
+    0%      0  VDMToolsWizard`docTokenInfoSeqes
+    0%      0  VDMToolsWizard`docContextNodeInfoSeq
+    0%      0  VDMToolsWizard`docContextNodeInfoSeqes
+
+Total Coverage: 26%
