@@ -1,0 +1,1265 @@
+%--------------------------------------------------------------------------------
+% WHAT
+%    Abstract Syntax for the Static Semantics of VDM++ and VDM-SL.
+%      C preprocessor macroes:
+%        VDMPP  -> VDM++ abstract syntax.
+%          -> VDM-SL abstract syntax.
+%         -> Type information used by the code generator.
+% $Id: common_as.vdm,v 1.74 2006/03/15 07:53:31 vdmtools Exp $
+% Implemented in: ???
+%--------------------------------------------------------------------------------
+
+
+-- CI`HasTypeInfo(n.cid)
+
+
+
+\section{VDM-SL Abstract Syntax} 
+\label{sec:as}
+
+\begin{vdm_al}
+module AS
+
+imports
+
+  from CI all,
+  from REP all
+
+
+exports all
+
+definitions
+
+types
+
+VdmFiles =
+   map CI`FileId to SpecFile;
+
+SpecFile ::
+    name : [FileName]
+    vdm : Document
+    tokenci : CI`TokenContextInfo
+    timestamp : [TimeStamp];
+
+TimeStamp = token;
+
+FileName = seq1 of char;
+
+
+\end{vdm_al}
+
+\subsection{Trace Definitions}
+
+\begin{vdm_al}
+types
+TraceDefList = seq of TraceDefTerm;
+
+TraceDefTerm = TraceDef | TraceDefAltn;
+
+TraceDef = SimpleTrace |
+           QualifiedTrace |
+           RepeatTrace |
+           QualifiedRepeatTrace;
+
+TraceDefAltn ::
+  term : TraceDefTerm
+  tdef : TraceDef
+  cid :- CI`ContextId;
+
+SimpleTrace = TraceApplyExpr | TraceBracketedExpr | TracePermuteExpr;
+
+TraceApplyExpr ::
+  op   : Name
+  args : seq of Expr
+  cid :- CI`ContextId;
+
+TraceBracketedExpr ::
+  list : TraceDefList
+  cid :- CI`ContextId;
+
+TracePermuteExpr ::
+  list : TraceDefList
+  cid :- CI`ContextId;
+
+QualifiedTrace ::
+  binds : seq of TraceBind
+  tdef  : SimpleTrace
+  cid :- CI`ContextId;
+
+TraceBind = LocalTraceBind |
+            LetTraceBind |
+            LetBeTraceBind;
+
+LocalTraceBind ::
+  localdefs : seq of LocalDef
+  cid :- CI`ContextId;
+
+LetTraceBind ::
+  bind : BindList
+  cid :- CI`ContextId;
+
+LetBeTraceBind ::
+  bind   : BindList
+  stexpr : [Expr]
+  cid :- CI`ContextId;
+
+RepeatTrace ::
+  tdef : SimpleTrace
+  pat  : TraceRepeatPattern
+  cid :- CI`ContextId;
+
+TraceRepeatPattern =
+  <ANY> |
+  <ATLEASTONE> |
+  <POSSIBLY> |
+  RepeatFixed |
+  RepeatInterval;
+
+RepeatFixed ::
+  num : RealLit
+  cid :- CI`ContextId;
+
+RepeatInterval ::
+  low  : RealLit
+  high : RealLit
+  cid :- CI`ContextId;
+
+QualifiedRepeatTrace ::
+  binds : seq of TraceBind
+  tdef  : SimpleTrace
+  pat   : TraceRepeatPattern
+  cid :- CI`ContextId;
+
+
+-----------------------------------------------------------------------
+-------------------------- Document -----------------------------------
+-----------------------------------------------------------------------
+
+Document = seq of (Module | DLModule) | seq of Definitions
+inv d == (exists x in set elems d & is_Definitions (x)) => (len d = 1) ;
+
+-----------------------------------------------------------------------
+--------------------------- Modules -----------------------------------
+-----------------------------------------------------------------------
+
+Module :: nm   : Name
+          intf : Interface
+          defs : [Definitions]
+          cid :- CI`ContextId              
+          ;
+
+Interface :: imp  : map Name to [ImportSig]
+             exp  : [ExportSig]
+             cid :- CI`ContextId           
+             ;
+
+ImportSig :: tps : map Name to [TypeDef]
+             val : map Name to [Type]
+             fns : map Name to [(TypeVarList * FnType)]
+             ops : map Name to [OpType]
+             ren : map Name to Name
+             cid :- CI`ContextId          
+             ;
+
+ExportSig :: tps : map Name to [<STRUCT>]
+             val : map Name to Type
+             fns : map Name to (TypeVarList * FnType) -- 
+             ops : map Name to OpType
+             cid :- CI`ContextId          
+             ;
+
+-----------------------------------------------------------------------
+----------------- DL Modules ------------------------------
+-----------------------------------------------------------------------
+
+DLModule :: nm     : Name
+              intf   : DLInterface
+              useslib : [TextLit]
+              cid :- CI`ContextId 
+              ;
+             
+DLInterface :: imp  : map Name to DLImportSig
+                 exp  : DLExportSig
+                 cid :- CI`ContextId 
+                 ;
+                 
+DLImportSig :: tps : map Name to [ImportSig]
+inv imp == (forall impsig in set rng imp.tps & impsig = nil) ;
+
+DLExportSig ::  val : map Name to Type
+                  fns : map Name to FnType
+                  ops : map Name to OpType
+                  cid :- CI`ContextId
+                  ; 
+
+-----------------------------------------------------------------------
+---------------------- Access specifiers ------------------------------
+-----------------------------------------------------------------------
+
+Access = <DEFAULT_AS> | <PRIVATE_AS> | <PROTECTED_AS> | <PUBLIC_AS> | <NOT_INITIALISED_AS>;
+
+-----------------------------------------------------------------------
+-------------------------- Definitions --------------------------------
+-----------------------------------------------------------------------
+
+Definitions :: typem    : map Name to TypeDef
+               valuem   : seq of ValueDef
+               fnm      : map Name to FnDef
+               opm      : map Name to OpDef
+               State    : [ StateDef ]
+               tracem   : map NameList to TraceDefList
+               cid :- CI`ContextId 
+               ;
+
+
+StateDef :: tp : CompositeType                                
+            Inv : [Invariant]  -- new. was: [ Pattern * Expr ]
+            Init : [StateInit] -- new. was: [ Pattern * Expr ]
+            cid :- CI`ContextId 
+            ;                          
+
+StateInit ::
+        pat : Pattern
+        expr : Expr
+        cid :- CI`ContextId
+        ;
+
+\end{vdm_al}
+
+The {\em StateDef} type definition is really not part of the VDM++ language, however,
+the type definition is included in order to avoid too many ifdefs in the specification of the dynamic semantics.
+
+\subsection{Types} \label{atypes}
+
+\begin{vdm_al}
+-----------------------------------------------------------------------
+-------------------------- Type Definitions ---------------------------
+-----------------------------------------------------------------------
+
+TypeDef :: nm    : Name
+           shape : Type
+           Inv   : [Invariant]
+	   access : Access
+            cid :- CI`ContextId                
+inv td == true; -- len td.nm.ids = 1;
+
+
+Invariant ::
+     pat : Pattern
+     expr : Expr
+     cid :- CI`ContextId
+     ;
+
+Type = BasicType |
+       QuoteType | CompositeType | UnionType |
+       ProductType | OptionalType | SetType | SeqType | 
+       MapType | TypeName | FnType | BracketedType |
+       OpType | TypeVar | VoidType;
+
+BracketedType :: tp : Type
+                 cid :- CI`ContextId
+                 ;
+
+BasicType = BooleanType | NumericType | TokenType | CharType;
+
+BooleanType :: cid :- CI`ContextId
+               ;
+
+NumericType :: qtp : <NATONE> | <NAT> | <INTEGER> | <RAT> | <REAL>
+               cid :- CI`ContextId
+               ;
+               
+TokenType :: cid :- CI`ContextId
+             ;
+
+CharType :: cid :- CI`ContextId
+            ;
+ 
+QuoteType :: lit : QuoteLit
+             cid :- CI`ContextId
+             ;
+
+CompositeType :: name : Name   
+                 fields : seq of Field
+                 cid :- CI`ContextId
+inv ct == true; -- len ct.name. ids = 1;
+\end{vdm_al}
+
+The entry {\em dc} in the {\em Field} type describes if the field is
+an abstract field.
+
+\begin{vdm_al}
+Field :: sel : [Name]         
+         type : Type
+         dc   : bool
+         cid :- CI`ContextId
+inv field == if field.sel <> nil
+             then len field.sel.ids = 1
+             else true;
+
+UnionType :: tps : seq of Type
+             cid :- CI`ContextId
+             ;
+
+ProductType :: tps : seq of Type
+               cid :- CI`ContextId
+               ;
+
+OptionalType :: tp: Type
+                cid :- CI`ContextId
+                ;
+
+SetType :: elemtp : Type
+           cid :- CI`ContextId
+           ;
+
+SeqType = Seq0Type | Seq1Type;                                
+
+Seq0Type :: elemtp : Type
+            cid :- CI`ContextId
+            ;
+
+Seq1Type :: elemtp : Type
+            cid :- CI`ContextId
+            ;
+
+MapType = GeneralMapType | InjectiveMapType;                  
+
+GeneralMapType :: mapdom : Type                               
+                  maprng : Type
+                  cid :- CI`ContextId
+                  ;
+
+InjectiveMapType :: mapdom : Type                             
+                    maprng : Type
+                    cid :- CI`ContextId
+                    ;
+
+TypeName :: name : Name
+            cid :- CI`ContextId               
+            ;
+
+-- for the Dynamic Semantic
+DynFnType = FnType | LambdaFnType;
+
+
+-- hc: Why in AS and not in dyn. sem ??
+-- for the Dynmaic Semantic
+LambdaFnType :: fndom : DiscretionaryType                    
+                fnrng : Type | AllType;
+
+FnType = PartialFnType | TotalFnType;                         
+
+PartialFnType :: fndom : DiscretionaryType                    
+                 fnrng : Type
+                 cid :- CI`ContextId
+                 ;
+
+TotalFnType :: fndom : DiscretionaryType                      
+               fnrng : Type
+               cid :- CI`ContextId
+               ;
+
+DiscretionaryType = seq of Type;                        
+
+TypeVar :: name : Name
+           cid :- CI`ContextId
+           ;                                          
+
+VoidType :: cid :- CI`ContextId
+           ;
+
+AllType :: cid :- CI`ContextId
+           ;
+
+-- AllType is used by the dynamic semantics to deal with the result type
+-- of lambda expressions! Otherwise it is not used!!
+
+\end{vdm_al}
+
+\subsection{Functions} \label{afunctions}
+
+\begin{vdm_al}
+
+-----------------------------------------------------------------------
+-------------------------- Functions Definitions ----------------------
+-----------------------------------------------------------------------
+
+FnDef = ExplFnDef | ImplFnDef | ExtExplFnDef;                                
+
+ExplFnDef :: nm      : Name
+             tpparms : TypeVarList
+             tp      : FnType
+             parms   : ParametersList
+             body    : FnBody
+             fnpre   : [Expr]
+             fnpost  : [Expr]
+             access : Access
+             static : bool
+             measu  : [Name]
+             cid :- CI`ContextId                       
+inv fndef == len fndef.nm.ids = 1;
+
+ImplFnDef :: nm      : Name
+             params  : TypeVarList    
+             partps  : ParameterTypes
+             resnmtps: seq of NameType
+             fnpre   : [Expr]
+             fnpost  : Expr
+             access : Access
+             static : bool
+             cid :- CI`ContextId                       
+inv fndef == len fndef.nm.ids = 1;
+
+ExtExplFnDef :: nm      : Name
+                params  : TypeVarList   
+                partps  : ParameterTypes
+                resnmtps: seq of NameType
+                body    : FnBody
+                fnpre   : [Expr]
+                fnpost  : [Expr]
+                access : Access
+                static : bool
+                cid :- CI`ContextId                    
+                ;
+
+TypeVarList = seq of TypeVar;            -- hc: not a node (no pos
+                                         --     info about parenthesis
+
+
+ParametersList = seq1 of Parameters;      -- hc: not a node (no pos
+                                         --     info about parenthesis
+Parameters = seq of Pattern;             -- hc: not a node (no pos
+                                         --     info about parenthesis
+
+ParameterTypes = seq of PatTypePair;     -- hc: not a node (no pos
+                                         --     info about parenthesis
+
+NameType :: nm : Name                                             
+            tp : Type
+            cid :- CI`ContextId                       
+inv nt == len nt.nm.ids = 1;
+
+
+PatTypePair :: pats : seq of Pattern    
+               tp  : Type
+               cid :- CI`ContextId
+               ;
+
+dummy = <NOTYETSPEC>;
+
+FnBody :: body : Expr | <NOTYETSPEC> 
+                cid :- CI`ContextId
+                ;
+\end{vdm_al}
+
+\subsection{Operations}
+
+\begin{vdm_al}
+-----------------------------------------------------------------------
+-------------------------- Operations Definitions ---------------------
+-----------------------------------------------------------------------
+
+OpDef = ExplOpDef | ImplOpDef | ExtExplOpDef;
+\end{vdm_al}
+\begin{vdm_al}
+ExplOpDef :: nm      : Name
+             sync    : bool
+             tp      : OpType                                 
+             parms   : Parameters
+             body    : OpBody
+             oppre   : [Expr]
+             oppost  : [Expr]
+             access  : Access
+             static  : bool
+             constr  : bool
+             cid :- CI`ContextId                      
+             ;
+
+\end{vdm_al}
+The field $timepost$ in $ExplOpDef$ will always be {\sf nil} 
+in VDM-SL specifications.
+\begin{vdm_al}
+
+ImplOpDef :: nm       : Name
+             sync    : bool
+             partps   : ParameterTypes                         
+             resnmtps : seq of NameType
+             opext    : seq of ExtInf
+             oppre    : [Expr]
+             oppost   : Expr
+             excps    : seq of Error
+             access : Access
+             static : bool
+             constr  : bool
+             cid :- CI`ContextId                      
+             ;
+
+\end{vdm_al}
+\begin{vdm_al}
+
+ExtExplOpDef :: nm       : Name
+                sync    : bool
+                partps   : ParameterTypes                         
+                resnmtps : seq of NameType
+                body     : OpBody
+                opext    : seq of ExtInf
+                oppre    : [Expr]
+                oppost   : [Expr]
+                excps    : seq of Error
+                access : Access
+                static : bool
+                constr  : bool
+                cid :- CI`ContextId                      
+                ;
+
+\end{vdm_al}
+The field $timepost$ in $ExtExplOpDef$ will always be {\sf nil} 
+in VDM-SL specifications.
+\begin{vdm_al}
+
+OpType :: opdom : DiscretionaryType
+          oprng : Type
+          cid :- CI`ContextId
+          ;
+
+ExtInf :: mode : Mode                                         
+          vars : seq of Name
+          tp   : [Type]
+          cid :- CI`ContextId
+          ;
+
+Mode = <READ> | <READWRITE>;                                  
+
+OpBody :: body : Stmt | <NOTYETSPEC> 
+                cid :- CI`ContextId
+                ;
+\end{vdm_al}
+                 
+
+\subsection{Values} \label{avalues}
+
+
+\begin{vdm_al}
+-----------------------------------------------------------------------
+-------------------------- Value Definitions --------------------------
+-----------------------------------------------------------------------
+
+
+ValueDef :: pat : Pattern                                     
+            tp  : [Type]
+            val : Expr
+            access : Access
+            static : bool
+            cid :- CI`ContextId
+            ;
+\end{vdm_al}
+
+\subsection{Expressions} \label{aexpr}
+\begin{vdm_al}
+
+-----------------------------------------------------------------------
+-------------------------- Expressionts -------------------------------
+-----------------------------------------------------------------------
+
+Expr = BracketedExpr | DefExpr | LetExpr | LetBeSTExpr| IfExpr | CasesExpr | 
+       UnaryExpr | BinaryExpr | QuantExpr| IotaExpr |
+       SetEnumerationExpr | SetComprehensionExpr | SetRangeExpr |
+       SeqEnumerationExpr | SeqComprehensionExpr |
+       SubSequenceExpr | SeqModifyMapOverrideExpr |
+       MapEnumerationExpr | MapComprehensionExpr | Maplet |
+       TupleConstructorExpr |
+       RecordConstructorExpr | RecordModifierExpr |
+       FieldSelectExpr | ApplyExpr |
+       IsExpr | Literal | Name | OldName | UndefinedExpr |
+       NarrowExpr |
+       TupleSelectExpr | TypeJudgementExpr | PreConditionApplyExpr |
+      TokenConstructorExpr | FctTypeInstExpr | LambdaExpr | LastRes;
+
+-- only used in the concurrency module				     -- (!) OlOpp   
+								     -- (!) OlOpp
+GuardExpr :: expr : AS`Expr  -- this is the original guard expression   -- (!) OlOpp
+             name : AS`Name; -- this is the name of the class,	     -- (!) OlOpp 
+	                  --  in which the expression was defined.   -- (!) OlOpp 
+      
+BracketedExpr :: expr  : Expr 
+                 cid :- CI`ContextId               
+inv n == true -- TI
+                 ;
+
+DefExpr :: Def : seq of (PatternBind * Expr)                  
+           In  : Expr
+           cid :- CI`ContextId                    
+inv n == true -- TI
+           ;
+
+LetExpr :: localdef : seq of LocalDef                         
+           body     : Expr
+           cid :- CI`ContextId
+inv n == true -- TI
+           ;
+
+
+LocalDef = FnDef | ValueDef;                             
+
+LetBeSTExpr :: lhs : BindList
+               St  : [Expr]
+               In  : Expr
+               cid :- CI`ContextId       
+inv n == true -- TI
+               ;
+
+
+IfExpr :: test   : Expr                                          
+          cons   : Expr
+          elsif  : seq of ElseifExpr
+          altn   : Expr
+          cid :- CI`ContextId            
+inv n == true -- TI
+;
+
+
+ElseifExpr :: test : Expr
+              cons : Expr
+              cid :- CI`ContextId                
+              ;           
+
+CasesExpr :: sel    : Expr
+             altns  : seq of CaseAltn 
+             Others : [ Expr ]
+             cid :- CI`ContextId                
+inv n == true -- TI
+;
+
+
+CaseAltn :: match : seq of Pattern
+            body  : Expr
+            cid :- CI`ContextId                
+            ;
+
+UnaryExpr = PrefixExpr;
+
+PrefixExpr :: opr   : UnaryOp
+              arg   : Expr
+              cid :- CI`ContextId             
+inv n == true -- TI
+;
+
+
+UnaryOp = <NUMPLUS> | <NUMMINUS> | <NUMABS> | <FLOOR> |
+          <NOT> |
+          <SETCARD> | <SETDISTRUNION> | <SETDISTRINTERSECT> |
+          <SETPOWER> |
+          <SEQLEN> | <SEQDISTRCONC> | <SEQELEMS> | <SEQINDICES> |
+          <SEQTAIL> | <SEQHEAD> | <SEQREVERSE> |
+          <MAPDOM> | <MAPRNG> | <MAPDISTRMERGE> | <MAPINVERSE>;
+
+
+BinaryExpr :: left  : Expr
+              opr   : BinaryOp
+              right : Expr
+              cid :- CI`ContextId            
+inv n == true -- TI
+;
+
+
+BinaryOp = <NUMPLUS> | <NUMMINUS> | <NUMMULT> | <NUMDIV> |
+           <NUMREM> | <NUMMOD> | <NUMEXP> | <INTDIV> |
+           <NUMLT> | <NUMLE> | <NUMGT> | <NUMGE> |
+           <AND> | <OR> | <IMPLY> | <EQUIV> |
+           <EQ> | <NE> |
+           <SETUNION> | <SETINTERSECT> | <SETMINUS> | <SUBSET> |
+           <PROPERSUBSET> | <INSET> | <NOTINSET> |
+           <SEQCONC> |
+           <MAPMERGE> | <MAPDOMRESTTO> | <MAPDOMRESTBY> |
+           <MAPRNGRESTTO> | <MAPRNGRESTBY> |
+           <COMPOSE> | ( <LEXORD> * nat );
+
+QuantExpr = AllOrExistsExpr | ExistsUniqueExpr;
+
+
+AllOrExistsExpr :: quant : AllOrExistsQuantifier
+                   bind  : BindList
+                   pred  : Expr
+                   cid :- CI`ContextId  
+inv n == true -- CI`HasTypeInfo(n.cid) and CI`HasPidMInfo(n.cid)
+                   ;
+
+
+ExistsUniqueExpr :: bind : Bind
+                    pred : Expr
+                    cid :- CI`ContextId 
+inv n == true -- CI`HasTypeInfo(n.cid) and CI`HasPidMInfo(n.cid)
+                    ;
+
+
+AllOrExistsQuantifier = <ALL> | <EXISTS>;
+
+IotaExpr :: bind : Bind
+            pred : Expr
+            cid :- CI`ContextId        
+inv n == true -- TI
+;
+
+
+SetEnumerationExpr :: els   : seq of Expr
+                      cid :- CI`ContextId 
+inv n == true -- TI
+;
+
+
+SetComprehensionExpr :: elem : Expr
+                        bind : BindList
+                        pred : [Expr]
+                        cid :- CI`ContextId 
+inv n == true -- CI`HasTypeInfo(n.cid) and CI`HasPidMInfo(n.cid)
+                        ;
+
+
+SetRangeExpr :: lb : Expr
+                ub : Expr
+                cid :- CI`ContextId 
+inv n == true -- TI
+                ;
+
+
+SeqEnumerationExpr :: els : seq of Expr
+                      cid :- CI`ContextId 
+inv n == true -- TI
+;
+
+
+SeqComprehensionExpr :: elem : Expr
+                        bind : SetBind
+                        pred : [Expr]
+                        cid :- CI`ContextId 
+inv n == true -- CI`HasTypeInfo(n.cid) and CI`HasPidMInfo(n.cid)
+                        ;
+
+
+SubSequenceExpr :: sequence : Expr
+                   frompos  : Expr
+                   topos    : Expr
+                   cid :- CI`ContextId 
+inv n == true -- TI
+;
+
+
+SeqModifyMapOverrideExpr :: seqmap : Expr
+                            mapexp : Expr
+                            cid :- CI`ContextId 
+inv n == true -- TI
+;
+
+
+MapEnumerationExpr :: els : seq of Maplet
+                      cid :- CI`ContextId 
+inv n == true -- TI
+;
+
+
+Maplet :: mapdom : Expr
+          maprng : Expr
+          cid :- CI`ContextId
+          ;
+
+MapComprehensionExpr :: elem : Maplet
+                        bind : BindList
+                        pred : [Expr]
+                        cid :- CI`ContextId 
+inv n == true -- CI`HasTypeInfo(n.cid) and CI`HasPidMInfo(n.cid)
+                        ;
+
+
+TupleConstructorExpr :: fields : seq of Expr 
+                        cid :- CI`ContextId
+inv n == true -- TI
+                        ;
+
+
+TokenConstructorExpr :: field : Expr
+                        cid :- CI`ContextId 
+inv n == true -- TI
+                        ;
+
+RecordConstructorExpr :: tag: Name
+                         fields: seq of Expr
+                         cid :- CI`ContextId
+inv n == true -- TI
+;
+
+RecordModifierExpr :: rec : Expr
+                      modifiers : seq1 of RecordModification
+                      cid :- CI`ContextId 
+inv n == true -- TI
+;
+
+RecordModification :: field : Name
+                      new : Expr
+                      cid :- CI`ContextId 
+inv rm == len rm.field.ids = 1;
+
+
+FieldSelectExpr :: rec : Expr
+                   nm  : Name | FctTypeInstExpr
+                   cid :- CI`ContextId 
+inv n == 
+          ((is_Name (n.nm) and len n.nm.ids = 1 ) or
+           (is_FctTypeInstExpr (n.nm) and len n.nm.polyfct.ids = 1)) 
+           and true;
+\end{vdm_al}
+
+\begin{vdm_al}
+FctTypeInstExpr :: polyfct : Name
+                   inst    : seq of Type
+                   cid :- CI`ContextId  -- tp_info
+inv n == true -- TI
+;
+
+LambdaExpr :: parm : seq of TypeBind
+              body : Expr
+              cid :- CI`ContextId  
+inv n == true -- TI
+;
+                              
+ApplyExpr :: fct : Expr
+             arg : seq of Expr
+             cid :- CI`ContextId 
+inv n == true -- TI
+             ;
+
+IsExpr :: type : BasicType | Name
+          arg  : Expr
+          cid :- CI`ContextId 
+inv n == true -- TI
+;
+
+UndefinedExpr::
+          cid :- CI`ContextId  
+;
+
+NarrowExpr :: expr : Expr
+              type : Type
+              cid :- CI`ContextId
+inv n == true -- TI
+;
+
+TupleSelectExpr :: tuple : Expr
+                   no: RealLit
+                   cid :- CI`ContextId
+;
+
+TypeJudgementExpr :: expr : Expr
+                     type : Type
+                     cid :- CI`ContextId
+;
+
+PreConditionApplyExpr :: fct : Expr
+                         arg : seq of Expr
+                         cid :- CI`ContextId
+;
+
+
+\end{vdm_al}
+
+\subsection{Names} \label{anames}
+\begin{vdm_al}
+Name :: ids : Ids
+        cid :- CI`ContextId 
+inv n == true -- TI
+;
+
+Ids = seq of Id;
+
+Id = seq of char;
+
+NameList = seq1 of Name;
+
+OldName :: ids : seq of Id
+         cid :- CI`ContextId 
+inv n == true -- TI
+;
+
+\end{vdm_al}
+
+\subsection{Statements} \label{astmt}
+\begin{vdm_al}
+
+
+-----------------------------------------------------------------------
+-------------------------- Statements ---------------------------------
+-----------------------------------------------------------------------
+
+Stmt = DefStmt | LetStmt | LetBeSTStmt|
+       AssignStmt | SeqForLoopStmt | AtomicAssignStmt |
+       SetForLoopStmt | IndexForLoopStmt | WhileLoopStmt |
+       ReturnStmt | IfStmt |
+       CasesStmt | BlockStmt | IdentStmt |
+       ErrorStmt | AlwaysStmt | CallStmt | SpecificationStmt | 
+       AssertStmt |
+       ExitStmt | TrapStmt | RecTrapStmt | NonDetStmt ;
+
+DefStmt :: value : seq of (PatternBind * Expr)
+           In    : Stmt
+           cid :- CI`ContextId 
+           ;
+
+LetStmt :: localdef : seq of LocalDef
+           In       : Stmt
+           cid :- CI`ContextId 
+           ;
+
+LetBeSTStmt :: bind : BindList
+               St   : [Expr]
+               In   : Stmt
+               cid :- CI`ContextId 
+               ;
+
+BlockStmt :: dcls  : seq of AssignDef
+             stmts : seq of Stmt
+             cid :- CI`ContextId 
+             ;
+
+AssignDef :: var     : Name
+             tp      : Type
+             dclinit : [Expr]
+             cid :- CI`ContextId   
+             ;
+            
+
+AtomicAssignStmt :: atm : seq of AssignStmt
+                    cid :- CI`ContextId
+                    ;
+
+AssignStmt :: lhs : StateDesignator
+              rhs : Expr
+              cid :- CI`ContextId
+              ;
+
+StateDesignator = Name | FieldRef | MapOrSeqRef | NarrowExpr;
+
+FieldRef :: var : StateDesignator
+            sel : Name
+            cid :- CI`ContextId 
+            ;
+
+MapOrSeqRef :: var : StateDesignator
+               arg : Expr
+               cid :- CI`ContextId
+               ;
+
+SeqForLoopStmt :: cv  : PatternBind
+                  fseq : Expr
+                  body : Stmt
+                  cid :- CI`ContextId
+                  ;
+
+SetForLoopStmt :: cv   : Pattern
+                  fset : Expr
+                  body : Stmt
+                  cid :- CI`ContextId
+                  ;
+
+IndexForLoopStmt :: cv   : Name
+                    lb   : Expr
+                    ub   : Expr
+                    By   : [Expr]
+                    body : Stmt
+                    cid :- CI`ContextId
+inv ifls == len ifls.cv.ids = 1;
+
+WhileLoopStmt :: test : Expr
+                 body : Stmt
+                 cid :- CI`ContextId
+                 ;
+
+ReturnStmt :: val : [Expr]
+              cid :- CI`ContextId 
+              ;
+
+IfStmt :: test   : Expr
+          cons   : Stmt
+          elsif  : seq of ElseifStmt
+          altn   : [Stmt]
+          cid :- CI`ContextId
+          ;
+
+ElseifStmt :: test : Expr
+              cons : Stmt
+              cid :- CI`ContextId
+              ;
+
+
+Error :: nm     : Name                                          
+         cond   : Expr
+         action : Expr
+         cid :- CI`ContextId 
+         ;
+
+
+ErrorStmt :: 
+          cid :- CI`ContextId
+          ;
+
+AlwaysStmt :: Post : Stmt
+              body : Stmt
+              cid :- CI`ContextId
+              ;
+
+TrapStmt :: pat : PatternBind
+            Post : Stmt
+            body : Stmt
+            cid :- CI`ContextId
+            ;
+
+RecTrapStmt :: traps : seq of Trap
+               body  : Stmt
+               cid :- CI`ContextId
+               ;
+
+Trap :: match    : PatternBind
+        trappost : Stmt
+        cid :- CI`ContextId
+        ;
+
+ExitStmt :: expr : [Expr]
+            cid :- CI`ContextId
+            ;
+ 
+NonDetStmt :: stmts : seq of Stmt
+              cid :- CI`ContextId
+              ;
+
+CallStmt :: oprt   : Name
+            args   : seq of Expr
+            cid :- CI`ContextId 
+inv n == true -- TI
+;
+
+
+CasesStmt :: sel    : Expr
+             altns  : seq of CasesStmtAltn 
+             Others : [Stmt]
+             cid :- CI`ContextId
+             ;
+
+CasesStmtAltn :: match : seq of Pattern
+                 body  : Stmt
+                 cid :- CI`ContextId 
+                 ;
+
+IdentStmt ::
+           cid :- CI`ContextId
+           ;
+
+SpecificationStmt :: opext    : seq of ExtInf
+                     oppre    : [Expr]
+                     oppost   : Expr
+                     excps    : seq of Error
+                     cid :- CI`ContextId
+                     ;
+
+AssertStmt :: expr : Expr
+              cid :- CI`ContextId
+              ;
+
+\end{vdm_al}
+
+
+
+\subsection{Patterns} \label{apattern}
+\begin{vdm_al}
+
+
+-----------------------------------------------------------------------
+-------------------- Patterns and Bindings ----------------------------
+-----------------------------------------------------------------------
+
+Pattern = PatternName | MatchVal | SetPattern | SeqPattern | MapPattern |
+          TuplePattern | RecordPattern | MapletPattern;
+
+PatternName :: nm : [Name] | OldName
+               tp : [Type]
+               cid :- CI`ContextId 
+inv n ==  true;
+\end{vdm_al}
+
+The $OldName$ type in $PatternName$ is used by the code generator, in
+order to code generate post conditions on operations. Note, that old
+names can not appear in pattern names in the concrete syntax.
+
+\begin{vdm_al}
+MatchVal :: val : Expr
+            cid :- CI`ContextId 
+            ;
+
+SetPattern = SetEnumPattern | SetUnionPattern;
+\end{vdm_al}
+
+The empty set is represented using $MatchVal$ and not
+$SetEnumPattern$. Consequently $SetEnumPattern$ contains
+$\seqof+{Pattern}$ instead of $\seqof*{Pattern}$.
+
+\begin{vdm_al}
+SetEnumPattern :: 
+     Elems : seq1 of Pattern
+     cid :- CI`ContextId 
+inv n == true -- TI
+;
+
+SetUnionPattern :: lp : Pattern
+                   rp : Pattern
+                   cid :- CI`ContextId
+                   ;
+
+SeqPattern = SeqEnumPattern | SeqConcPattern;
+\end{vdm_al}
+
+The empty sequence is represented using $MatchVal$ and not
+$SeqEnumPattern$. Consequently $SeqEnumPattern$ contains
+$\seqof+{Pattern}$ instead of $\seqof*{Pattern}$.
+
+\begin{vdm_al}
+SeqEnumPattern :: els : seq1 of Pattern
+                  cid :- CI`ContextId 
+inv n == true -- TI
+;
+
+SeqConcPattern :: lp : Pattern
+                  rp : Pattern
+                  cid :- CI`ContextId
+                  ;
+
+MapPattern = MapEnumPattern | MapMergePattern;
+
+MapletPattern :: dp : Pattern
+                 rp : Pattern
+                 cid :- CI`ContextId
+                 ;
+
+MapEnumPattern :: mls : seq1 of MapletPattern
+                  cid :- CI`ContextId
+                  ;
+
+MapMergePattern :: lp : Pattern
+                   rp : Pattern
+                   cid :- CI`ContextId
+                   ;
+
+TuplePattern :: fields : seq of Pattern
+                cid :- CI`ContextId 
+inv n == true -- TI
+;
+
+RecordPattern :: nm: Name
+                 fields: seq of Pattern
+                 cid :- CI`ContextId 
+inv n == true -- TI
+\end{vdm_al}
+
+\subsection{Bindings} \label{abinding}
+\begin{vdm_al}
+types
+
+PatternBind = Pattern | Bind;
+
+Bind = SetBind | TypeBind;
+
+SetBind :: pat : Pattern
+           Set : Expr
+           cid :- CI`ContextId 
+           ;
+
+TypeBind :: pat : Pattern
+            tp  : Type
+            cid :- CI`ContextId
+            ;
+
+BindList = seq of MultBind;
+
+MultBind = MultSetBind | MultTypeBind;
+
+MultSetBind :: pat : seq of Pattern
+               Set : Expr
+               cid :- CI`ContextId
+               ;
+
+MultTypeBind :: pat : seq of Pattern
+                tp  : Type
+                cid :- CI`ContextId
+                ;
+\end{vdm_al}
+
+\subsection{Literals} \label{aliterals}
+\begin{vdm_al}
+
+-----------------------------------------------------------------------
+-------------------- Literals -----------------------------------------
+-----------------------------------------------------------------------
+
+Literal = BoolLit | NilLit | NumLit | RealLit | CharLit | TextLit | QuoteLit;
+
+BoolLit :: val : bool
+           cid :- CI`ContextId
+           ;
+
+NilLit :: 
+        cid :- CI`ContextId
+        ;
+
+RealLit :: val : real
+           cid :- CI`ContextId
+           ;
+
+NumLit = RealLit
+inv n == is_int(n.val);
+
+CharLit :: val : char
+           cid :- CI`ContextId 
+           ;
+
+TextLit :: val : seq of char
+           cid :- CI`ContextId
+           ;
+
+QuoteLit :: val : seq of char
+            cid :- CI`ContextId;
+\end{vdm_al}
+
+
+\subsection{Structure combining the AST and the ContextInfo} \label{AstCI}
+
+{\em AstCI} is a structure that is not directly part of the AST. It
+combines a {\em Document} or {\em Expr}, a {\em CI`TokenContextInfo\/}
+and a {\em CI` FileIdMap} into a compound structure that is used by
+all the test environments.
+
+\begin{vdm_al}
+
+-----------------------------------------------------------------------
+-------------------- AstCI --------------------------------------------
+-----------------------------------------------------------------------
+
+AstCI ::
+  ast: Document | Expr
+  tllci : seq of CI`TokenContextInfo
+  fidm : CI` FileIdMap;
+\end{vdm_al}
+
+\subsection{Debugger Constructs} \label{debugconstr}
+
+{\em LastRes\/} is not directly part of the AST but is so tightly
+related to it that is has been defined as an AST node anyway. It is
+the node corresponding to the \$\$ command in the debugger.
+
+\begin{vdm_al}
+
+-----------------------------------------------------------------------
+-------------------- Debugger Constructs ------------------------------
+-----------------------------------------------------------------------
+
+LastRes :: 
+
+end AS
+\end{vdm_al}
+
