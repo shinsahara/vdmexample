@@ -1,0 +1,133 @@
+\section {AnalyserCommon}
+\subsection {Responsibility}
+Utilities of analyser.
+
+\begin{vdm_al}
+class AnalyserCommon
+
+values
+public DbgLevel = 5;
+fileName_of_CallGraph = "CallGraph.txt";
+levelString = "--------------------"; --30 spaces
+protected io = new IO();
+protected util = new VDMUtil();
+
+types
+public IdentifierName = seq of char;
+
+functions
+protected MakeCallTree[@T] : AnalysedObject * @T * [seq of char * nat * nat * IdentifierName * IdentifierName] -> bool
+MakeCallTree(anAnalysedObject, val, p) == 
+	let wClassName = anAnalysedObject.GetClassName(),
+		mk_(keyName, dispName) = getNames[@T](wClassName, val)
+	in (
+	if  anAnalysedObject.GetOutputLevel() <= 7 and not anAnalysedObject.IsRoutineName(dispName) then
+		false
+	else 
+		let	wLevel = anAnalysedObject.GetLevel(),
+			lineNum_set = anAnalysedObject.GetLineNum(keyName),
+			wDefinedLineNum = anAnalysedObject.GetDefinedLineNum(dispName),
+			mk_(-, line_num, column_num, -, fnop_name) = p,
+			wSourceInfos =  
+				if DbgLevel >= 9 then
+					util.val2seq_of_char[nat * nat * IdentifierName](mk_(line_num, column_num, fnop_name))
+				else
+					""
+		in anAnalysedObject.SetCallGraphData(keyName, dispName, wLevel, wDefinedLineNum, lineNum_set, wSourceInfos)
+	);
+
+operations
+protected prCallTree2 : AnalysedObject ==> ()
+prCallTree2(anAnalysedObject) ==
+	for wCG in anAnalysedObject.GetCallGraphDataSeq() do
+		let wDispName = wCG.fDispName in
+		let wLevel =wCG.fLevel,
+			indents = getIndents(wLevel),
+			wDefinedLineNum = wCG.fDefinedLineNum,
+			wDefinedLineNums = util.val2seq_of_char[set of nat](wDefinedLineNum),
+			wlineNum_set = wCG.fLineNum_set,
+			wLineNums = util.val2seq_of_char[set of nat](wlineNum_set),
+			wSourceInfos = wCG.fSourceInfos,
+			s9 = indents ^ wDispName ^ wDefinedLineNums ^ wLineNums ^ "\t" ^ wSourceInfos ^ "\n",
+			- = printf(s9) 
+		in skip;
+			
+functions
+protected print[@T] : AnalysedObject * @T -> bool
+print(anAnalysedObject, val)  == 
+	let wLevel = anAnalysedObject.GetLevel(),
+		indents = getIndents(wLevel+1),
+		s = indents ^ util.val2seq_of_char[@T](val) ^ "\n",
+		- = io.fecho(fileName_of_CallGraph,s,<append>) in
+	io.echo(s);
+
+protected printf : seq of char -> bool
+printf(s) == 
+	let - = io.fecho(fileName_of_CallGraph,s,<append>) in
+	io.echo(s);
+
+
+protected printHeader :seq of IdentifierName +> bool
+printHeader(aClassName_seq) ==
+	def	s = "+++ CallGraph +++";
+		- = io.echo(s);
+		- = io.fecho(fileName_of_CallGraph, s, <start>);
+		wClassName_str = util.val2seq_of_char[seq of IdentifierName](aClassName_seq);
+		r = printf(" Analysing " ^ wClassName_str ^ ". Wait for a while..." ^ "\n");
+	in r;
+
+public pr : seq of char +> bool
+pr(s) == io.echo(s);
+
+getIndents : AnalysedObject`Level +> seq of char
+getIndents(aLevel) ==
+	if aLevel > 0 then
+		levelString(1,...,aLevel)
+	 else
+		"";
+
+getNames[@T] : IdentifierName * @T +> IdentifierName * IdentifierName
+getNames(aClassName, val) ==
+	if is_(val, IdentifierName) then	-- Class Name
+		mk_(aClassName ^ "`" ^ val, val)
+	elseif is_(val, seq of IdentifierName) then
+		if len val = 2 then	-- Class_name`RoutineName
+			mk_(hd val ^ "`" ^ hd tl val, hd val ^ "`" ^ hd tl val)
+		else	-- RoutineName
+			mk_(aClassName ^ "`" ^ hd val, hd val)
+	else
+		mk_(aClassName ^ "`" ^ val, val);
+
+protected GetName : AS`Name +> AS`Ids
+GetName(aNAME) == let mk_AS`Name(ids, -) = aNAME in ids;
+
+/*
+-- isExclusionName : excluding instance variables, parameters, values, and local name
+-- effective iff the naming convension in set {SCSK, Shin_Sahara}
+isExclusionName : IdentifierName +> bool
+isExclusionName(s) == 
+	if s = [] then
+		false
+	else
+		let p1 = s(1) in set elems "isvw",
+			p2 = s(1) = 'a'
+		in
+			if len s >= 3 then
+				s(1,...,2) = "an" and isRoutineName(s(3)) or
+				(p1 or p2) and isRoutineName(s(2))
+			elseif len s = 2 then
+				(p1 or p2) and isRoutineName(s(2))
+			else
+				p1;
+
+isRoutineName : char +> bool
+isRoutineName(c) == 
+	Character`isCapitalLetter(c) or not Character`isLetterOrDigit(c);
+*/
+
+end AnalyserCommon
+\end{vdm_al}
+
+\begin{rtinfo}
+[TotalxCoverage]{vdm.tc}[AnalyserCommon]
+\end{rtinfo}

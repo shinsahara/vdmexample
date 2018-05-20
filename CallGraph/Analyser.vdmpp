@@ -1,0 +1,1147 @@
+\section {Analyser}
+\subsection {Responsibility}
+Analyse VDM++ specifications.
+
+\begin{vdm_al}
+class Analyser is subclass of AnalyserCommon
+
+instance variables
+protected iWzd : VDMToolsWizard := new VDMToolsWizard();
+
+operations
+public analyseClass : AnalysedObject * IdentifierName ==> seq of AnalysedObject
+analyseClass(anAnalysedObject, aClassName) ==
+	def - = pr("Analysing " ^ aClassName ^ "...\n");
+		- = anAnalysedObject.ClearLevel();
+		wClass = iWzd.classAST(aClassName);
+		wClassToFileMap = iWzd.classToFileMap();
+		wTokenInfo_seq = iWzd.docTokenInfoSeq(wClassToFileMap(aClassName));
+		wAnalysedObject = anAnalysedObject.SetTokenInfo(wTokenInfo_seq);
+		wContextNodeInfo_seq = iWzd.docContextNodeInfoSeq(wClassToFileMap(aClassName), nil);
+		wAnalysedObject1 = wAnalysedObject.SetContextNodeInfo(wContextNodeInfo_seq);
+		wAnalysedObject2 = wAnalysedObject1;
+		wAnalysedObject3 = wAnalysedObject2.SetName2LineNum(aClassName);
+		defs = wClass.defs;
+		nm = wClass.nm;
+		ids = GetName(nm);
+		wLineNum = wAnalysedObject3.GetLine(nm.cid);
+		wAnalysedObject4 = wAnalysedObject3;
+		wAnalysedObject5 = wAnalysedObject4.SetRoutineName2DefinedLineNum(ids, wLineNum);
+		- = MakeCallTree[IdentifierName](wAnalysedObject5, aClassName, util.P());
+		r = analyseDefinitions(wAnalysedObject5, defs);
+		- = wAnalysedObject5.ClearLevel();
+	in return r;
+
+functions
+analyseDefinitions : AnalysedObject * AS`Definitions  +> seq of AnalysedObject
+analyseDefinitions(anAnalysedObject, aDefinitions) == 
+	let valuem = aDefinitions.valuem,
+		fnm = aDefinitions.fnm,
+		opm = aDefinitions.opm,
+		cnm = anAnalysedObject.GetClassName(),
+		wValue_sec = analyseValueDefs(anAnalysedObject, cnm, valuem),
+		wFunc_seq = analyseFnms(anAnalysedObject, fnm),
+		wOp_seq = analyseOpms(anAnalysedObject, opm),
+		r = wFunc_seq ^ wOp_seq ^ wValue_sec
+	in r;
+
+analyseFnms : AnalysedObject * map AS`Name to AS`FnDef +> seq of AnalysedObject
+analyseFnms(anAnalysedObject, aFnm) ==
+	let wFnDef_seq = util.set2seq[AS`FnDef](rng aFnm),
+		r = conc [analyseFnm(anAnalysedObject, wFnDef_seq(i)) | i in set inds wFnDef_seq]
+	in r;
+
+analyseOpms : AnalysedObject * map AS`Name to AS`OpDef +> seq of AnalysedObject
+analyseOpms(anAnalysedObject, aOpm) ==
+	let wOpDef_seq = util.set2seq[AS`OpDef](rng aOpm),
+		r = conc [analyseOpm(anAnalysedObject, wOpDef_seq(i)) | i in set inds wOpDef_seq]
+	in r;
+
+analyseFnm : AnalysedObject * AS`FnDef +> seq of AnalysedObject
+analyseFnm(anAnalysedObject, aFnDef) ==
+	if is_AS`ExplFnDef(aFnDef)	then
+		analyseExplFnDef(anAnalysedObject, aFnDef)
+	elseif is_AS`ImplFnDef(aFnDef) then
+		analyseImplFnDef(anAnalysedObject, aFnDef)
+	elseif is_AS`ExtExplFnDef(aFnDef) then
+		analyseExtExplFnDef(anAnalysedObject, aFnDef)
+	else
+		[anAnalysedObject];
+
+analyseOpm : AnalysedObject * AS`OpDef +> seq of AnalysedObject
+analyseOpm(anAnalysedObject, aOpDef) ==
+	if is_AS`ExplOpDef(aOpDef) then
+		analyseExplOpDef(anAnalysedObject, aOpDef)
+	elseif is_AS`ImplOpDef(aOpDef) then
+		analyseImplOpDef(anAnalysedObject, aOpDef)
+	elseif is_AS`ExtExplOpDef(aOpDef) then
+		analyseExtExplOpDef(anAnalysedObject, aOpDef)
+	else 
+		[anAnalysedObject];
+
+analyseExplFnDef : AnalysedObject * AS`FnDef +> seq of AnalysedObject
+analyseExplFnDef(anAnalysedObject, aFnDef) == 
+	let tp = aFnDef.tp,
+		body = aFnDef.body,
+		nm = aFnDef.nm,
+		fnpre = aFnDef.fnpre,
+		fnpost = aFnDef.fnpost,
+		ids = GetName(nm),
+		wLineNum = anAnalysedObject.GetLine(nm.cid),
+		wAnalysedObject = anAnalysedObject.SetRoutineName2DefinedLineNum(ids, wLineNum),
+		wAnalysedObject2 = wAnalysedObject.IncLevel(),
+		- = MakeCallTree[AS`Ids](wAnalysedObject2, ids, util.P()),
+		- = if DbgLevel >= 8 then print[AS`FnType](wAnalysedObject2, tp) else false,
+		r = 
+			analyseFnBody(wAnalysedObject2, ids, body) ^ 
+			analyseExpr(wAnalysedObject2, ids, fnpre) ^ 
+			analyseExpr(wAnalysedObject2, ids, fnpost),
+		- = wAnalysedObject2.DecLevel()
+	in r;
+
+analyseImplFnDef : AnalysedObject * AS`FnDef +> seq of AnalysedObject
+analyseImplFnDef(anAnalysedObject, aFnDef) == 
+	let nm = aFnDef.nm,
+		ids = GetName(nm),
+		wLineNum = anAnalysedObject.GetLine(nm.cid),
+		wAnalysedObject = anAnalysedObject.SetRoutineName2DefinedLineNum(ids, wLineNum),
+		resnmtps = aFnDef.resnmtps,
+		fnpre = aFnDef.fnpre,
+		fnpost = aFnDef.fnpost,
+		wAnalysedObject2 = wAnalysedObject.IncLevel(),
+		- = MakeCallTree[AS`Ids](wAnalysedObject2, ids, util.P()),
+		- = if DbgLevel >= 8 then print[seq of AS`NameType](wAnalysedObject2, resnmtps) else false,
+		r = 
+			analyseExpr(wAnalysedObject2, ids, fnpre) ^ 
+			analyseExpr(wAnalysedObject2, ids, fnpost),
+		- = wAnalysedObject.DecLevel()
+	in r;
+
+analyseExtExplFnDef : AnalysedObject * AS`FnDef +> seq of AnalysedObject
+analyseExtExplFnDef(anAnalysedObject, aFnDef) == 
+	let nm = aFnDef.nm,
+		ids = GetName(nm),
+		wLineNum = anAnalysedObject.GetLine(nm.cid),
+		wAnalysedObject = anAnalysedObject.SetRoutineName2DefinedLineNum(ids, wLineNum),
+		resnmtps = aFnDef.resnmtps,
+		body = aFnDef.body,
+		fnpre = aFnDef.fnpre,
+		fnpost = aFnDef.fnpost,
+		wAnalysedObject2 = wAnalysedObject.IncLevel(),
+		- = MakeCallTree[AS`Ids](wAnalysedObject2, ids, util.P()),
+		- = if DbgLevel >= 8 then print[seq of AS`NameType](wAnalysedObject2, resnmtps) else false,
+		r = 
+			analyseFnBody(wAnalysedObject2, ids, body) ^ 
+			analyseExpr(wAnalysedObject2, ids, fnpre) ^ 
+			analyseExpr(wAnalysedObject2, ids, fnpost),
+		- = wAnalysedObject2.DecLevel()
+	in r;
+
+analyseExplOpDef : AnalysedObject * AS`OpDef +> seq of AnalysedObject
+analyseExplOpDef(anAnalysedObject, aOpDef) == 
+	let nm = aOpDef.nm,
+		ids = GetName(nm),
+		wLineNum = anAnalysedObject.GetLine(nm.cid),
+		wAnalysedObject = anAnalysedObject.SetRoutineName2DefinedLineNum(ids, wLineNum),
+		body = aOpDef.body,
+		oppre = aOpDef.oppre,
+		oppost = aOpDef.oppost,
+		wAnalysedObject2 = wAnalysedObject.IncLevel(),
+		- = MakeCallTree[AS`Ids](wAnalysedObject2, ids, util.P()),
+		r =
+			analyseOpBody(wAnalysedObject2, ids, body) ^ 
+			analyseExpr(wAnalysedObject2, ids, oppre) ^ 
+			analyseExpr(wAnalysedObject2, ids, oppost),
+		- = wAnalysedObject2.DecLevel()
+	in r;
+
+analyseImplOpDef : AnalysedObject * AS`OpDef +> seq of AnalysedObject
+analyseImplOpDef(anAnalysedObject, aOpDef) == 
+	let nm = aOpDef.nm,
+		ids = GetName(nm),
+		wLineNum = anAnalysedObject.GetLine(nm.cid),
+		wAnalysedObject = anAnalysedObject.SetRoutineName2DefinedLineNum(ids, wLineNum),
+		partps = aOpDef.partps,
+		oppre = aOpDef.oppre,
+		oppost = aOpDef.oppost,
+		wAnalysedObject2 = wAnalysedObject.IncLevel(),
+		- = MakeCallTree[AS`Ids](wAnalysedObject2, ids, util.P()),
+		r1 = analyseParameterTypes(anAnalysedObject, ids, partps),
+		r2 = analyseExpr(anAnalysedObject, ids, oppre),
+		r3 = analyseExpr(anAnalysedObject, ids, oppost),
+		r = r1 ^ r2 ^ r3,
+		- = wAnalysedObject2.DecLevel()
+	in r;
+
+analyseExtExplOpDef : AnalysedObject * AS`OpDef +> seq of AnalysedObject
+analyseExtExplOpDef(anAnalysedObject, aOpDef) ==
+	let nm = aOpDef.nm,
+		ids = GetName(nm),
+		wLineNum = anAnalysedObject.GetLine(nm.cid),
+		wAnalysedObject = anAnalysedObject.SetRoutineName2DefinedLineNum(ids, wLineNum),
+		partps = aOpDef.partps,
+		body = aOpDef.body,
+		oppre = aOpDef.oppre,
+		oppost = aOpDef.oppost,
+		excps = aOpDef.excps,
+		wAnalysedObject2 = wAnalysedObject.IncLevel(),
+		- = MakeCallTree[AS`Ids](wAnalysedObject2, ids, util.P()),
+		r1 = analyseOpBody(wAnalysedObject2, ids, body),
+		r2 = analyseParameterTypes(anAnalysedObject, ids, partps),
+		r3 = analyseExpr(wAnalysedObject2, ids, oppre),
+		r4 = analyseExpr(wAnalysedObject2, ids, oppost),
+		r5 = conc [analyseError(anAnalysedObject, ids, excps(i)) | i in set inds excps],
+		r = r1 ^ r2 ^ r3 ^ r4 ^ r5,
+		- = wAnalysedObject2.DecLevel()
+		in r;
+
+analyseFnBody : AnalysedObject * AS`Ids * AS`FnBody +> seq of AnalysedObject
+analyseFnBody(anAnalysedObject, anIds, aFnBody) == 
+	if is_(aFnBody.body, AS`Expr) then
+		analyseExpr(anAnalysedObject, anIds, aFnBody.body)
+	else
+		[anAnalysedObject];
+
+analyseOpBody : AnalysedObject * AS`Ids * AS`OpBody +> seq of AnalysedObject
+analyseOpBody(anAnalysedObject, anIds, aOpBody) == 
+	if is_(aOpBody.body, AS`Stmt) then
+		analyseStmt(anAnalysedObject, anIds,aOpBody.body)
+	else
+		[anAnalysedObject];
+
+analyseExprs : AnalysedObject * AS`Ids * seq of [AS`Expr] +> seq of AnalysedObject
+analyseExprs(anAnalysedObject, anIds, exprs) ==
+	let r = conc [analyseExpr(anAnalysedObject, anIds, exprs(i)) | i in set inds exprs]
+	in r;
+	
+analyseExpr : AnalysedObject * AS`Ids * [AS`Expr] +> seq of AnalysedObject
+analyseExpr(anAnalysedObject, anIds, anExpr) == 
+	let wAnalysedObject = anAnalysedObject.IncLevel(),
+		r = 
+			if is_(anExpr, AS`LetExpr) then
+				analyseLetExpr(wAnalysedObject, anIds, anExpr)
+			elseif is_(anExpr, AS`LetBeSTExpr) then
+				analyseLetBeSTExpr(wAnalysedObject, anIds, anExpr)
+			elseif is_(anExpr, AS`DefExpr) then
+				analyseDefExpr(wAnalysedObject, anIds, anExpr)
+			elseif is_(anExpr, AS`ApplyExpr) then
+				analyseApplyExpr(wAnalysedObject, anIds, anExpr)
+			elseif is_(anExpr, AS`IfExpr) then
+				analyseIfExpr(wAnalysedObject, anIds, anExpr)
+			elseif is_(anExpr, AS`CasesExpr) then
+				analyseCasesExpr(wAnalysedObject, anIds, anExpr)
+			elseif is_(anExpr, AS`FieldSelectExpr) then
+				analyseFieldSelectExpr(wAnalysedObject, anIds, anExpr)
+			elseif is_(anExpr, AS`SetComprehensionExpr) then
+				analyseSetComprehensionExpr(wAnalysedObject, anIds, anExpr)
+			elseif is_(anExpr, AS`SeqComprehensionExpr) then
+				analyseSeqComprehensionExpr(wAnalysedObject, anIds, anExpr)
+			elseif is_(anExpr, AS`BracketedExpr) then
+				analyseBracketedExpr(wAnalysedObject, anIds, anExpr)
+			elseif is_(anExpr, AS`UnaryExpr) then
+				analyseUnaryExpr(wAnalysedObject, anIds, anExpr)
+			elseif is_(anExpr, AS`BinaryExpr) then
+				analyseBinaryExpr(wAnalysedObject, anIds, anExpr)
+			elseif is_(anExpr, AS`SetEnumerationExpr) then
+				analyseSetEnumerationExpr(wAnalysedObject, anIds, anExpr)
+			elseif is_(anExpr, AS`SeqEnumerationExpr) then
+				analyseSeqEnumerationExpr(wAnalysedObject, anIds, anExpr)
+			elseif is_(anExpr, AS`Maplet) then
+				analyseMaplet(anAnalysedObject, anIds, anExpr)
+			elseif is_(anExpr, AS`MapEnumerationExpr) then
+				analyseMapEnumerationExpr(wAnalysedObject, anIds, anExpr)
+			elseif is_(anExpr, AS`MapComprehensionExpr) then
+				analyseMapComprehensionExpr(wAnalysedObject, anIds, anExpr)
+			elseif is_(anExpr, AS`QuantExpr) then
+				analyseQuantExpr(wAnalysedObject, anIds, anExpr)
+			elseif is_(anExpr, AS`FctTypeInstExpr) then
+				analyseFctTypeInstExpr(anAnalysedObject, anIds, anExpr)
+			elseif is_(anExpr, AS`IotaExpr) then
+				analyseIotaExpr(anAnalysedObject, anIds, anExpr)
+			elseif is_(anExpr, AS`SetRangeExpr) then
+				analyseSetRangeExpr(wAnalysedObject, anIds, anExpr)
+			elseif is_(anExpr, AS`SubSequenceExpr) then
+				analyseSubSequenceExpr(wAnalysedObject, anIds, anExpr)
+			elseif is_(anExpr, AS`SeqModifyMapOverrideExpr) then
+				analyseSeqModifyMapOverrideExpr(wAnalysedObject, anIds, anExpr)
+			elseif is_(anExpr, AS`TupleConstructorExpr) then
+				analyseTupleConstructorExpr(wAnalysedObject, anIds, anExpr)
+			elseif is_(anExpr, AS`RecordConstructorExpr) then
+				analyseRecordConstructorExpr(wAnalysedObject, anIds, anExpr)
+			elseif is_(anExpr, AS`RecordModifierExpr) then
+				analyseRecordModifierExpr(wAnalysedObject, anIds, anExpr)
+			elseif is_(anExpr, AS`IsExpr) then
+				analyseIsExpr(wAnalysedObject, anIds, anExpr)
+			elseif is_(anExpr, AS`NarrowExpr) then
+				analyseNarrowExpr(wAnalysedObject, anIds, anExpr)
+			elseif is_(anExpr, AS`TupleSelectExpr) then
+				analyseTupleSelectExpr(wAnalysedObject, anIds, anExpr)
+			elseif is_(anExpr, AS`TypeJudgementExpr) then
+				analyseTypeJudgementExpr(wAnalysedObject, anIds, anExpr)
+			elseif is_(anExpr, AS`PreConditionApplyExpr) then
+				analysePreConditionApplyExpr(wAnalysedObject, anIds, anExpr)
+			elseif is_(anExpr, AS`NewExpr) then
+				analyseNewExpr(wAnalysedObject, anIds, anExpr)
+			elseif is_(anExpr, AS`IsOfClassExpr) then
+				analyseIsOfClassExpr(wAnalysedObject, anIds, anExpr)
+			elseif is_(anExpr, AS`SameBaseClassExpr) then
+				analyseSameBaseClassExpr(wAnalysedObject, anIds, anExpr)
+			elseif is_(anExpr, AS`SameClassExpr) then
+				analyseSameClassExpr(wAnalysedObject, anIds, anExpr)
+			elseif is_(anExpr, AS`TokenConstructorExpr) then
+				analyseTokenConstructorExpr(wAnalysedObject, anIds, anExpr)
+			elseif is_(anExpr, AS`LambdaExpr) then
+				analyseLambdaExpr(wAnalysedObject, anIds, anExpr)
+			elseif is_(anExpr, AS`Name) then
+				let - = MakeCallTree[AS`Ids](wAnalysedObject, anExpr.ids, util.P()) in
+					[wAnalysedObject]
+			else
+				[wAnalysedObject],
+		- = wAnalysedObject.DecLevel()
+	in r;
+
+
+
+analyseStmt : AnalysedObject * AS`Ids * [AS`Stmt] +> seq of AnalysedObject
+analyseStmt(anAnalysedObject, anIds, aStmt) == 
+	let wAnalysedObject = anAnalysedObject.IncLevel(),
+		r = 
+			if is_(aStmt, AS`BlockStmt) then
+				analyseBlockStmt(wAnalysedObject, anIds, aStmt)
+			elseif is_(aStmt, AS`AssignStmt) then
+				analyseAssignStmt(wAnalysedObject, anIds, aStmt)
+			elseif is_(aStmt, AS`LetStmt) then
+				analyseLetStmt(wAnalysedObject, anIds, aStmt)
+			elseif is_(aStmt, AS`DefStmt) then
+				analyseDefStmt(wAnalysedObject, anIds, aStmt)
+			elseif is_(aStmt, AS`CallStmt) then
+				analyseCallStmt(wAnalysedObject, anIds, aStmt)
+			elseif is_(aStmt, AS`ReturnStmt) then
+				analyseReturnStmt(wAnalysedObject, anIds, aStmt)
+			elseif is_(aStmt, AS`IfStmt) then
+				analyseIfStmt(wAnalysedObject, anIds,aStmt)
+			elseif is_(aStmt, AS`CasesStmt) then
+				analyseCasesStmt(wAnalysedObject, anIds, aStmt)
+			elseif is_(aStmt, AS`SetForLoopStmt) then
+				analyseSetForLoopStmt(wAnalysedObject, anIds, aStmt)
+			elseif is_(aStmt, AS`SeqForLoopStmt) then
+				analyseSeqForLoopStmt(wAnalysedObject, anIds, aStmt)
+			elseif is_(aStmt, AS`WhileLoopStmt) then
+				analyseWhileLoopStmt(wAnalysedObject, anIds, aStmt)
+			elseif is_(aStmt, AS`IndexForLoopStmt) then
+				analyseIndexForLoopStmt(wAnalysedObject, anIds, aStmt)
+			elseif  is_(aStmt, AS`TrapStmt) then
+				analyseTrapStmt(wAnalysedObject, anIds, aStmt)
+			elseif is_(aStmt, AS`RecTrapStmt) then
+				analyseRecTrapStmt(wAnalysedObject, anIds, aStmt)
+			elseif is_(aStmt, AS`AlwaysStmt) then
+				analyseAlwaysStmt(wAnalysedObject, anIds, aStmt)
+			elseif is_(aStmt, AS`NonDetStmt) then
+				analyseNonDetStmt(wAnalysedObject, anIds, aStmt)
+			elseif is_(aStmt, AS`AtomicAssignStmt) then
+				analyseAtomicAssignStmt(wAnalysedObject, anIds, aStmt)
+			elseif is_(aStmt, AS`ExitStmt) then
+				analyseExitStmt(wAnalysedObject, anIds, aStmt)
+			elseif is_(aStmt, AS`StartStmt) then
+				analyseStartStmt(wAnalysedObject, anIds, aStmt)
+			elseif is_(aStmt, AS`StartListStmt) then
+				analyseStartListStmt(wAnalysedObject, anIds, aStmt)
+			elseif is_(aStmt, AS`SpecificationStmt) then
+				analyseSpecificationStmt(wAnalysedObject, anIds, aStmt)
+			else
+				[wAnalysedObject],
+		 - = wAnalysedObject.DecLevel()	 
+	in r;
+
+analyseLetExpr : AnalysedObject * AS`Ids * [AS`LetExpr] +> seq of AnalysedObject
+analyseLetExpr(anAnalysedObject, anIds, anExpr) ==
+	let localdef = anExpr.localdef,
+		body = anExpr.body
+	in
+	analyseLocaldefs(anAnalysedObject, anIds, localdef) ^
+	analyseExpr(anAnalysedObject, anIds, body);
+
+analyseLetBeSTExpr : AnalysedObject * AS`Ids * [AS`LetBeSTExpr] +> seq of AnalysedObject
+analyseLetBeSTExpr(anAnalysedObject, anIds, anExpr) ==
+	let lhs = anExpr.lhs,
+		St = anExpr.St,
+		In = anExpr.In
+	in
+	analyseBindList(anAnalysedObject, anIds, lhs) ^
+	analyseExpr(anAnalysedObject, anIds, St) ^ 
+	analyseExpr(anAnalysedObject, anIds, In);
+
+analyseDefExpr : AnalysedObject * AS`Ids * [AS`DefExpr] +> seq of AnalysedObject
+analyseDefExpr(anAnalysedObject, anIds, anExpr) ==
+	let Def = anExpr.Def,
+		In = anExpr.In
+	in
+	analyseDef(anAnalysedObject, anIds, Def) ^
+	analyseExpr(anAnalysedObject, anIds, In);
+
+analyseLocaldefs : AnalysedObject * AS`Ids * seq of [AS`LocalDef] +> seq of AnalysedObject
+analyseLocaldefs(anAnalysedObject, anIds, anLocalDef) ==
+	let r = conc
+				[if is_(anLocalDef, seq of AS`FnDef) then
+						analyseFnm(anAnalysedObject, anLocalDef(i)) 
+				 elseif is_(anLocalDef, seq of AS`ValueDef) then
+						analyseValueDef(anAnalysedObject, anIds, anLocalDef(i))
+				 else
+							[]
+				| i in set inds anLocalDef
+				]
+	in r; 
+
+analyseValueDefs : AnalysedObject * IdentifierName * seq of [AS`ValueDef] +> seq of AnalysedObject
+analyseValueDefs(anAnalysedObject, aClassName, aValueDef_sec) ==
+	let s1 = conc [analyseValueDef(anAnalysedObject, [aClassName], aValueDef_sec(i)) | i in set inds aValueDef_sec]
+	in s1;
+
+analyseDef : AnalysedObject * AS`Ids * seq of (AS`PatternBind * AS`Expr) +> seq of AnalysedObject
+analyseDef(anAnalysedObject, anIds, anDef) ==
+	let mk_(wPatternBind_sec, wExpr_sec) = Sequence`Unzip[AS`PatternBind, AS`Expr](anDef),
+		s1 = conc [analysePatternBind(anAnalysedObject, anIds, wPatternBind_sec(i)) | i in set inds wPatternBind_sec],
+		s2 = conc [analyseExpr(anAnalysedObject, anIds, wExpr_sec(i)) | i in set inds wExpr_sec],
+		r = s1 ^ s2
+	in r; 
+
+analysePatternBind : AnalysedObject * AS`Ids * [AS`PatternBind] +> seq of AnalysedObject
+analysePatternBind(anAnalysedObject, anIds, aPatternBind) ==
+	if is_(aPatternBind, AS`Pattern) then
+		analysePattern(anAnalysedObject, anIds, aPatternBind)
+	elseif is_(aPatternBind, AS`Bind) then
+		analyseBind(anAnalysedObject, anIds, aPatternBind)
+	else
+		[];
+
+analyseBind : AnalysedObject * AS`Ids * [AS`Bind] +> seq of AnalysedObject
+analyseBind(anAnalysedObject, anIds, aBind) ==
+	if is_(aBind, AS`SetBind) then
+		analyseSetBind(anAnalysedObject, anIds, aBind)
+	elseif is_(aBind, AS`TypeBind) then
+		analyseTypeBind(anAnalysedObject, anIds, aBind)
+	else
+		[];
+
+analyseSetBind : AnalysedObject * AS`Ids * [AS`SetBind] +> seq of AnalysedObject
+analyseSetBind(anAnalysedObject, anIds, aBind) ==
+	let pat = aBind.pat,
+		Set = aBind.Set,
+		r = 
+			analysePattern(anAnalysedObject, anIds, pat) ^
+			analyseExpr(anAnalysedObject, anIds, Set)
+	in
+		r;
+
+analyseTypeBind : AnalysedObject * AS`Ids * [AS`TypeBind] +> seq of AnalysedObject
+analyseTypeBind(anAnalysedObject, anIds, aBind) ==
+	let pat = aBind.pat in
+	analysePattern(anAnalysedObject, anIds, pat);
+
+analysePattern :  AnalysedObject * AS`Ids * [AS`Pattern] +> seq of AnalysedObject
+analysePattern(anAnalysedObject, anIds, aPattern) ==
+	if is_(aPattern, AS`PatternName) then
+		[]
+	elseif is_(aPattern, AS`MatchVal) then
+		analyseExpr(anAnalysedObject, anIds, aPattern.val)
+	elseif is_(aPattern, AS`SetPattern) then
+		analyseSetPattern(anAnalysedObject, anIds, aPattern)
+	elseif is_(aPattern, AS`SeqPattern) then
+		analyseSeqPattern(anAnalysedObject, anIds, aPattern)
+	elseif is_(aPattern, AS`MapPattern) then
+		analyseMapPattern(anAnalysedObject, anIds, aPattern)
+	elseif is_(aPattern, AS`TuplePattern) then
+		analyseTuplePattern(anAnalysedObject, anIds, aPattern)
+	elseif is_(aPattern, AS`RecordPattern) then
+		analyseRecordPattern(anAnalysedObject, anIds, aPattern)
+	elseif is_(aPattern, AS`MapletPattern) then
+		analyseMapletPattern(anAnalysedObject, anIds, aPattern)
+	else
+		[];
+
+analyseSetPattern :  AnalysedObject * AS`Ids * [AS`SetPattern] +> seq of AnalysedObject
+analyseSetPattern(anAnalysedObject, anIds, aSetPattern) ==
+	if is_(aSetPattern, AS`SetEnumPattern) then
+		analyseSetEnumPattern(anAnalysedObject, anIds, aSetPattern)
+	elseif is_(aSetPattern, AS`SetUnionPattern) then
+		analyseSetUnionPattern(anAnalysedObject, anIds, aSetPattern)
+	else
+		[];
+
+analyseSetEnumPattern : AnalysedObject * AS`Ids * [AS`SetEnumPattern] +> seq of AnalysedObject
+analyseSetEnumPattern(anAnalysedObject, anIds, aSetEnumPattern) ==
+	let Elems = aSetEnumPattern.Elems,
+		r = conc [analysePattern(anAnalysedObject, anIds, Elems(i)) | i in set inds Elems]
+	in
+		r;
+
+analyseSetUnionPattern : AnalysedObject * AS`Ids * [AS`SetUnionPattern] +> seq of AnalysedObject
+analyseSetUnionPattern(anAnalysedObject, anIds, aSetUnionPattern) ==
+	let lp = aSetUnionPattern.lp,
+		rp = aSetUnionPattern.rp,
+		r = 
+			analysePattern(anAnalysedObject, anIds, lp) ^
+			analysePattern(anAnalysedObject, anIds, rp)
+	in
+		r;
+
+analyseSeqPattern : AnalysedObject * AS`Ids * [AS`SeqPattern] +> seq of AnalysedObject
+analyseSeqPattern(anAnalysedObject, anIds, aSeqPattern) ==
+	if is_(aSeqPattern, AS`SeqEnumPattern) then
+		analyseSeqEnumPattern(anAnalysedObject, anIds, aSeqPattern)
+	elseif is_(aSeqPattern, AS`SeqConcPattern) then
+		analyseSeqConcPattern(anAnalysedObject, anIds, aSeqPattern)
+	else
+		[];
+
+analyseSeqEnumPattern : AnalysedObject * AS`Ids * [AS`SeqEnumPattern] +> seq of AnalysedObject
+analyseSeqEnumPattern(anAnalysedObject, anIds, aSeqEnumPattern) ==
+	let els = aSeqEnumPattern.els in
+	conc [analysePattern(anAnalysedObject, anIds, els(i)) | i in set inds els];
+
+analyseSeqConcPattern : AnalysedObject * AS`Ids * [AS`SeqConcPattern] +> seq of AnalysedObject
+analyseSeqConcPattern(anAnalysedObject, anIds, aSeqConcPattern) ==
+	let lp = aSeqConcPattern.lp,
+		rp = aSeqConcPattern.rp,
+		r = 
+			analysePattern(anAnalysedObject, anIds, lp) ^
+			analysePattern(anAnalysedObject, anIds, rp)
+	in
+		r;
+
+analyseMapPattern : AnalysedObject * AS`Ids * [AS`MapPattern] +> seq of AnalysedObject
+analyseMapPattern(anAnalysedObject, anIds, aMapPattern) ==
+	if is_(aMapPattern, AS`MapEnumPattern) then
+		analyseMapEnumPattern(anAnalysedObject, anIds, aMapPattern)
+	elseif is_(aMapPattern, AS`MapMergePattern) then
+		analyseMapMergePattern(anAnalysedObject, anIds, aMapPattern)
+	else
+		[];
+
+analyseMapEnumPattern : AnalysedObject * AS`Ids * [AS`MapEnumPattern] +> seq of AnalysedObject
+analyseMapEnumPattern(anAnalysedObject, anIds, aMapEnumPattern) ==
+	let mls = aMapEnumPattern.mls,
+		r = conc [analyseMapletPattern(anAnalysedObject, anIds, mls(i)) | i in set inds mls]
+	in
+		r;
+	
+analyseMapletPattern : AnalysedObject * AS`Ids * [AS`MapletPattern] +> seq of AnalysedObject
+analyseMapletPattern(anAnalysedObject, anIds, aMapletPattern) ==
+	let dp = aMapletPattern.dp,
+		rp = aMapletPattern.rp,
+		r = 
+			analysePattern(anAnalysedObject, anIds, dp) ^
+			analysePattern(anAnalysedObject, anIds, rp)
+	in
+		r;
+
+analyseMapMergePattern : AnalysedObject * AS`Ids * [AS`MapMergePattern] +> seq of AnalysedObject
+analyseMapMergePattern(anAnalysedObject, anIds, aMapMergePattern) ==
+	let lp = aMapMergePattern.lp,
+		rp = aMapMergePattern.rp,
+		r = 
+			analysePattern(anAnalysedObject, anIds, lp) ^
+			analysePattern(anAnalysedObject, anIds, rp)
+	in
+		r;
+
+analyseTuplePattern : AnalysedObject * AS`Ids * [AS`TuplePattern] +> seq of AnalysedObject
+analyseTuplePattern(anAnalysedObject, anIds, aTuplePattern) ==
+	let fields = aTuplePattern.fields,
+		r = conc [analysePattern(anAnalysedObject, anIds, fields(i)) | i in set inds fields]
+	in
+		r;
+
+analyseRecordPattern : AnalysedObject * AS`Ids * [AS`RecordPattern] +> seq of AnalysedObject
+analyseRecordPattern(anAnalysedObject, anIds, aRecordPattern) ==
+	let fields = aRecordPattern.fields,
+		r = conc [analysePattern(anAnalysedObject, anIds, fields(i)) | i in set inds fields]
+	in
+		r;
+
+analyseParameterTypes : AnalysedObject * AS`Ids * [AS`ParameterTypes] +> seq of AnalysedObject
+analyseParameterTypes(anAnalysedObject, anIds, aParameterTypes) ==
+	conc [analysePatTypePair(anAnalysedObject, anIds, aParameterTypes(i)) | i in set inds aParameterTypes];
+
+analysePatTypePair : AnalysedObject * AS`Ids * [AS`PatTypePair] +> seq of AnalysedObject
+analysePatTypePair(anAnalysedObject, anIds, aPatTypePair) ==
+	let pats = aPatTypePair.pats
+	in conc [analysePattern(anAnalysedObject, anIds, pats(i)) | i in set inds pats];
+
+analyseValueDef : AnalysedObject * AS`Ids * [AS`ValueDef] +> seq of AnalysedObject
+analyseValueDef(anAnalysedObject, anIds, anValueDef) == 
+	let pat = anValueDef.pat,
+		val = anValueDef.val
+	in
+	analysePattern(anAnalysedObject, anIds, pat) ^ analyseExpr(anAnalysedObject, anIds, val);
+
+analyseApplyExpr : AnalysedObject * AS`Ids * [AS`ApplyExpr] +> seq of AnalysedObject
+analyseApplyExpr(anAnalysedObject, anIds, anExpr) == 
+	let fct = anExpr.fct,
+		arg = anExpr.arg
+	in
+	analyseExpr(anAnalysedObject, anIds, fct) ^
+	analyseExprs(anAnalysedObject, anIds, arg);
+
+analyseIfExpr : AnalysedObject * AS`Ids * [AS`IfExpr] +> seq of AnalysedObject
+analyseIfExpr(anAnalysedObject, anIds, anExpr) ==
+	let test = anExpr.test,
+		cons = anExpr.cons,
+		elsif = anExpr.elsif,
+		altn = anExpr.altn
+	in
+		analyseExpr(anAnalysedObject, anIds, test) ^
+		analyseExpr(anAnalysedObject, anIds, cons) ^
+		analyseElseifExprs(anAnalysedObject, anIds, elsif) ^
+		analyseExpr(anAnalysedObject, anIds, altn);
+
+analyseCasesExpr : AnalysedObject * AS`Ids * [AS`CasesExpr] +> seq of AnalysedObject
+analyseCasesExpr(anAnalysedObject, anIds, anExpr) ==
+	let sel = anExpr.sel,
+		altns = anExpr.altns,
+		Others = anExpr.Others,
+		r1 = analyseExpr(anAnalysedObject, anIds, sel),
+		r2 = conc [analyseCaseAltn(anAnalysedObject, anIds, altns(i)) | i in set inds altns],
+		r3 = 
+			if Others = nil then
+				[]
+			else
+				analyseExpr(anAnalysedObject, anIds, Others)
+	in r1 ^ r2 ^ r3;
+
+analyseCaseAltn : AnalysedObject * AS`Ids * AS`CaseAltn +> seq of AnalysedObject
+analyseCaseAltn(anAnalysedObject, anIds, anCaseAltn) ==
+	let match = anCaseAltn.match,
+		r1 = conc [analysePattern(anAnalysedObject, anIds, match(i)) | i in set inds match],
+		body = anCaseAltn.body,
+		r2 = analyseExpr(anAnalysedObject, anIds, body)
+	in r1 ^ r2;
+
+analyseFieldSelectExpr : AnalysedObject * AS`Ids * [AS`FieldSelectExpr] +> seq of AnalysedObject
+analyseFieldSelectExpr(anAnalysedObject, anIds, anExpr) ==
+	let rec = anExpr.rec,
+		nm = anExpr.nm,
+		ids = 
+			if is_(nm, AS`Name) then
+				GetName(nm)
+			elseif is_(nm, AS`FctTypeInstExpr) then
+				GetName(nm.polyfct)
+			else
+				GetName(nm),
+		- = MakeCallTree[AS`Ids](anAnalysedObject, ids, util.P())
+	in
+		analyseExpr(anAnalysedObject, anIds, rec);
+
+analyseSetComprehensionExpr : AnalysedObject * AS`Ids * AS`SetComprehensionExpr +> seq of AnalysedObject
+analyseSetComprehensionExpr(anAnalysedObject, anIds, anExpr) ==
+	let elem = anExpr.elem,
+		bind = anExpr.bind,
+		pred = anExpr.pred,
+		r1 = analyseExpr(anAnalysedObject, anIds, elem),
+		r2 = analyseBindList(anAnalysedObject, anIds, bind),
+		r3 = 
+			if pred = nil then
+				[]
+			else
+				analyseExpr(anAnalysedObject, anIds, pred)
+	in r1 ^ r2 ^ r3;
+
+analyseSeqComprehensionExpr : AnalysedObject * AS`Ids * AS`SeqComprehensionExpr +> seq of AnalysedObject
+analyseSeqComprehensionExpr(anAnalysedObject, anIds, anExpr) ==
+	let elem = anExpr.elem,
+		bind = anExpr.bind,
+		pred = anExpr.pred,
+		r1 = analyseExpr(anAnalysedObject, anIds, elem),
+		r2 = analyseSetBind(anAnalysedObject, anIds, bind),
+		r3 = 
+			if pred = nil then
+				[]
+			else
+				analyseExpr(anAnalysedObject, anIds, pred)
+	in r1 ^ r2 ^ r3;
+
+analyseBracketedExpr : AnalysedObject * AS`Ids * AS`BracketedExpr +> seq of AnalysedObject
+analyseBracketedExpr(anAnalysedObject, anIds, anExpr) ==
+	let expr = anExpr.expr in
+	analyseExpr(anAnalysedObject, anIds, expr);
+
+analyseUnaryExpr : AnalysedObject * AS`Ids * AS`UnaryExpr +> seq of AnalysedObject
+analyseUnaryExpr(anAnalysedObject, anIds, anExpr) ==
+	analysePrefixExpr(anAnalysedObject, anIds, anExpr);
+
+analysePrefixExpr : AnalysedObject * AS`Ids * AS`PrefixExpr +> seq of AnalysedObject
+analysePrefixExpr(anAnalysedObject, anIds, anExpr) ==
+	let arg = anExpr.arg
+	in analyseExpr(anAnalysedObject, anIds, arg);
+
+analyseBinaryExpr : AnalysedObject * AS`Ids * AS`BinaryExpr +> seq of AnalysedObject
+analyseBinaryExpr(anAnalysedObject, anIds, anExpr) ==
+	let left = anExpr.left,
+		right = anExpr.right
+	in 
+		analyseExpr(anAnalysedObject, anIds, left) ^
+		analyseExpr(anAnalysedObject, anIds, right);
+
+analyseSetEnumerationExpr : AnalysedObject * AS`Ids * AS`SetEnumerationExpr +> seq of AnalysedObject
+analyseSetEnumerationExpr(anAnalysedObject, anIds, anExpr) ==
+	let els = anExpr.els,
+		r1 = conc [analyseExpr(anAnalysedObject, anIds, els(i)) | i in set inds els]
+	in r1;
+
+analyseSeqEnumerationExpr : AnalysedObject * AS`Ids * AS`SeqEnumerationExpr +> seq of AnalysedObject
+analyseSeqEnumerationExpr(anAnalysedObject, anIds, anExpr) ==
+	let els = anExpr.els,
+		r1 = conc [analyseExpr(anAnalysedObject, anIds, els(i)) | i in set inds els]
+	in r1;
+
+analyseMapEnumerationExpr : AnalysedObject * AS`Ids * AS`MapEnumerationExpr +> seq of AnalysedObject
+analyseMapEnumerationExpr(anAnalysedObject, anIds, anExpr) ==
+	let els = anExpr.els,
+		r1 = conc [analyseMaplet(anAnalysedObject, anIds, els(i)) | i in set inds els]
+	in r1;
+
+analyseMapComprehensionExpr : AnalysedObject * AS`Ids * AS`MapComprehensionExpr +> seq of AnalysedObject
+analyseMapComprehensionExpr(anAnalysedObject, anIds, anExpr) ==
+	let elem = anExpr.elem,
+		bind = anExpr.bind,
+		pred = anExpr.pred,
+		r1 = analyseMaplet(anAnalysedObject, anIds, elem),
+		r2 = analyseBindList(anAnalysedObject, anIds, bind),
+		r3 = analyseExpr(anAnalysedObject, anIds, pred)
+	in r1 ^ r2 ^ r3;
+
+analyseQuantExpr : AnalysedObject * AS`Ids * AS`QuantExpr +> seq of AnalysedObject
+analyseQuantExpr(anAnalysedObject, anIds, anExpr) ==
+	if is_(anExpr, AS`AllOrExistsExpr) then
+		analyseAllOrExistsExpr(anAnalysedObject, anIds, anExpr)
+	elseif is_(anExpr, AS`ExistsUniqueExpr) then
+		analyseExistsUniqueExpr(anAnalysedObject, anIds, anExpr)
+	else
+		[];
+
+analyseFctTypeInstExpr : AnalysedObject * AS`Ids * AS`FctTypeInstExpr +> seq of AnalysedObject
+analyseFctTypeInstExpr(anAnalysedObject, -, anExpr) ==
+	let wName = GetName(anExpr.polyfct),
+		- = MakeCallTree[AS`Ids](anAnalysedObject, wName, util.P())
+	in [anAnalysedObject];
+
+analyseIotaExpr : AnalysedObject * AS`Ids * AS`IotaExpr +> seq of AnalysedObject
+analyseIotaExpr(anAnalysedObject, anIds, anExpr) ==
+	let bind = anExpr.bind,
+		pred = anExpr.pred,
+		r1 = analyseBind(anAnalysedObject, anIds, bind),
+		r2 = analyseExpr(anAnalysedObject, anIds, pred)
+	in r1 ^ r2;
+
+analyseAllOrExistsExpr : AnalysedObject * AS`Ids * AS`AllOrExistsExpr +> seq of AnalysedObject
+analyseAllOrExistsExpr(anAnalysedObject, anIds, anExpr) ==
+	let bind = anExpr.bind,
+		pred = anExpr.pred,
+		r1 = analyseBindList(anAnalysedObject, anIds, bind),
+		r2 = analyseExpr(anAnalysedObject, anIds, pred)
+	in r1 ^ r2;
+
+analyseExistsUniqueExpr : AnalysedObject * AS`Ids * AS`ExistsUniqueExpr +> seq of AnalysedObject
+analyseExistsUniqueExpr(anAnalysedObject, anIds, anExpr) ==
+	let bind = anExpr.bind,
+		pred = anExpr.pred,
+		r1 = analyseBind(anAnalysedObject, anIds, bind),
+		r2 = analyseExpr(anAnalysedObject, anIds, pred)
+	in r1 ^ r2;
+
+analyseSetRangeExpr : AnalysedObject * AS`Ids * [AS`SetRangeExpr] +> seq of AnalysedObject
+analyseSetRangeExpr(anAnalysedObject, anIds, anExpr) ==
+	let lb = anExpr.lb,
+		ub = anExpr.ub,
+		r1 = analyseExpr(anAnalysedObject, anIds, lb),
+		r2 = analyseExpr(anAnalysedObject, anIds, ub)
+	in r1 ^ r2;
+
+analyseSubSequenceExpr : AnalysedObject * AS`Ids * [AS`SubSequenceExpr] +> seq of AnalysedObject
+analyseSubSequenceExpr(anAnalysedObject, anIds, anExpr) ==
+	let sequence = anExpr.sequence,
+		frompos = anExpr.frompos,
+		topos = anExpr.topos,
+		r1 = analyseExpr(anAnalysedObject, anIds, sequence),
+		r2 = analyseExpr(anAnalysedObject, anIds, frompos),
+		r3 = analyseExpr(anAnalysedObject, anIds, topos)
+	in r1 ^ r2 ^ r3;
+
+analyseSeqModifyMapOverrideExpr : AnalysedObject * AS`Ids * [AS`SeqModifyMapOverrideExpr] +> seq of AnalysedObject
+analyseSeqModifyMapOverrideExpr(anAnalysedObject, anIds, anExpr) ==
+	let seqmap = anExpr.seqmap,
+		mapexp = anExpr.mapexp,
+		r1 = analyseExpr(anAnalysedObject, anIds, seqmap),
+		r2 = analyseExpr(anAnalysedObject, anIds, mapexp)
+	in r1 ^ r2;
+
+analyseTupleConstructorExpr : AnalysedObject * AS`Ids * [AS`TupleConstructorExpr] +> seq of AnalysedObject
+analyseTupleConstructorExpr(anAnalysedObject, anIds, anExpr) ==
+	let fields = anExpr.fields,
+		r = conc [analyseExpr(anAnalysedObject, anIds, fields(i)) | i in set inds fields]
+	in r;
+
+analyseRecordConstructorExpr : AnalysedObject * AS`Ids * [AS`RecordConstructorExpr] +> seq of AnalysedObject
+analyseRecordConstructorExpr(anAnalysedObject, anIds, anExpr) ==
+	let fields = anExpr.fields,
+		r = conc [analyseExpr(anAnalysedObject, anIds, fields(i)) | i in set inds fields]
+	in r;
+
+analyseRecordModifierExpr : AnalysedObject * AS`Ids * [AS`RecordModifierExpr] +> seq of AnalysedObject
+analyseRecordModifierExpr(anAnalysedObject, anIds, anExpr) ==
+	let rec = anExpr.rec,
+		modifiers = anExpr.modifiers,
+		r1 = analyseExpr(anAnalysedObject, anIds, rec),
+		r2 = conc [analyseRecordModification(anAnalysedObject, anIds, modifiers(i)) | i in set inds modifiers]
+	in r1 ^ r2;
+
+analyseIsExpr : AnalysedObject * AS`Ids * [AS`IsExpr] +> seq of AnalysedObject
+analyseIsExpr(anAnalysedObject, anIds, anExpr) ==
+	let arg = anExpr.arg
+	in analyseExpr(anAnalysedObject, anIds, arg);
+
+analyseNarrowExpr : AnalysedObject * AS`Ids * [AS`NarrowExpr] +> seq of AnalysedObject
+analyseNarrowExpr(anAnalysedObject, anIds, anExpr) ==
+	let expr = anExpr.expr
+	in analyseExpr(anAnalysedObject, anIds, expr);
+
+analyseTupleSelectExpr : AnalysedObject * AS`Ids * [AS`TupleSelectExpr] +> seq of AnalysedObject
+analyseTupleSelectExpr(anAnalysedObject, anIds, anExpr) ==
+	let tuple = anExpr.tuple
+	in analyseExpr(anAnalysedObject, anIds, tuple);
+
+analyseTypeJudgementExpr : AnalysedObject * AS`Ids * [AS`TypeJudgementExpr] +> seq of AnalysedObject
+analyseTypeJudgementExpr(anAnalysedObject, anIds, anExpr) ==
+	let expr = anExpr.expr
+	in analyseExpr(anAnalysedObject, anIds, expr);
+
+analysePreConditionApplyExpr : AnalysedObject * AS`Ids * [AS`PreConditionApplyExpr] +> seq of AnalysedObject
+analysePreConditionApplyExpr(anAnalysedObject, anIds, anExpr) ==
+	let fct = anExpr.fct,
+		arg = anExpr.arg,
+		r1 = analyseExpr(anAnalysedObject, anIds, fct),
+		r2 = conc [analyseExpr(anAnalysedObject, anIds, arg(i)) | i in set inds arg]
+	in r1 ^ r2;
+
+analyseNewExpr : AnalysedObject * AS`Ids * [AS`NewExpr] +> seq of AnalysedObject
+analyseNewExpr(anAnalysedObject, anIds, anExpr) ==
+	let args = anExpr.args,
+		r1 = conc [analyseExpr(anAnalysedObject, anIds, args(i)) | i in set inds args]
+	in r1;
+
+analyseIsOfClassExpr : AnalysedObject * AS`Ids * [AS`IsOfClassExpr] +> seq of AnalysedObject
+analyseIsOfClassExpr(anAnalysedObject, anIds, anExpr) ==
+	let arg = anExpr.arg
+	in analyseExpr(anAnalysedObject, anIds, arg);
+
+analyseSameBaseClassExpr : AnalysedObject * AS`Ids * [AS`SameBaseClassExpr] +> seq of AnalysedObject
+analyseSameBaseClassExpr(anAnalysedObject, anIds, anExpr) ==
+	let expr1 = anExpr.expr1,
+		expr2 = anExpr.expr2,
+		r1 = analyseExpr(anAnalysedObject, anIds, expr1),
+		r2 = analyseExpr(anAnalysedObject, anIds, expr2)
+	in r1 ^ r2;
+
+analyseSameClassExpr : AnalysedObject * AS`Ids * [AS`SameClassExpr] +> seq of AnalysedObject
+analyseSameClassExpr(anAnalysedObject, anIds, anExpr) ==
+	let expr1 = anExpr.expr1,
+		expr2 = anExpr.expr2,
+		r1 = analyseExpr(anAnalysedObject, anIds, expr1),
+		r2 = analyseExpr(anAnalysedObject, anIds, expr2)
+	in r1 ^ r2;
+
+analyseTokenConstructorExpr : AnalysedObject * AS`Ids * [AS`TokenConstructorExpr] +> seq of AnalysedObject
+analyseTokenConstructorExpr(anAnalysedObject, anIds, anExpr) ==
+	let field = anExpr.field
+	in analyseExpr(anAnalysedObject, anIds, field);
+
+analyseLambdaExpr : AnalysedObject * AS`Ids * [AS`LambdaExpr] +> seq of AnalysedObject
+analyseLambdaExpr(anAnalysedObject, anIds, anExpr) ==
+	let parm = anExpr.parm,
+		body = anExpr.body,
+		r1 = conc [analyseTypeBind(anAnalysedObject, anIds, parm(i)) | i in set inds parm],
+		r2 = analyseExpr(anAnalysedObject, anIds, body)
+	in r1 ^ r2;
+
+analyseRecordModification : AnalysedObject * AS`Ids * [AS`RecordModification] +> seq of AnalysedObject
+analyseRecordModification(anAnalysedObject, anIds, anExpr) ==
+	let field = anExpr.field,
+		new' = anExpr.new',
+		r1 = analyseExpr(anAnalysedObject, anIds, field),
+		r2 = analyseExpr(anAnalysedObject, anIds, new')
+	in r1 ^ r2;
+
+analyseMaplet : AnalysedObject * AS`Ids * AS`Maplet +> seq of AnalysedObject
+analyseMaplet(anAnalysedObject, anIds, anExpr) ==
+	let mapdom = anExpr.mapdom,
+		maprng = anExpr.maprng,
+		r1 = analyseExpr(anAnalysedObject, anIds, mapdom),
+		r2 = analyseExpr(anAnalysedObject, anIds, maprng)
+	in r1 ^ r2;
+
+analyseBindList : AnalysedObject * AS`Ids * AS`BindList +> seq of AnalysedObject
+analyseBindList(anAnalysedObject, anIds, aBindList) ==
+	let r = conc [analyseMultBind(anAnalysedObject, anIds, aBindList(i)) | i in set inds aBindList]
+	in r;
+
+analyseMultBind : AnalysedObject * AS`Ids * AS`MultBind +> seq of AnalysedObject
+analyseMultBind(anAnalysedObject, anIds, aMultBind) ==
+	if is_(aMultBind, AS`MultSetBind) then
+		analyseMultSetBind(anAnalysedObject, anIds, aMultBind)
+	elseif is_(aMultBind, AS`MultTypeBind) then
+		analyseMultTypeBind(anAnalysedObject, anIds, aMultBind)
+	else
+		[];
+
+analyseMultSetBind : AnalysedObject * AS`Ids * AS`MultSetBind +> seq of AnalysedObject
+analyseMultSetBind(anAnalysedObject, anIds, aMultSetBind) ==
+	let pat = aMultSetBind.pat,
+		Set = aMultSetBind.Set,
+		r1 = conc [analysePattern(anAnalysedObject, anIds, pat(i)) | i in set inds pat],
+		r2 = analyseExpr(anAnalysedObject, anIds, Set)
+	in r1 ^ r2;
+
+analyseMultTypeBind : AnalysedObject * AS`Ids * AS`MultTypeBind +> seq of AnalysedObject
+analyseMultTypeBind(anAnalysedObject, anIds, aMultTypeBind) ==
+	let pat = aMultTypeBind.pat,
+		r1 = conc [analysePattern(anAnalysedObject, anIds, pat(i)) | i in set inds pat]
+	in r1;
+
+analyseBlockStmt : AnalysedObject * AS`Ids * [AS`Stmt] +> seq of AnalysedObject
+analyseBlockStmt(anAnalysedObject, anIds, aStmt) ==
+	let stmts = aStmt.stmts
+	in analyseBlockStmts(anAnalysedObject, anIds, stmts);
+
+analyseBlockStmts : AnalysedObject * AS`Ids * seq of [AS`Stmt] +> seq of AnalysedObject
+analyseBlockStmts(anAnalysedObject, anIds, stmts) ==
+	let r = conc [analyseStmt(anAnalysedObject, anIds, stmts(i)) | i in set inds stmts]
+	in r;
+
+analyseAssignStmt: AnalysedObject * AS`Ids * [AS`Stmt] +> seq of AnalysedObject
+analyseAssignStmt(anAnalysedObject, anIds, aStmt) ==
+	let rhs = aStmt.rhs in
+	analyseExpr(anAnalysedObject, anIds, rhs);
+
+analyseReturnStmt : AnalysedObject * AS`Ids * [AS`Stmt] +> seq of AnalysedObject
+analyseReturnStmt(anAnalysedObject, anIds, aStmt) == 
+	let val = aStmt.val in
+	analyseExpr(anAnalysedObject, anIds, val);
+
+analyseCallStmt : AnalysedObject * AS`Ids * [AS`Stmt] +> seq of AnalysedObject
+analyseCallStmt(anAnalysedObject, -, aStmt) == 
+	let obj = aStmt.obj,
+		oprt = aStmt.oprt,
+		ids = GetName(oprt),
+		args = aStmt.args,
+		r1 = analyseExpr(anAnalysedObject, ids, obj),
+		r2 = conc [analyseExpr(anAnalysedObject, ids, args(i)) | i in set inds args],
+		wAnalysedObject = anAnalysedObject.IncLevel(),
+		- = MakeCallTree[AS`Ids](wAnalysedObject, ids, util.P()),
+		- = anAnalysedObject.DecLevel()
+	in r1 ^ r2;
+
+analyseDefStmt : AnalysedObject * AS`Ids * [AS`DefStmt] +> seq of AnalysedObject
+analyseDefStmt(anAnalysedObject, anIds, aStmt) ==
+	let value = aStmt.value,
+		In = aStmt.In,
+		r = 
+			analyseDef(anAnalysedObject, anIds, value) ^
+			analyseStmt(anAnalysedObject, anIds, In)
+	in
+		r;
+		
+analyseLetStmt : AnalysedObject * AS`Ids * [AS`Stmt] +> seq of AnalysedObject
+analyseLetStmt(anAnalysedObject, anIds, aStmt) == 
+	let localdef = aStmt.localdef,
+		In = aStmt.In,
+		r1 = analyseLocaldefs(anAnalysedObject, anIds, localdef),
+		r2 = analyseStmt(anAnalysedObject, anIds, In)
+	in r1 ^ r2;
+
+analyseIfStmt : AnalysedObject * AS`Ids * [AS`Stmt] +> seq of AnalysedObject
+analyseIfStmt(anAnalysedObject, anIds, aStmt) == 
+	let test = aStmt.test,
+		cons = aStmt.cons,
+		elsif = aStmt.elsif,
+		altn = aStmt.altn
+	in
+		analyseExpr(anAnalysedObject, anIds, test) ^
+		analyseStmt(anAnalysedObject, anIds, cons) ^
+		analyseElseifStmts(anAnalysedObject, anIds, elsif) ^
+		if altn <> nil then 
+			analyseStmt(anAnalysedObject, anIds, altn)
+		else
+			[];
+
+analyseCasesStmt : AnalysedObject * AS`Ids * [AS`CasesStmt] +> seq of AnalysedObject
+analyseCasesStmt(anAnalysedObject, anIds, aStmt) == 
+	let sel = aStmt.sel,
+		altns = aStmt.altns,
+		Others = aStmt.Others,
+		r1 = analyseExpr(anAnalysedObject, anIds, sel),
+		r2 = conc [analyseCasesStmtAltn(anAnalysedObject, anIds, altns(i)) | i in set inds altns],
+		r3 = 
+			if Others = nil then
+				[]
+			else
+				analyseStmt(anAnalysedObject, anIds, Others)
+	in r1 ^ r2 ^ r3;
+
+analyseSetForLoopStmt : AnalysedObject * AS`Ids * [AS`SetForLoopStmt] +> seq of AnalysedObject
+analyseSetForLoopStmt(anAnalysedObject, anIds, aStmt) == 
+	let cv = aStmt.cv,
+		fset = aStmt.fset,
+		body = aStmt.body
+	in
+		analysePattern(anAnalysedObject, anIds, cv) ^
+		analyseExpr(anAnalysedObject, anIds, fset) ^
+		analyseStmt(anAnalysedObject, anIds, body);
+
+analyseSeqForLoopStmt : AnalysedObject * AS`Ids * [AS`SeqForLoopStmt] +> seq of AnalysedObject
+analyseSeqForLoopStmt(anAnalysedObject, anIds, aStmt) == 
+	let cv = aStmt.cv,
+		fseq = aStmt.fseq,
+		body = aStmt.body
+	in
+		analysePatternBind(anAnalysedObject, anIds, cv) ^
+		analyseExpr(anAnalysedObject, anIds, fseq) ^
+		analyseStmt(anAnalysedObject, anIds, body);
+
+analyseWhileLoopStmt : AnalysedObject * AS`Ids * [AS`WhileLoopStmt] +> seq of AnalysedObject
+analyseWhileLoopStmt(anAnalysedObject, anIds, aStmt) ==
+	let test = aStmt.test,
+		body = aStmt.body,
+		r1 = analyseExpr(anAnalysedObject, anIds, test),
+		r2 = analyseStmt(anAnalysedObject, anIds, body)
+	in r1 ^ r2;
+
+analyseIndexForLoopStmt : AnalysedObject * AS`Ids * [AS`IndexForLoopStmt] +> seq of AnalysedObject
+analyseIndexForLoopStmt(anAnalysedObject, anIds, aStmt) ==
+	let lb = aStmt.lb,
+		ub = aStmt.ub,
+		By = aStmt.By,
+		body = aStmt.body,
+		r1 = analyseExpr(anAnalysedObject, anIds, lb),
+		r2 = analyseExpr(anAnalysedObject, anIds, ub),
+		r3 = analyseExpr(anAnalysedObject, anIds, By),
+		r4 = analyseStmt(anAnalysedObject, anIds, body)
+	in r1 ^ r2 ^ r3 ^ r4;
+
+analyseTrapStmt : AnalysedObject * AS`Ids * [AS`TrapStmt] +> seq of AnalysedObject
+analyseTrapStmt(anAnalysedObject, anIds, aStmt) ==
+	let pat = aStmt.pat,
+		Post = aStmt.Post,
+		body = aStmt.body,
+		r1 = analysePatternBind(anAnalysedObject, anIds, pat),
+		r2 = analyseStmt(anAnalysedObject, anIds, Post),
+		r3 = analyseStmt(anAnalysedObject, anIds, body)
+	in r1 ^ r2 ^ r3;
+
+analyseRecTrapStmt : AnalysedObject * AS`Ids * [AS`RecTrapStmt] +> seq of AnalysedObject
+analyseRecTrapStmt(anAnalysedObject, anIds, aStmt) ==
+	let traps = aStmt.traps,
+		body = aStmt.body,
+		r1 = conc[analyseTrap(anAnalysedObject, anIds, traps(i)) | i in set inds traps],
+		r2 = analyseStmt(anAnalysedObject, anIds, body)
+	in r1 ^ r2;
+
+analyseTrap : AnalysedObject * AS`Ids * [AS`Trap] +> seq of AnalysedObject
+analyseTrap(anAnalysedObject, anIds, aTrap) ==
+	let match = aTrap.match,
+		trappost = aTrap.trappost,
+		r1 = analysePatternBind(anAnalysedObject, anIds, match),
+		r2 = analyseStmt(anAnalysedObject, anIds, trappost)
+	in r1 ^ r2;
+
+analyseAlwaysStmt : AnalysedObject * AS`Ids * [AS`AlwaysStmt] +> seq of AnalysedObject
+analyseAlwaysStmt(anAnalysedObject, anIds, aStmt) ==
+	let Post = aStmt.Post,
+		body = aStmt.body,
+		r1 = analyseStmt(anAnalysedObject, anIds, Post),
+		r2 = analyseStmt(anAnalysedObject, anIds, body)
+	in r1 ^ r2;
+
+analyseNonDetStmt : AnalysedObject * AS`Ids * [AS`NonDetStmt] +> seq of AnalysedObject
+analyseNonDetStmt(anAnalysedObject, anIds, aStmt) ==
+	let stmts = aStmt.stmts,
+		r1 = conc [analyseStmt(anAnalysedObject, anIds, stmts(i)) | i in set inds stmts]
+	in r1;
+
+analyseAtomicAssignStmt : AnalysedObject * AS`Ids * [AS`AtomicAssignStmt] +> seq of AnalysedObject
+analyseAtomicAssignStmt(anAnalysedObject, anIds, aStmt) ==
+	let atm = aStmt.atm,
+		r1 = conc [analyseAssignStmt(anAnalysedObject, anIds, atm(i)) | i in set inds atm]
+	in r1;
+
+analyseExitStmt : AnalysedObject * AS`Ids * [AS`ExitStmt] +> seq of AnalysedObject
+analyseExitStmt(anAnalysedObject, anIds, aStmt) ==
+	let expr = aStmt.expr
+	in analyseExpr(anAnalysedObject, anIds, expr);
+
+analyseStartStmt: AnalysedObject * AS`Ids * [AS`StartStmt] +> seq of AnalysedObject
+analyseStartStmt(anAnalysedObject, anIds, aStmt) ==
+	let expr = aStmt.expr
+	in analyseExpr(anAnalysedObject, anIds, expr);
+
+analyseStartListStmt: AnalysedObject * AS`Ids * [AS`StartListStmt] +> seq of AnalysedObject
+analyseStartListStmt(anAnalysedObject, anIds, aStmt) ==
+	let expr = aStmt.expr
+	in analyseExpr(anAnalysedObject, anIds, expr);
+
+analyseSpecificationStmt: AnalysedObject * AS`Ids * [AS`SpecificationStmt] +> seq of AnalysedObject
+analyseSpecificationStmt(anAnalysedObject, anIds, aStmt) ==
+	let oppre = aStmt.oppre,
+		oppost = aStmt.oppost,
+		excps = aStmt.excps,
+		r1 = analyseExpr(anAnalysedObject, anIds, oppre),
+		r2 = analyseExpr(anAnalysedObject, anIds, oppost),
+		r3 = conc [analyseError(anAnalysedObject, anIds, excps(i)) | i in set inds excps]
+	in r1 ^ r2 ^ r3;
+
+analyseError: AnalysedObject * AS`Ids * [AS`Error] +> seq of AnalysedObject
+analyseError(anAnalysedObject, anIds, excps) ==
+	let cond = excps.cond,
+		action = excps.action,
+		r1 = analyseExpr(anAnalysedObject, anIds, cond),
+		r2 = analyseExpr(anAnalysedObject, anIds, action)
+	in r1 ^ r2;
+
+analyseCasesStmtAltn : AnalysedObject * AS`Ids * AS`CasesStmtAltn +> seq of AnalysedObject
+analyseCasesStmtAltn(anAnalysedObject, anIds, anCasesStmtAltn) ==
+	let match = anCasesStmtAltn.match,
+		r1 = conc [analysePattern(anAnalysedObject, anIds, match(i)) | i in set inds match],
+		body = anCasesStmtAltn.body,
+		r2 = analyseStmt(anAnalysedObject, anIds, body)
+	in r1 ^ r2;
+
+analyseElseifStmts : AnalysedObject * AS`Ids * seq of [AS`ElseifStmt] +> seq of AnalysedObject
+analyseElseifStmts(anAnalysedObject, anIds, elsif) ==
+	let r = conc [analyseElseifStmt(anAnalysedObject, anIds, elsif(i)) | i in set inds elsif]
+	in r;
+
+analyseElseifStmt : AnalysedObject * AS`Ids * [AS`ElseifStmt] +> seq of AnalysedObject
+analyseElseifStmt(anAnalysedObject, anIds, aStmt) ==
+	let test = aStmt.test,
+		cons = aStmt.cons,
+		r1 = analyseExpr(anAnalysedObject, anIds, test),
+		r2 = analyseStmt(anAnalysedObject, anIds, cons)
+	in r1 ^ r2;
+
+analyseElseifExprs : AnalysedObject * AS`Ids * seq of [AS`ElseifExpr] +> seq of AnalysedObject
+analyseElseifExprs(anAnalysedObject, anIds, anExpr) ==
+	let r = conc [analyseElseifExpr(anAnalysedObject, anIds, anExpr(i)) | i in set inds anExpr]
+	in r;
+
+analyseElseifExpr : AnalysedObject * AS`Ids * [AS`ElseifExpr] +> seq of AnalysedObject
+analyseElseifExpr(anAnalysedObject, anIds, anExpr) ==
+	let test = anExpr.test,
+		cons = anExpr.cons
+	in
+	analyseExpr(anAnalysedObject, anIds, test) ^ analyseExpr(anAnalysedObject, anIds, cons);
+
+end Analyser
+\end{vdm_al}
+
+\begin{rtinfo}
+[TotalxCoverage]{vdm.tc}[Analyser]
+\end{rtinfo}

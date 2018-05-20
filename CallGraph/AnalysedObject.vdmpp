@@ -1,0 +1,231 @@
+\section {AnalysedObject}
+\subsection {Responsibility}
+Manage analysed data.
+
+Normally, I have to manage analysed CallGraph data.
+However, now, I don't hold analysed data for efficiency. 
+
+\begin{vdm_al}
+class AnalysedObject is subclass of AnalyserCommon
+
+values
+unnecessaryToken = {
+	"&",",",".",";","(",")","-","@","==>","->","<-:","<:",":>",":->",
+	"::","^","=","<",">",">=","<=","=>", "||","|","[","]","{","}","+>","<=>",
+	"`",":=","*","**","++","+",":","<>","in set","static","is_", "==", ".#",
+	"narrow_",
+	"#act" , "#active" , "#fin" , "#req" , "#waiting" 
+	, "abs"
+	, "all" , "always" , "and" , "async"
+	, "atomic" , "be" , "bool" , "by" , "card" , "cases"
+	, "char" , "class" , "comp" , "compose" , "conc" , "dcl"
+	, "def" , "dinter" , "div" , "do" , "dom" , "dunion"
+	, "elems" , "else" , "elseif" , "end" , "error"
+	, "errs" , "exists" , "exists1" , "exit" , "ext" , "false"
+	, "for" , "forall" , "from" , "functions" , "hd" , "if" , "in"
+	, "inds" , "inmap" , "input" , "instance" , "int" , "inter"
+	, "inv" , "inverse" , "iota" , "is" , "isofbaseclass"
+	, "isofclass" , "lambda" , "len" , "let" , "map" , "measure"
+	, "merge" , "mod" , "mu" , "munion" , "mutex"
+	, "nat" , "nat1" , "new" , "nil" , "not" , "of" , "operations"
+	, "or" , "others" , "per" , "periodic" , "post" , "power" , "pre", "pre_", "mk_"
+	, "private" , "protected" , "psubset" , "public" , "rat"
+	, "rd" , "real" , "rem" , "responsibility" , "return"
+	, "reverse" , "rng" , "samebaseclass" , "sameclass" , "self"
+	, "seq" , "seq1" , "set" , "skip" , "specied" , "st" , "start"
+	, "startlist" , "subclass" , "subset" , "sync"
+	, "then" , "thread" , "threadid" , "tixe"
+	, "tl" , "to" , "token" , "traces" , "trap" , "true" , "types"
+	, "undened" , "union" , "values" , "variables" , "while" , "with"
+	, "wr" , "yet", "RESULT"
+};
+
+types 
+public Level = nat;
+public OutputLevel = nat;
+public Name2LineNum = map IdentifierName to set of nat;
+public RoutineName2DefinedLineNum =  map IdentifierName to set of nat;
+public CallGraphData ::
+	fKeyName : IdentifierName
+	fDispName : IdentifierName
+	fLevel : nat
+	fDefinedLineNum : set of nat
+	fLineNum_set : set of nat
+	fSourceInfos : seq of char;
+
+instance variables
+public level : Level := 0; -- Calling level. If F1 call F2 then (level of F2) = (evel of F1) + 1
+iOutputLevel : OutputLevel := 0;
+iClassName : IdentifierName := "";
+iTokenInfo_seq : [seq of CI`TokenInfo] := nil;
+iContextNodeInfo_seq : [seq of CI`ContextNodeInfo] := nil;
+public iName2LineNum : Name2LineNum := {|->};	-- Class name to set of line number
+public iCallGraphData_seq : seq of CallGraphData := [];
+public iRoutineName2DefinedLineNum : RoutineName2DefinedLineNum := {|->};	-- Routine name to defined line
+
+operations
+public AnalysedObject : [OutputLevel] * Level ==> AnalysedObject
+AnalysedObject(anOutputLevel, aLevel) == (
+	level := aLevel;
+	if anOutputLevel = nil then
+		iOutputLevel := 0
+	else
+		iOutputLevel := anOutputLevel
+);
+
+public SetName2LineNum : IdentifierName ==> AnalysedObject
+SetName2LineNum(aClassName) == (
+	iClassName := aClassName;
+	if iOutputLevel < 5 then
+		skip
+	else	
+		for aTokenInfo in iTokenInfo_seq do (
+			if aTokenInfo.text in set unnecessaryToken then
+				skip
+			else
+				def wName = aClassName ^ "`" ^ aTokenInfo.text;
+					wLine = aTokenInfo.pos_st.abs_line
+				in 
+				if wName not in set dom iName2LineNum then
+					iName2LineNum := iName2LineNum munion {wName |-> {wLine}}
+				else
+					iName2LineNum := iName2LineNum ++ {wName |-> iName2LineNum(wName) union {wLine}}
+		);
+	return self
+);
+
+public ClearSetName2LineNum : () ==> AnalysedObject
+ClearSetName2LineNum() == (
+	iName2LineNum := {|->};
+	return self
+);
+
+public SetName2LineNum : () ==> AnalysedObject
+SetName2LineNum() == SetName2LineNum(iClassName);
+
+public SetRoutineName2DefinedLineNum : AS`Ids * nat ==> AnalysedObject 
+SetRoutineName2DefinedLineNum(anIds, aLineNum) == (
+	let wName =
+			if len anIds = 2 then
+				anIds(2)
+			else
+				anIds(1)
+	in (
+		if wName not in set dom iRoutineName2DefinedLineNum then
+			iRoutineName2DefinedLineNum := iRoutineName2DefinedLineNum munion {wName |-> {aLineNum}}
+		else
+			iRoutineName2DefinedLineNum := 
+				iRoutineName2DefinedLineNum ++ {wName |-> iRoutineName2DefinedLineNum(wName) union {aLineNum}};
+		return self
+	)
+);
+
+public ClearRoutineName2DefinedLineNum : () ==> AnalysedObject
+ClearRoutineName2DefinedLineNum() == (
+	iRoutineName2DefinedLineNum := {|->};
+	return self
+);
+	
+public IsRoutineName : IdentifierName ==> bool
+IsRoutineName(aName) == 
+	let wName = 
+			if String`Index('`')(aName) <> 0 then -- ClassName`RoutineName
+				let s = String`DropToken(aName, {'`'}) in
+				s(2,...,len s)
+			else
+				aName
+	in
+		return 
+			wName in set dom iRoutineName2DefinedLineNum or
+			wName(1,...,4) = "pre_" or
+			wName(1,...,5) = "post_";
+
+operations
+public SetTokenInfo : [seq of CI`TokenInfo] ==> AnalysedObject
+SetTokenInfo(aTokenInfo_seq) == (
+	iTokenInfo_seq := aTokenInfo_seq;
+	return self
+);
+
+public SetContextNodeInfo : [seq of CI`ContextNodeInfo] ==> AnalysedObject
+SetContextNodeInfo(aContextNodeInfo_seq) ==(
+	iContextNodeInfo_seq := aContextNodeInfo_seq;
+	return self
+);
+
+public GetLine : CI`ContextId ==> nat
+GetLine(cid) ==
+	let wNodeId = CI`ConvCid2Nid(cid),
+		wContextNodeInfo = iContextNodeInfo_seq(wNodeId),
+		tokenpos : [CI`TokenSpan] = wContextNodeInfo.tokenpos,
+		token_st = tokenpos.token_st,
+		wTokenInfo = iTokenInfo_seq(token_st),
+		abs_line = wTokenInfo.pos_st.abs_line
+	in return abs_line;
+
+public GetDefinedLineNum : IdentifierName ==> set of nat
+GetDefinedLineNum(aName) ==
+	if aName not in set dom iRoutineName2DefinedLineNum then
+		return {}
+	else
+		return iRoutineName2DefinedLineNum(aName);
+
+public GetLineNum : IdentifierName ==> set of nat
+GetLineNum(aName) ==
+	if aName not in set dom iName2LineNum then
+		return {}
+	else
+		return iName2LineNum(aName);
+
+public GetClassName : () ==> IdentifierName
+GetClassName() == return iClassName;
+
+public GetOutputLevel : () ==> OutputLevel
+GetOutputLevel() == return iOutputLevel;
+
+public GetLevel : () ==> Level
+GetLevel() == return level;
+
+public SetLevel : Level ==> ()
+SetLevel(aLevel) == level := aLevel;
+
+public IncLevel : () ==> AnalysedObject
+IncLevel() == (
+	level := level + 1;
+	return self
+);
+
+public DecLevel : () ==> AnalysedObject
+DecLevel() == (
+	level := level - 1;
+	return self
+);
+
+public ClearLevel : () ==> AnalysedObject
+ClearLevel() == (
+	level := 0;
+	return self
+);
+
+public SetCallGraphData : IdentifierName * IdentifierName * nat * set of nat * set of nat * seq of char ==> bool
+SetCallGraphData(aKeyName, aDispName, aLevel, aDefinedLineNum_set, aLineNum_set, aSourceInfos) == (
+	let wCallGraphData = mk_CallGraphData(aKeyName, aDispName, aLevel, aDefinedLineNum_set, aLineNum_set, aSourceInfos) in
+	iCallGraphData_seq := iCallGraphData_seq ^ [wCallGraphData];
+	return true
+);
+
+public CleanCallGraphData : () ==> seq of CallGraphData
+CleanCallGraphData() == (
+	iCallGraphData_seq := [];
+	return iCallGraphData_seq
+);
+
+public GetCallGraphDataSeq : () ==> seq of CallGraphData
+GetCallGraphDataSeq() == return iCallGraphData_seq;
+	
+end AnalysedObject
+\end{vdm_al}
+
+\begin{rtinfo}
+[TotalxCoverage]{vdm.tc}[AnalysedObject]
+\end{rtinfo}
