@@ -1,0 +1,172 @@
+\section {航空管制システム}
+	\index{こうくうかんせいしすてむ@航空管制システム}
+私は、航空管制(ATC = Air Traffic Control)の要求辞書である。
+英語と対応する日本語の用語(型名、関数名、操作名などの名称)を定義している。
+
+明確になった自然言語によるシステムの要求は以下のとおりである。
+\begin{description}
+\item[R1] 当直の管制官だけが空域を管制できる。
+\item[R2] 空域は、委託中の場合にのみ活性にすることができます。
+\item[R3] ATC領域内のすべての利用中の空域が活性です。
+\item[R4] 利用中の各空域の許容数を超えない。
+\item[R5] 管制官を2つの異なる空域に同時に割り当てることはできない。
+\item[R6]各既知の航空機には独自の管制官がいる。
+\item[R7] 各既知の航空機は、固有の空域を占有します。
+\item[R8] 活性化された各空域には固有の管制官がいる。
+\item[R9] 活性化されていない空域に航空機はいない。
+\item[R10] 既知の航空機の管制官は当直である。
+\end{description}
+
+\begin{vdm_al}
+class 航空管制システム is subclass of ATC英語要求辞書
+
+types
+public 管制官 = Controller;
+public 空域 = Space;
+public 航空機 = Aircraft;
+public 当直集合 = set of 管制官;
+public 管制 = inmap 空域 to 管制官;
+public 許容数 = map 空域 to nat;
+public 位置 = map 航空機 to 空域;
+\end{vdm_al}
+
+以下の用語は、機能と安全性の特性を表す。
+\begin{itemize}
+\item 委託中: 空域は、それがATC領域の一部であれば委託中であると言われる。
+この用語は、ここで意図されていない意味を含む正式な法的用語である「制御された空域」よりも好ましい
+（例えば、航空機が公的な許可なしに空域に入ることはできない）。
+本仕様書の目的のために、空域は、その許容数が分かっている場合に限り、委託中とする。
+\item 活性: 空域は、管制官が割り当てられている場合に活性化されるという。
+\item 非活性: 空域は、委任されているが、割り当てられた管制官がいない場合、非活性化されていると言われます。
+例えば、ある空港が全体的または部分的に空港に関係する空域は、夜間に空港が閉鎖されたときに非活性化することがある。
+\item 利用中: 空域は、1つ以上の航空機が占有している場合に利用中という。空域は活性化されていても現在は利用されていないかもしれないが、その逆は無い。
+\item 割当中: 特定の空域の現在の管制官は、その空域に割当中という。管制官は、ATC領域内のある空域の管制官であれば、単純に割当中にできる。
+\item 担当可能: 当直で現在割り当てられていない管制官が担当可能であるという。
+\item 既知: 航空機は、ATC領域の一部の空域を利用していると既知という。
+\end{itemize}
+
+\begin{vdm_al}
+public 機能安全性特性 = <委託中> | <活性> | <非活性> | <利用中> | <割当中> | <担当可能> | <既知>;
+
+instance variables
+	public s当直集合 : 当直集合 := {};
+	public s管制 : 管制 := {|->};
+	public s許容数 : 許容数 := {|->};
+	public s位置 : 位置 := {|->};
+inv
+	rng s管制 subset s当直集合 and 
+	dom s管制 subset dom s許容数 and
+	rng s位置 subset dom s管制 and
+	forall s空域 in set rng s位置 & 航空機数(s空域, s位置) <= s許容数(s空域);
+	
+operations
+public 航空管制システム: 当直集合 * 管制 * 許容数 * 位置 ==> 航空管制システム
+航空管制システム(a当直集合, a管制, a許容数, a位置) == atomic (
+	s当直集合 := a当直集合;
+	s管制 := a管制;
+	s許容数 := a許容数;
+	s位置 := a位置;
+);
+
+public フライトを追加する (a航空機: 航空機, a空域: 空域) == --TSCMCR_Append_++ --AddFlight操作
+	s位置 := s位置 ++ {a航空機 |-> a空域}
+pre 
+	a空域 in set dom s管制 and 
+	a航空機 not in set dom s位置 and 
+	航空機数(a空域, s位置) < s許容数(a空域) 
+post 
+	s位置 = s位置~ ++ {a航空機 |-> a空域};
+	
+public フライトを削除する (a航空機: 航空機) == --TSCMCR_Delete --RemoveFlight操作
+	s位置 := {a航空機} <-: s位置
+pre a航空機 in set dom s位置
+post s位置 = {a航空機} <-: s位置~;
+
+public 空域を切り替える (a航空機: 航空機, a空域: 空域) == --TSCMCR_Append_++ --Handover
+	s位置 := s位置 ++ {a航空機 |-> a空域}
+pre 
+	a空域 in set dom s管制 and
+	a航空機 in set dom s位置 and
+	s位置(a航空機) <> a空域 and
+	航空機数(a空域, s位置) < s許容数(a空域) 
+post 
+	s位置 = s位置~ ++ {a航空機 |-> a空域};
+	
+public 委託する: 空域 * nat ==> 許容数 --TSCMCR_Append_++ --Commission操作
+委託する(a空域, n) == (
+	 s許容数 := s許容数 ++ {a空域 |-> n};
+	 return s許容数
+)
+pre 
+	a空域 not in set dom s許容数
+post 
+	s許容数 = s許容数~ ++ {a空域 |-> n};
+
+public 許容数を設定し直す : 空域 * nat ==> 許容数 --TSCMCR_Append_++ --ResetCapacity操作
+許容数を設定し直す(a空域, n) == (
+	s許容数 := s許容数 ++ {a空域 |-> n};
+	return s許容数
+)
+pre
+	a空域 in set dom s許容数 and 
+	航空機数(a空域, s位置) <= n
+post
+	s許容数 = s許容数~ ++ {a空域 |-> n};
+
+public 委託をやめる : 空域 ==> () --TSCMCR_Delete --Decommission操作
+委託をやめる(a空域) == 
+	s許容数 := {a空域} <-: s許容数
+pre a空域 in set (dom s許容数 \ dom s管制)
+post s許容数 = {a空域} <-: s許容数~;
+
+public 活性化する : 空域 * 管制官 ==> 管制官 --TSCMCR_Append_++ --Activate操作
+活性化する(a空域, a管制官) == (
+	s管制 := s管制 ++ {a空域 |-> a管制官};
+	return a管制官
+)
+pre 
+	let p1 = a空域 in set  (dom s許容数 \ dom s管制) in p1 and 
+	let p2 = rng s管制 <> s当直集合 in p2
+post 
+	s管制 = s管制~ ++ {a空域 |-> a管制官};
+
+public 非活性化する : 空域 ==> ()
+非活性化する(a空域) == --TSCMCR_Delete --Deactivate操作
+	s管制 := {a空域} <-: s管制
+pre a空域 in set (dom s管制 \ rng s位置)
+post s管制 = {a空域} <-: s管制~;
+
+public 再割り当て(a空域: 空域, a管制官: 管制官) a管制官: 管制官 == ( --TSCMCR_Append_++ --Reassign操作
+	s管制 := s管制 ++ {a空域 |-> a管制官};
+	return a管制官
+)
+pre 
+	a空域 in set dom s管制 and 
+	rng s管制 <> s当直集合
+post 
+	s管制 = s管制~ ++ {a空域 |-> a管制官} and 
+	a管制官 <> s管制~(a空域);
+
+public 出勤する : 管制官 ==> () --TSCSCR_Append --ClockOn操作
+出勤する(a管制官) ==
+	s当直集合 := s当直集合 union {a管制官}
+pre a管制官 not in set s当直集合
+post s当直集合 = s当直集合~ union {a管制官};
+
+public 退勤する  : 管制官 ==> () --TSCSCR_Delete --ClockOff操作
+退勤する(a管制官) ==
+	s当直集合 := s当直集合 \ {a管制官}
+pre a管制官 in set s当直集合 \ rng s管制
+post s当直集合 = s当直集合~ \ {a管制官};
+
+functions
+public 航空機数 : 空域 * 位置 -> nat
+航空機数(a空域, a位置) == card dom (a位置 :> {a空域});
+
+end 航空管制システム
+\end{vdm_al}
+
+
+\begin{rtinfo}
+{vdm.tc}[航空管制システム]
+\end{rtinfo}

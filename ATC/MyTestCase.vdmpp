@@ -1,0 +1,162 @@
+\section {TestCaseCom}
+私はテストケースの共通クラスである。
+
+\begin{vdm_al}
+class TestCaseCom  is subclass of TestCase
+
+operations
+public print : seq of char ==> ()
+print(a文字列) == 
+	let - = new IO().echo(a文字列) in skip;
+
+values
+public v航空管制システム0 = 
+	new 航空管制システム();
+
+public v航空管制システム1 = 
+	new 航空管制システム(
+		{mk_token("佐原"), mk_token("小田"), mk_token("酒匂")}, 
+		{mk_token("横田") |-> mk_token("小田"), mk_token("嘉手納") |-> mk_token("酒匂")},
+		{mk_token("嘉手納") |-> 5, mk_token("横田") |-> 4}, 
+		{|->}
+	);
+
+end TestCaseCom
+
+class TestCase0001 is subclass of TestCaseCom
+\end{vdm_al}
+
+\section {TestCase0001}
+I am a regression testcase for nromal case.
+\begin{vdm_al}
+
+operations
+
+protected test01 : () ==> ()
+test01() == (
+	assertTrue(
+		"\ttest01 嘉手納空域に許容数2で委託できない。 \n",
+		let m = v航空管制システム0.委託する(mk_token("嘉手納"), 2) in
+		m(mk_token("嘉手納")) = 2
+	);
+	assertTrue(
+		"\ttest01 嘉手納空域を許容数5で設定し直すことができない。 \n",
+		let m = v航空管制システム0.許容数を設定し直す(mk_token("嘉手納"), 5) in
+		m(mk_token("嘉手納")) = 5
+	);
+	assertTrue(
+		"\ttest01 横田空域に許容数3で委託できない。 \n",
+		let m = v航空管制システム0.委託する(mk_token("横田"), 3) in
+		m(mk_token("横田")) = 3
+	);
+	assertTrue(
+		"\ttest01 横田空域を許容数4で設定し直すことができない。 \n",
+		let m = v航空管制システム0.許容数を設定し直す(mk_token("横田"), 4) in
+		m(mk_token("横田")) = 4
+	);
+	assertTrue(
+		"\ttest01 航空機数が想定した2にならない。 \n",
+		v航空管制システム0.numOfAircraft(mk_token("横田"), {mk_token("F35_1") |-> mk_token("横田"), mk_token("F18_1") |-> mk_token("横田")})  = 2
+	);
+	v航空管制システム0.出勤する(mk_token("小田"));
+	assertTrue(
+		"\ttest01 管制官小田が出勤できない。 \n",
+		mk_token("小田") in set v航空管制システム0.s当直集合
+	);
+	assertTrue(
+		"\ttest01 横田空域で、小田管制官を活性化できない。 \n",
+		v航空管制システム0.活性化する(mk_token("横田"), mk_token("小田")) = mk_token("小田")
+	);
+	v航空管制システム0.フライトを追加する (mk_token("F35_1"), mk_token("横田"));
+	assertTrue(
+		"\ttest01 横田空域にフライトF35_1を追加できない。 \n",
+		v航空管制システム0.s位置(mk_token("F35_1")) = mk_token("横田")
+	);
+	v航空管制システム0.出勤する(mk_token("佐原"));
+	assertTrue(
+		"\ttest01 管制官佐原が出勤できない。 \n",
+		mk_token("佐原") in set v航空管制システム0.s当直集合
+	);
+	assertTrue(
+		"\ttest01 嘉手納空域で、佐原管制官を活性化できない。 \n",
+		v航空管制システム0.活性化する(mk_token("嘉手納"), mk_token("佐原")) = mk_token("佐原")
+	);
+	v航空管制システム0.空域を切り替える (mk_token("F35_1"), mk_token("嘉手納"));
+	v航空管制システム0.フライトを削除する (mk_token("F35_1"));
+	assertTrue(
+		"\ttest01 嘉手納空域でフライトF35_1を削除できない。 \n",
+		mk_token("F35_1") not in set rng v航空管制システム0.s位置
+	);
+	v航空管制システム0.非活性化する(mk_token("嘉手納"));
+	v航空管制システム0.出勤する(mk_token("酒匂"));
+	assertTrue(
+		"\ttest01 嘉手納空域で、酒匂管制官を活性化できない。 \n",
+		v航空管制システム0.活性化する(mk_token("嘉手納"), mk_token("酒匂")) = mk_token("酒匂")
+	);
+	assertTrue(
+		"\ttest01 嘉手納空域で佐原管制官を再割当できない。 \n",
+		v航空管制システム0.再割り当て(mk_token("嘉手納"), mk_token("佐原")) = mk_token("佐原")
+	);
+);
+end TestCase0001
+
+class TestCase0002 is subclass of TestCaseCom
+\end{vdm_al}
+
+\section {TestCase0001}
+I am a regression testcase for nromal case.
+\begin{vdm_al}
+operations
+
+protected test10 : () ==> ()
+test10() == (
+	v航空管制システム1.フライトを追加する (mk_token("F35_1"), mk_token("横田"));
+	v航空管制システム1.空域を切り替える (mk_token("F35_1"), mk_token("嘉手納"));
+		assertTrue(
+		"\ttest10 厚木空域を許容数2で委託できない。 \n",
+		let m = v航空管制システム1.委託する(mk_token("厚木"), 2) in
+		m(mk_token("厚木")) = 2
+	);
+	v航空管制システム1.委託をやめる(mk_token("厚木"));
+	v航空管制システム1.退勤する(mk_token("佐原"));
+)
+end TestCase0002
+
+class TestCaseE0001 is subclass of TestCaseCom
+\end{vdm_al}
+
+\section {TestCaseE0001}
+I am a regression testcase for nromal case.
+\begin{vdm_al}
+
+operations
+
+protected testE01 : () ==> ()
+testE01() == (
+	assertTrue(
+		"\ttestE01 航空機数が想定した1にならない。 \n",
+		v航空管制システム0.航空機数(mk_token("横田"), {mk_token("F35_1") |-> mk_token("嘉手納"), mk_token("F18_1") |-> mk_token("横田")})  = 1
+	);
+	assertTrue(
+		"\ttestE01 厚木空域を許容数2で委託できない。 \n",
+		let m = v航空管制システム0.委託する(mk_token("厚木"), 2) in
+		m(mk_token("厚木")) = 2
+	);
+	assertTrue(
+		"\ttestE01 厚木空域で管制官小田を活性化できない。 \n",
+		let m = v航空管制システム0.活性化する(mk_token("厚木"), mk_token("小田")) in
+		m = mk_token("小田")
+	);
+	assertTrue(
+		"\ttestE01 岩国空域で管制官小田を活性化できない。 \n",
+		let m = v航空管制システム0.活性化する(mk_token("岩国"), mk_token("小田")) in
+		m = mk_token("小田")
+	)
+);
+
+end TestCaseE0001
+\end{vdm_al}
+
+\begin{rtinfo}
+[TotalxCoverage]{vdm.tc}[TestCase0001]
+\end{rtinfo}

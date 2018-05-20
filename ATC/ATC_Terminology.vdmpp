@@ -1,0 +1,158 @@
+\section {ATC要求辞書}
+	\index{ATC要求辞書@ATC要求辞書}
+私は、航空管制(ATC = Air Traffic Control)の英語要求辞書である。
+英語の用語(型名、関数名、操作名などの名称)を定義している。
+
+明確になった自然言語によるシステムの要求は以下のとおりである。
+\begin{description}
+\item[R1] Only on-duty controllers can control airspaces.
+\item[R2] An airspace can be activated only if it is commissioned.
+\item[R3] All utilised airspaces in the ATC region are activated.
+\item[R4] The capacity of each utilised airspace is not exceeded.
+\item[R5] A controller cannot be assigned to two different airspaces simultaneously.
+\item[R6] Each known aircraft has a unique controller.
+\item[R7] Each known aircraft occupies a unique airspace.
+\item[R8] Each activated airspace has a unique controller.
+\item[R9] An airspace which is not activated contains no aircraft.
+\item[R10] The controller of a known aircraft is on duty.
+\end{description}
+
+\begin{vdm_al}
+class ATC英語要求辞書
+
+types
+public Controller = token;
+public Space = token;
+public Aircraft = token;
+public ATC ::
+	onduty : set of Controller
+	control : inmap Space to Controller
+	capacity : map Space to nat
+	location : map Aircraft to Space
+inv mk_ATC(cs,con,cap,loc) ==
+			rng con subset cs and
+			dom con subset dom cap and
+			rng loc subset dom con and
+			forall s in set rng loc & numOfAircraft(s, loc) <= cap(s);
+public properties = <commissioned> | <activated> | <deactivated> | <utilised> | <assigned> | <available> | <known>;
+
+instance variables
+	public sOnduty : set of Controller := {};
+	public sControl : inmap Space to Controller := {|->};
+	public sCapacity : map Space to nat := {|->};
+	public sLocation : map Aircraft to Space := {|->};
+	
+functions
+public numOfAircraft : Space * map Aircraft to Space -> nat
+numOfAircraft(s, loc) == card dom (loc :> {s});
+
+public isActivated : Space * ATC -> bool
+isActivated(s, δ) == s in set dom (δ.control);
+
+public isKnown : Aircraft * ATC -> bool
+isKnown(p, δ) == p in set dom (δ.location);
+
+public controllerOf : Aircraft * ATC -> Controller
+controllerOf(p, δ) == δ.control(δ.location(p))
+pre isKnown(p, δ);
+
+operations
+public Commission (s:Space, n:nat) == --TSCMCR_Append_++
+	sCapacity := sCapacity ++ {s |-> n}
+ext wr sCapacity : map Space to nat
+pre s not in set dom sCapacity
+post sCapacity = sCapacity~ ++ {s |-> n};
+
+public ResetCapacity (s: Space, n: nat) == --TSCMCR_Append_++
+	sCapacity := sCapacity ++ {s |-> n}
+ext rd sLocation : map Aircraft to Space
+		wr sCapacity : map Space to nat
+pre s in set dom sCapacity and numOfAircraft(s,sLocation) <= n
+post sCapacity = sCapacity~ ++ {s |-> n};
+
+public Decommission (s: Space) == --TSCMCR_Delete
+	sCapacity := {s} <-: sCapacity
+ext rd sControl : inmap Space to Controller
+		wr sCapacity : map Space to nat
+pre s in set (dom sCapacity \ dom sControl)
+post sCapacity = {s} <-: sCapacity~;
+
+public ClockOn (c: Controller) == --TSCSCR_Append
+	sOnduty := sOnduty union {c}
+ext wr sOnduty : set of Controller
+pre c not in set sOnduty
+post sOnduty = sOnduty~ union {c};
+
+public ClockOff (c: Controller) == --TSCSCR_Delete
+	sOnduty := sOnduty \ {c}
+ext wr sOnduty : set of Controller
+		rd sControl : inmap Space to Controller 
+pre c in set sOnduty \ rng sControl
+post sOnduty = sOnduty~ \ {c};
+
+public Activate (s:Space, c:Controller) c:Controller == (--TSCMCR_Append_++
+	sControl := sControl ++ {s |-> c};
+	return c
+)
+ext rd sOnduty : set of Controller
+		wr sControl : inmap Space to Controller 
+		rd sCapacity : map Space to nat
+pre 
+	s in set  (dom sCapacity \ dom sControl) and 
+	rng sControl <> sOnduty 
+post 
+	sControl = sControl~ ++ {s |-> c};
+
+public Reassign (s: Space) c: Controller == ( --TSCMCR_Append_++
+	sControl := sControl ++ {s |-> c};
+	return c
+)
+ext rd sOnduty : set of Controller
+		wr sControl : inmap Space to Controller 
+pre 
+	s in set dom sControl and 
+	rng sControl <> sOnduty
+post 
+	sControl = sControl~ ++ {s |-> c} and 
+	c <> sControl~(s);
+
+public Deactivate (s: Space) == --TSCMCR_Delete
+	sControl := {s} <-: sControl
+ext wr sControl : inmap Space to Controller
+		rd sLocation : map Aircraft to Space 
+pre s in set (dom sControl \ rng sLocation)
+post sControl = {s} <-: sControl~;
+
+public AddFlight (p: Aircraft, s: Space) == --TSCMCR_Append_++
+	sLocation := sLocation ++ {p |-> s}
+ext rd sControl : inmap Space to Controller 
+		rd sCapacity : map Space to nat
+		wr sLocation : map Aircraft to Space
+pre 
+	s in set dom sControl and 
+	p not in set dom sLocation and 
+	numOfAircraft(s, sLocation) < sCapacity(s) 
+post 
+	sLocation = sLocation~ ++ {p |-> s};
+
+public Handover (p: Aircraft, s: Space) == --TSCMCR_Append_++
+	sLocation := sLocation ++ {p |-> s}
+ext rd sControl : inmap Space to Controller
+		rd sCapacity : map Space to nat
+		wr sLocation : map Aircraft to Space
+pre 
+	s in set dom sControl and
+	p in set dom sLocation and
+	sLocation(p) <> s and
+	numOfAircraft(s, sLocation) < sCapacity(s) 
+post 
+	sLocation = sLocation~ ++ {p |-> s};
+	
+public RemoveFlight (p: Aircraft) == --TSCMCR_Delete
+	sLocation := {p} <-: sLocation
+ext wr sLocation : map Aircraft to Space
+pre p in set dom sLocation
+post sLocation = {p} <-: sLocation~;
+
+end ATC英語要求辞書
+\end{vdm_al}

@@ -1,0 +1,29 @@
+\section {TestApp}
+
+\begin{vdm_al}
+class TestApp
+operations
+\end{vdm_al}
+
+\subsubsection {Operation : run}
+Main operation of the regression test.
+
+\begin{vdm_al}
+static public run : () ==> ()
+run() == (
+	let tests : set of Test = {new TestCase0001()},
+	ts : TestSuite = new TestSuite(tests),
+	result : TestResult = new TestResult()
+	in (
+		result.addListener(new PrintTestListener());
+		ts.run(result);
+		IO`print(result.toString())
+	)
+);
+    
+end TestApp
+\end{vdm_al}
+
+\begin{rtinfo}
+[TotalxCoverage]{vdm.tc}[TestApp]
+\end{rtinfo}

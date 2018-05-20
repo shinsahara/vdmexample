@@ -1,0 +1,108 @@
+\documentclass[a4paper,10pt]{jsarticle}
+%\documentclass[a4paper,10pt]{jsbook}
+
+\usepackage[dvipdfmx]{graphicx, color}
+%\usepackage{folha}
+\graphicspath{{image/}}
+
+\usepackage{color}
+\usepackage{array}
+\usepackage{longtable}
+\usepackage{alltt}
+\usepackage{graphics}
+\usepackage{vpp-nms}
+%\usepackage{vpp}
+\usepackage{makeidx}
+\makeindex
+
+\usepackage{colortbl}
+
+\usepackage[dvipdfmx,bookmarks=true,bookmarksnumbered=true,colorlinks,plainpages=true]{hyperref}
+
+%\AtBeginDvi{\special{pdf:tounicode 90ms-RKSJ-UCS2}}
+\AtBeginDvi{\special{pdf:tounicode EUC-UCS2}}
+
+\definecolor{covered}{rgb}{0,0,0}      %black
+\definecolor{not-covered}{rgb}{1,0,0}  %red
+
+\setcounter{secnumdepth}{6}
+\makeatletter
+\renewcommand{\paragraph}{\@startsection{paragraph}{4}{\z@}%
+  {1.5\Cvs \@plus.5\Cdp \@minus.2\Cdp}%
+  {.5\Cvs \@plus.3\Cdp}%
+  {\reset@font\normalsize\bfseries}}
+\makeatother
+
+\renewcommand{\sf}{\sffamily \color{blue}}
+
+\newcommand{\syou}{\texttt{<}}
+\newcommand{\dai}{\texttt{>}}
+
+%\include{Title}
+
+%\pagestyle{empty}
+\usepackage{fancyhdr}
+%\usepackage{lastpage} 
+%  \pagestyle{fancy} 
+%   \let\origtitle\title 
+%  \renewcommand{\title}[1]{\lfoot{#1}\origtitle{#1}}
+
+%  \rfoot{\today}
+%  \rhead{[\ \scshape\oldstylenums{\thepage}\ / %
+ %     \scshape\oldstylenums{\pageref{LastPage}}\ ]}
+%  \cfoot{}
+
+
+\begin{document}
+
+% the title page
+
+\title{航空管制システム\\
+\small{($Revision: 0.1 $ -- \today)}}
+\author{佐原　伸\\
+}
+%\institute{\pgldk \and \chessnl}
+\date{\mbox{}}
+\maketitle
+
+\begin{abstract}
+\setlength{\baselineskip}{12pt plus .1pt}
+VDM++言語\cite{SCSK2012PP}入門セミナーの演習問題で、
+航空管制システムのモデル作成例。
+\end{abstract}
+%\vspace{-1cm}
+
+\tableofcontents
+
+%\mainmatter
+%\section {}
+\include{ATC_Terminology.vdmpp }
+\include{ATC.vdmpp}
+\include{MyTest.vdmpp }
+\include{MyTestCase.vdmpp}
+\newpage
+%\layout
+
+%\begin{thebibliography}{9}
+\section{参考文献、索引}
+VDM++\cite{SCSK2012PP}は、
+1970年代中頃にIBMウィーン研究所で開発されたVDM-SL\cite{SCSK2012SL}を拡張し、
+さらにオブジェクト指向拡張した
+
+
+VDM++の教科書としては\cite{Sakoh2010}がある。
+
+VDM++を開発現場で実践的に使う場合の解説が\cite{Sahara2008}にある。
+
+\bibliographystyle{jplain}
+%\bibliography{/Users/sahara/svnw/sahara}
+\bibliography{/Users/sahara/Dropbox/bib/saharaUTF8}
+%\bibliography{/Users/ssahara/svnwork/sahara}
+
+%\end{thebibliography}
+
+%\newpage
+%\addcontentsline{toc}{section}{Index}
+\printindex
+
+\end{document}
