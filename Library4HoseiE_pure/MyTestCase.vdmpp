@@ -1,0 +1,85 @@
+\begin{vdm_al}
+class TestCase0001 is subclass of TestCase
+\end{vdm_al}
+
+\subsection {TestCase0001}
+I am a regression testcase for nromal case.
+\begin{vdm_al}
+
+operations
+
+protected test01 : () ==> ()
+test01() == (
+	let l = new Library(),
+		p = mk_token("Sakoh"), 
+		c = mk_token("OO Construction_1") 
+	in (
+		l.add_user(p); 
+		l.add_book(c); 
+		l.borrow_book(p, c); 
+		l.return_book(c); 
+		l.remove_user(p);
+		assertTrue("ttest01 Strange result after add_user, add_book, borrow_book, return_book, remove_user. \n",
+			l.getAttributes() = mk_({mk_token("OO Construction_1")}, {}, {|->}) 
+		);
+	);
+	
+	let l = new Library(),
+		p = mk_token("Sakoh"), 
+		c = mk_token("OO Construction_1") 
+	in (
+		l.add_user(p); 
+		l.add_book(c); 
+		l.borrow_book(p, c); 
+		l.return_book(c); 
+		l.remove_book(c);
+		assertTrue("test01 Strange result after add_user, add_book, borrow_book, return_book, remove_book. \n",
+			l.getAttributes() = mk_({}, {mk_token( "Sakoh")}, {|->})
+		);
+	);
+		
+	let l = new Library(),
+		p = mk_token("Sakoh"), 
+		c = mk_token("OO Construction_1") 
+	in (
+		l.add_user(p); 
+		l.add_book(c); 
+		l.borrow_book(p, c); 
+		l.return_book(c);
+		assertTrue("test01 Strange result after add_user, add_book, borrow_book, return_book. \n",
+			l.getAttributes() = mk_({mk_token("OO Construction_1")}, {mk_token( "Sakoh")}, {|->})
+		);
+	);
+);
+
+end TestCase0001
+\end{vdm_al}
+
+\subsection {TestCase0002}
+I am a regression testcase for error or failure case.
+\begin{vdm_al}
+class TestCase0002 is subclass of TestCase
+operations
+
+protected test901 : () ==> ()
+test901() == (
+	let l = new Library(),
+		p = mk_token("Sakoh"), 
+		c = mk_token("OO Construction_1") 
+	in trap <RuntimeError> with 
+		IO`print("test901 Can't remove_user as the user bollowed a book. This is the test of \"pre-condition error\" check.\n") 
+	in (
+		l.add_user(p); 
+		l.add_book(c); 
+		l.borrow_book(p, c); 
+		IO`print("\ttest901 Can't remove_user as the user bollowed a book. This is the test of \"pre-condition error\" check.\n") ;
+		l.remove_user(p);
+		assertTrue("ttest901 Strange result after add_user, add_book, borrow_book, remove_user. \n",
+			l.getAttributes() = mk_({mk_token("OO Construction_1")}, {}, {|->})
+		);
+		return
+	);
+);
+
+end TestCase0002
+\end{vdm_al}

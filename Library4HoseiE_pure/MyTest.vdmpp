@@ -1,0 +1,24 @@
+\begin{vdm_al}
+class TestApp
+
+\end{vdm_al}
+\subsection {TestApp}
+I am a regression test apprication for Library System.
+
+\begin{vdm_al}
+operations
+
+static public run : () ==> ()
+run() == (
+	let tests : set of Test = {new TestCase0001(), new TestCase0002()},
+	ts : TestSuite = new TestSuite(tests),
+	result : TestResult = new TestResult()
+	in (
+		result.addListener(new PrintTestListener());
+		ts.run(result);
+		IO`print(result.toString())
+	)
+);
+    
+end TestApp
+\end{vdm_al}

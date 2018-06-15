@@ -1,0 +1,92 @@
+\begin{vdm_al}
+class Library
+\end{vdm_al}
+
+\subsection {Library}
+I am a simple library system to manage borrowing copies of books.
+\begin{vdm_al}
+
+types
+public Copy = token;
+public User = token;
+Borrowing = map Copy to User;
+
+instance variables
+sCopies : set of Copy := {};
+sUsers : set of User := {};
+sBorrowing : Borrowing := {|->};
+inv 
+	dom sBorrowing subset sCopies and
+	rng sBorrowing subset sUsers;
+
+operations
+public add_user : User ==> ()
+add_user(aUser) == 
+	sUsers := sUsers union {aUser}
+pre
+	aUser not in set sUsers
+post
+	sUsers = sUsers~ union {aUser};
+
+public remove_user : User ==> ()
+remove_user(aUser) == 
+	sUsers := sUsers \ {aUser}
+pre
+	aUser in set sUsers and 
+	not borrowedUser(sBorrowing, aUser)
+post
+	sUsers = sUsers~ \ {aUser};
+
+public add_book : Copy ==> ()
+add_book(aCopy) == 
+	sCopies := sCopies union {aCopy}
+pre
+	aCopy not in set sCopies
+post
+	sCopies = sCopies~ union {aCopy};
+
+public remove_book: Copy ==> ()
+remove_book(aCopy) == 
+	sCopies := sCopies \ {aCopy}
+pre
+	aCopy in set sCopies and
+	not borrowedCopy(sBorrowing, aCopy)
+post
+	sCopies = sCopies~ \ {aCopy};
+
+public borrow_book : User * Copy ==> ()
+borrow_book(aUser, aCopy) ==
+	sBorrowing := sBorrowing munion {aCopy |-> aUser}
+pre
+	aUser in set sUsers and
+	aCopy in set sCopies and
+	not borrowedCopy(sBorrowing, aCopy)
+post
+	sBorrowing = sBorrowing~ munion {aCopy |-> aUser};
+
+public return_book : Copy ==> ()
+return_book(aCopy) ==
+	sBorrowing := {aCopy }<-: sBorrowing
+pre
+	borrowedCopy(sBorrowing, aCopy)
+post
+	sBorrowing = {aCopy } <-: sBorrowing~;
+
+public getAttributes : () ==> set of Copy * set of User * map Copy to User
+getAttributes() == return mk_(sCopies, sUsers, sBorrowing);
+
+functions
+borrowedCopy : Borrowing * Copy +> bool
+borrowedCopy(aBorrowing, aCopy) ==
+	aCopy in set dom aBorrowing;
+
+borrowedUser : Borrowing * User +> bool
+borrowedUser(aBorrowing, aUser) ==
+	aUser in set rng aBorrowing;
+
+end Library
+\end{vdm_al}
+
+\begin{rtinfo}
+{vdm.tc}[Library]
+\end{rtinfo}

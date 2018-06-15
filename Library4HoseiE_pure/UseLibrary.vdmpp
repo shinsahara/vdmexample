@@ -1,0 +1,42 @@
+\begin{vdm_al}
+class UseLibrary
+\end{vdm_al}
+
+\subsection {UseLibrary}
+UseLibrary is a Combinatorial test class.
+
+\begin{vdm_al}
+instance variables
+sL : Library :=  new Library();
+--sL : Library :=  ne Library1();
+
+traces
+
+T1:
+	let p in set {mk_token("Sakoh"), mk_token("Larsen")} in 
+	let c in set {mk_token("OO Construction_1"), mk_token("VDM_1")} in 
+		(sL.add_user(p); sL.add_book(c); 
+		 sL.borrow_book(p, c); 
+		 sL.return_book(c); 
+		 sL.remove_user(p); 
+		 sL.getAttributes()) 
+
+T2:
+	let p1,p2 in set {mk_token("Sakoh"), mk_token("Larsen")} in 
+	let c1,c2 in set {mk_token("OO Construction_1"), mk_token("VDM_1")} in 
+		(sL.add_user(p1); sL.add_user(p2); 
+		 sL.add_book(c1); sL.add_book(c2); 
+		 sL.borrow_book(p1, c1); sL.borrow_book(p1, c2);  
+		 sL.getAttributes())
+
+T3:
+	let p1,p2 in set {mk_token("Sakoh"), mk_token("Larsen")} in 
+	let c1,c2 in set {mk_token("OO Construction_1"), mk_token("VDM_1")} in 
+		(sL.add_user(p1); sL.add_user(p2); 
+		 sL.add_book(c1); sL.add_book(c2); 
+		 sL.borrow_book(p2, c1); sL.borrow_book(p2, c2);
+		 sL.remove_user(p1) | sL.remove_user(p2);
+		 sL.getAttributes())
+
+end UseLibrary
+\end{vdm_al}

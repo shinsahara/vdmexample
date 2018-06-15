@@ -1,0 +1,35 @@
+\begin{vdm_al}
+class PrintTestListener is subclass of TestListener
+\end{vdm_al}
+
+\subsection {PrintTestListener}
+This is a listener class that prints the result of passage of the test.
+
+\begin{vdm_al}
+operations
+  public initListener: () ==> ()
+  initListener () == skip;
+  
+  public exitListener: () ==> ()
+  exitListener () == skip;
+  
+  public addFailure: Test * AssertionFailedError ==> ()
+  addFailure (test, failError) ==
+    if failError.hasMessage() then
+      IO`print(failError.getMessage())
+    else
+      IO`print(test.getName() ^ " is failure.\n");
+  
+  public addError: Test * Throwable ==> ()
+  addError (test, -) == IO`print(test.getName() ^ " is error.\n");
+  
+  public startTest: Test ==> ()
+  startTest (test) ==
+    IO`print("---Start " ^ test.getName() ^ "---\n");
+  
+  public endTest: Test ==> ()
+  endTest (test) ==
+    IO`print("End " ^ test.getName() ^ ".\n");
+
+end PrintTestListener
+\end{vdm_al}
