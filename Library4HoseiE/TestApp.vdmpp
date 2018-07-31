@@ -1,0 +1,75 @@
+\section{TestApp}
+I am a simple regression test.
+\begin{vdm_al}
+class TestApp 
+
+operations
+static public run : () ==> seq of char * bool * map nat1 to bool
+run() == 
+	let testcases = [
+			t1(), t2(), t3(), t4()
+			--t1() -- for Pretty Print
+		],
+		testResults = makeOrderMap(testcases)
+	in
+	return
+		mk_("The result of regression test = ", forall i in set inds testcases & testcases(i), testResults);
+
+functions
+static public makeOrderMap : seq of bool +> map nat1 to bool
+makeOrderMap(s) == {i |-> s(i) | i in set inds s}
+pre s <> [];
+
+operations
+static public print : seq of char ==> bool
+print(s) == 
+	let - = new IO().echo(s) in return true;
+
+static t1: () ==> bool
+t1() == 
+	let l = new Library(),
+		p = mk_token("Sakoh"), 
+		c = mk_token("OO Construction_1") 
+	in (
+		l.add_user(p); l.add_book(c); l.borrow_book(p, c); l.return_book(c); l.remove_user(p);
+		return
+			l.getAttributes() = mk_({mk_token("OO Construction_1")}, {}, {|->})
+	);
+
+static t2: () ==> bool
+t2() == 
+	let l = new Library(),
+		p = mk_token("Sakoh"), 
+		c = mk_token("OO Construction_1") 
+	in (
+		l.add_user(p); l.add_book(c); l.borrow_book(p, c); l.return_book(c); l.remove_book(c);
+		return
+			l.getAttributes() = mk_({}, {mk_token( "Sakoh")}, {|->})
+	);
+
+static t3: () ==> bool
+t3() == 
+	let l = new Library(),
+		p = mk_token("Sakoh"), 
+		c = mk_token("OO Construction_1") 
+	in trap <RuntimeError> with 
+		print("\tt3 Can't remove_user as planned.\n") 
+	in (
+		l.add_user(p); l.add_book(c); l.borrow_book(p, c); l.remove_user(p);
+		return
+			l.getAttributes() = mk_({mk_token("OO Construction_1")}, {}, {|->})
+	);
+
+static t4: () ==> bool
+t4() == 
+	let l = new Library(),
+		p = mk_token("Sakoh"), 
+		c = mk_token("OO Construction_1") 
+	in (
+		l.add_user(p); l.add_book(c); l.borrow_book(p, c); l.return_book(c);
+		return
+			l.getAttributes() = mk_({mk_token("OO Construction_1")}, {mk_token( "Sakoh")}, {|->})
+	);
+
+end TestApp
+\end{vdm_al}

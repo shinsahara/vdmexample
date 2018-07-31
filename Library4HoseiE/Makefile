@@ -15,7 +15,8 @@ CODE = UTF8
 
 # TeX commands
 TEXDIR = /usr/local/texlive/2018/bin/x86_64-darwin
-PLATEX = $(TEXDIR)/platex 
+#TEXDIR = /Applications/UpTeX.app/Contents/Resources/TEX/texbin
+PLATEX = $(TEXDIR)/platex
 #BIBTEX=jbibtex
 BIBTEX=pbibtex --kanji=$(C0DE)
 DVIPDFM = $(TEXDIR)/dvipdfmx
@@ -32,8 +33,7 @@ OUTDOC = Library
 
 # VDM files
 VPPFILES = \
-	MyTest.vdmpp MyTestCase.vdmpp PrintTestListener.vdmpp \
-	UseLibrary.vdmpp Library.vdmpp lib/VDMUnit.vdmpp lib/IO.vdmpp
+	TestApp.vdmpp	UseLibrary.vdmpp	Library.vdmpp		io.vpp
 
 # Test script name
 TESTSCRIPT = test.script
@@ -73,13 +73,9 @@ makevdmtex:
 
 # run VDMJ
 vdmj:
-	vdmj_UTF8 -r vdm10 -exceptions -e "run()" $(VPPFILES)
+	vdmj_UTF8 -r classic -exceptions -e "run()" $(VPPFILES)
 	echo  "you have to type 'latex' and 'q'"
-	vdmj_UTF8 -r vdm10 -exceptions $(VPPFILES)
-
-# Command-Line Interface to Overture
-overture:
-	overture -vdmpp -i -e "run()" $(VPPFILES)
+	vdmj_UTF8 -r classic -exceptions $(VPPFILES)
 
 doc: #今は「! LaTeX Error: Environment vdm_al undefined.」というエラーが出る
 	$(PLATEX) $(OUTDOC)
@@ -88,6 +84,7 @@ doc: #今は「! LaTeX Error: Environment vdm_al undefined.」というエラー
 	$(PLATEX) $(OUTDOC)
 	$(PLATEX) $(OUTDOC)
 	$(DVIPDFM) $(OUTDOC)
+	
 
 # To use the PNG file on TeX, *.bb is needed. 
 makebb:
@@ -98,8 +95,8 @@ makebb:
 clean:
 	rm -rf *.aux *.aux *.log *.bbl *.blg *.dvi *.toc *.ilg *.ind *.bak
 	rm -rf */*.aux */*.log */*.bbl */*.blg */*.dvi */*.toc */*.ilg */*.ind */*.bak
-	rm -rf *.out *.vpp.tex *.vdmpp.tex *.idx */vdm.tc *.lof *.lot
-	rm -rf */*.out */*.vpp.tex */*.vdmpp.tex */*.idx */vdm.tc */*.lof */*.lot
+	rm -rf *.out *.vpp.tex *.vdmpp.tex *.idx */vdm.tc
+	rm -rf */*.out */*.vpp.tex */*.vdmpp.tex */*.idx */vdm.tc
 	rm -rf image/*.bb
 
 # Clean output document
