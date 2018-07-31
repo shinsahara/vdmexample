@@ -1,0 +1,29 @@
+\begin{vdmpp}[breaklines=true]
+class CT
+
+instance variables
+sSES : 特急券予約システム := new 特急券予約システム({|->});
+
+traces
+T0:
+ let wクレジットカード = new クレジットカード(mk_token(<クレジットID01>), mk_token(<クレジットPW01>)) in
+ let wおサイフケータイ = new おサイフケータイ(mk_token(<おサイフケータイID01>), wクレジットカード) in
+ let w会員証 = new 予約会員証(mk_token(<会員証ID01>), mk_token(<会員証PW01>), wクレジットカード) in
+ let w契約 = new 契約(wおサイフケータイ, w会員証) in
+ let wシステム = new 特急券予約システム({|->}) in
+ wシステム.予約する( w契約, mk_token(<予約ID01>),  wおサイフケータイ.クレジットカードを得る(), mk_token(<最初の予約内容>)) 
+
+
+end CT
+\end{vdmpp}
+\bigskip
+\begin{longtable}{|l|r|r|r|}
+\hline
+Function or operation & Line & Coverage & Calls \\
+\hline
+\hline
+\hline
+CT.vdmpp & & 0.0\% & 0 \\
+\hline
+\end{longtable}
+
