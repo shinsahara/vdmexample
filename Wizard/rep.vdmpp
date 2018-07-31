@@ -31,8 +31,7 @@ class REP
 --definitions
 
   types
-  
-public
+public 
     TypeRep    = InvTypeRep |
                  BasicTypeRep |
                  QuoteTypeRep |
@@ -96,7 +95,7 @@ public
 UnionTypeRep :: tps : set of TypeRep;
 
 public
-ProductTypeRep :: tps : seq of TypeRep;
+ProductTypeRep :: tps : seq1 of TypeRep;
 
 public
 SetTypeRep :: elemtp : TypeRep;
@@ -172,16 +171,16 @@ public
 public
     NilTypeRep ::;
 
-    --EmptySetTypeRep ::;
 public
+    --EmptySetTypeRep ::;
     EmptySetTypeRep:: elemtp :- TypeRep;
 
-    --EmptySeqTypeRep ::;
 public
+    --EmptySeqTypeRep ::;
     EmptySeqTypeRep:: elemtp :- TypeRep;
 
-    --EmptyMapTypeRep ::;
 public
+    --EmptyMapTypeRep ::;
     EmptyMapTypeRep :: mapdom :- TypeRep
                        maprng :- TypeRep;
 

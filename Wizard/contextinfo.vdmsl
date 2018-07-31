@@ -45,11 +45,12 @@ module identifier, and the next 22 bits models the node identfier.
      FileId = nat
      inv fid == fid < MaxFid -1;
 
+     TypeInfo = REP`TypeRep;
 values
 
 --   MaxNid: nat = 2**22;
    MaxNid: nat = 2**24;
-   MaxFid: nat  = 2**10;
+   MaxFid: nat = 2**10;
 
    NilContextId: int = -1;
 \end{vdm_al}
@@ -68,16 +69,16 @@ type checker) a special entry is reserved:
 
 
 \begin{vdm_al}
- state Sigma of
-   tll_ci : seq of TokenContextInfo
-   fid_m : FileIdMap
- init s == s = mk_Sigma([],{|->})
- end
+state Sigma of
+  tll_ci : seq of TokenContextInfo
+  fid_m : FileIdMap
+init s == s = mk_Sigma([],{|->})
+end
 
 types 
 TokenContextInfo::
- tll : TokenList
- ci  : ContextInfo;
+  tll : TokenList
+  ci  : ContextInfo;
 
 ContextInfo = seq of ContextNodeInfo;
 FileIdMap = map FileId to seq of char;
@@ -191,7 +192,7 @@ in a program table.
      ContextNodeInfo ::
         tokenpos : [TokenSpan]
         coverage : TestCoverageInfo
-        typeinfo : [REP`TypeRep]
+        typeinfo : [TypeInfo]
         pid_m    : [ map AS`Name to REP`TypeRep ]
         index    : [IndexInfo]
         isBreakable : bool
@@ -205,63 +206,59 @@ values
 
 \end{vdm_al}
 
-
-
 The functions {\em ConvCid2Mid} and {\em ConvCid2Nid} are used to
 convert context identifiers to module and node identifiers respectively.
 \begin{vdm_al}
 functions
 
- ConvCid2Fid: ContextId -> FileId
- ConvCid2Fid(cid) ==
+  ConvCid2Fid: ContextId -> FileId
+  ConvCid2Fid(cid) ==
     cid div MaxNid;
 
- ConvCid2Nid: ContextId -> NodeId
- ConvCid2Nid(cid) ==
+  ConvCid2Nid: ContextId -> NodeId
+  ConvCid2Nid(cid) ==
     cid mod MaxNid;
 
- SplitCid: ContextId -> FileId * NodeId
- SplitCid(cid) ==
-   mk_(ConvCid2Fid(cid), ConvCid2Nid(cid));
+  SplitCid: ContextId -> FileId * NodeId
+  SplitCid(cid) ==
+    mk_(ConvCid2Fid(cid), ConvCid2Nid(cid));
 
 \end{vdm_al}
 
-The functions {\em IsAValidFileId\/} and {\em IsAValidContextId\/} test whether a {\em FileId\/} and {\em ContextId\/} respectively is defined in {\em tll\_ci}.
+The functions {\em IsAValidFileId\/} and {\em IsAValidContextId\/} test whether a {\em FileId\/} and
+ {\em ContextId\/} respectively is defined in {\em tll\_ci}.
 
 \begin{vdm_al}
 operations
-IsAValidFileId: FileId ==> bool
-IsAValidFileId (fid) ==
-return fid in set inds tll_ci;
+  IsAValidFileId: FileId ==> bool
+  IsAValidFileId (fid) ==
+    return fid in set inds tll_ci;
 
-IsAValidContextId: ContextId ==> bool
-IsAValidContextId (cid) ==
-if cid <> NilContextId
-then let mk_(fid,nid) = SplitCid(cid) in
-     return fid in set inds tll_ci and
-            nid in set inds tll_ci(fid).ci
-else return false
+  IsAValidContextId: ContextId ==> bool
+  IsAValidContextId (cid) ==
+    if cid <> NilContextId
+    then let mk_(fid,nid) = SplitCid(cid)
+         in
+           return fid in set inds tll_ci and nid in set inds tll_ci(fid).ci
+    else return false
 \end{vdm_al}
 
 
 \subsection{Initialisation}
-The operation {\em UseContextTab} initializes the information for a file
-identifier.
+The operation {\em UseContextTab} initializes the information for a file identifier.
 
 \begin{vdm_al}
 operations
 
-UseContextTab: FileId * bool==> ()
-UseContextTab(fid, reset) ==
-( if len tll_ci < fid
-  then 
-    for i = len tll_ci + 1 to fid
-    do
-      tll_ci := tll_ci ^ [mk_TokenContextInfo([],[])];
-  if reset
-  then 
-    tll_ci(fid) := mk_TokenContextInfo([],[])
-);
+  UseContextTab: FileId * bool ==> ()
+  UseContextTab(fid, reset) ==
+   (if len tll_ci < fid
+    then 
+       tll_ci := tll_ci ^ [mk_TokenContextInfo([],[]) | - in set {len tll_ci + 1,...,fid}];
+    if reset
+    then 
+      tll_ci(fid) := mk_TokenContextInfo([],[])
+   );
 
 \end{vdm_al}
 
@@ -269,51 +266,40 @@ The operation {\em Push} adds an entry in the context table for
 a file id and returns a new corresponding {\em ContextId}.
 
 \begin{vdm_al}
-Push: FileId ==> ContextId
-Push(fid) ==
-(
-  let mk_TokenContextInfo(tll,ci) = tll_ci(fid) in
-  ( tll_ci(fid) := mk_TokenContextInfo(tll, ci ^ [ InitCntxtNodeInfo ]);
-    return  fid*MaxNid + len ci + 1
-  )
-)
-pre IsAValidFileId(fid)
+  Push: FileId ==> ContextId
+  Push(fid) ==
+    let mk_TokenContextInfo(tll,ci) = tll_ci(fid)
+    in
+     (tll_ci(fid) := mk_TokenContextInfo(tll, ci ^ [ InitCntxtNodeInfo ]);
+      return  fid*MaxNid + len ci + 1)
+  pre IsAValidFileId(fid);
 
 \end{vdm_al}
 
 \subsection{Type Information}
 
-The operation {\em GetTypeInfo} extracts the type information for a
-given context identifier. 
+The operation {\em GetTypeInfo} extracts the type information for a given context identifier. 
 
 \begin{vdm_al}
 operations
- GetTypeInfo: ContextId ==> [REP`TypeRep]
- GetTypeInfo(cid) ==
-   let mk_(fid,nid) = SplitCid(cid),
-       mk_TokenContextInfo(-,ci) = tll_ci(fid) in
-   return ci(nid).typeinfo
- pre HasTypeInfo(cid) and IsAValidContextId(cid);
-
- GetJSSTypeInfo: ContextId ==> [REP`TypeRep]
- GetJSSTypeInfo(-) ==
-   return nil;
+  GetTypeInfo: ContextId ==> [REP`TypeRep]
+  GetTypeInfo(cid) ==
+    let mk_(fid,nid) = SplitCid(cid),
+        mk_TokenContextInfo(-,ci) = tll_ci(fid) in
+    return ci(nid).typeinfo
+  pre HasTypeInfo(cid) and IsAValidContextId(cid);
 
 \end{vdm_al}
 
-The opeation {\em SetTypeInfo} sets the type information for a given
-context identifier.
+The opeation {\em SetTypeInfo} sets the type information for a given context identifier.
 
 \begin{vdm_al}
 SetTypeInfo: ContextId * REP`TypeRep ==> ()
 SetTypeInfo(cid, type) ==
-let mk_(fid, nid) = SplitCid(cid) in
-    tll_ci(fid).ci(nid).typeinfo := type
-pre IsAValidContextId(cid);
+  let mk_(fid, nid) = SplitCid(cid) in
+      tll_ci(fid).ci(nid).typeinfo := type
+  pre IsAValidContextId(cid);
 
-SetJSSTypeInfo: ContextId * [REP`TypeRep] ==> ()
-SetJSSTypeInfo(-, -) ==
-  skip;
 \end{vdm_al}
 
 The operation {\em HasTypeInfo} determines if type information is
@@ -325,9 +311,8 @@ information.
  HasTypeInfo: ContextId ==> bool
  HasTypeInfo(cid) ==
  return 
-   IsTypeChecked() =>
-   let mk_(fid, nid) = SplitCid(cid)
-   in tll_ci(fid).ci(nid).typeinfo <> nil;
+   IsTypeChecked() => let mk_(fid, nid) = SplitCid(cid)
+                      in tll_ci(fid).ci(nid).typeinfo <> nil;
 \end{vdm_al}
 
 
@@ -347,8 +332,8 @@ for a given context identifier:
 \begin{vdm_al}
 SetPidM: ContextId * map AS`Name to REP`TypeRep ==> ()
 SetPidM(cid, pidm) ==
-let mk_(fid,nid) = SplitCid(cid)
-in tll_ci(fid).ci(nid).pid_m := pidm
+  let mk_(fid,nid) = SplitCid(cid)
+  in tll_ci(fid).ci(nid).pid_m := pidm
 pre IsAValidContextId(cid);
 \end{vdm_al}
 
@@ -361,9 +346,8 @@ contain type information for pattern name.
  HasPidMInfo: ContextId ==> bool
  HasPidMInfo(cid) ==
    return
-   IsTypeChecked() =>
-   let mk_(fid, nid) = SplitCid(cid)
-   in tll_ci(fid).ci(nid).pid_m <> nil
+     IsTypeChecked() => let mk_(fid, nid) = SplitCid(cid)
+                        in tll_ci(fid).ci(nid).pid_m <> nil
 pre IsAValidContextId(cid);
 \end{vdm_al}
 
@@ -387,7 +371,7 @@ IsTypeChecked() ==
 \begin{vdm_al}
   GetFileLineColPos: ContextId ==> seq of char * Line * Column
   GetFileLineColPos(cid) ==
-    let mk_(found, fid, -, pos_ast, -) = GetFilePos(cid)
+    def mk_(found, fid, -, pos_ast, -) = GetFilePos(cid)
     in if found
        then let fileName = fid_m(fid),
             mk_TokenPos(-, abs_line,-,-,column) = pos_ast
@@ -440,8 +424,8 @@ element was not found.
 
   GetLocation : ContextId ==> nat * nat
   GetLocation (cid) ==
-    let mk_(-,-,-,ast,-) = GetFilePos(cid), 
-        line = ast.abs_line, 
+    def mk_(-,-,-,ast,-) = GetFilePos(cid);
+        line = ast.abs_line;
         col  = ast.column 
      in 
         return mk_(line,col); 
@@ -460,11 +444,11 @@ operations
 
   GetCidAtPos: seq of char * int * int ==> bool * seq of char * [ContextId]
   GetCidAtPos(file, line, col) ==
-    let fid = GetFidForFile(file)
+    def fid = GetFidForFile(file)
     in if fid = nil
        then return mk_(false, "No such file", nil)
-       else let ci : ContextInfo = tll_ci(fid).ci,
-                tll : TokenList = tll_ci(fid).tll,
+       else def ci : ContextInfo = tll_ci(fid).ci;
+                tll : TokenList = tll_ci(fid).tll;
                 mk_(found, nodeId) = FindPosInContextInfo(ci, tll, line, col)
             in if found
                then return mk_(true, "", CreateCid(fid, nodeId))
@@ -473,10 +457,15 @@ operations
 
   GetFidForFile: seq of char ==> [FileId]
   GetFidForFile(file) ==
-    let m = inverse fid_m
-    in if file in set dom m
-       then return m(file)
-       else return nil;
+    --let m = inverse fid_m
+    --in if file in set dom m
+    --   then return m(file)
+    --   else return nil;
+    return 
+      cases fid_m:
+        { fid |-> (file) } munion - -> fid,
+        others                      -> nil
+      end;
 
   FindPosInContextInfo: ContextInfo * TokenList * int * int ==> bool * [NodeId]
   FindPosInContextInfo(ci, tll, line, col) ==
@@ -607,16 +596,18 @@ UseContextTab(TCEntry,true);
 \begin{vdm_al}
 PushCGPosType: [TokenSpan ] * [REP`TypeRep] ==> ContextId
 PushCGPosType(pos, type) ==
-let cid = Push(CGEntry)
-in (SetTypeInfo(cid, type);
+  def cid = Push(CGEntry)
+  in
+   (SetTypeInfo(cid, type);
     SetPos(cid, pos);
     return cid;
    );
 
 PushCGType: [REP`TypeRep] ==> ContextId
 PushCGType(type) ==
-let cid = Push(CGEntry)
-in (SetTypeInfo(cid, type);
+  def cid = Push(CGEntry)
+  in
+   (SetTypeInfo(cid, type);
     return cid;
    );
 \end{vdm_al}

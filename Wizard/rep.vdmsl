@@ -81,7 +81,7 @@ FieldRep :: sel : [AS`Name]
 	    
 UnionTypeRep :: tps : set of TypeRep;
 
-ProductTypeRep :: tps : seq of TypeRep;
+ProductTypeRep :: tps : seq1 of TypeRep;
 
 SetTypeRep :: elemtp : TypeRep;
 
