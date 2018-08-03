@@ -1,0 +1,36 @@
+class Root is subclass of Newton
+
+functions
+static public root_impli_math: real -> real
+root_impli_math(x) == is not yet specified
+pre
+	x >= 0
+post
+	(exists1 r  : real & r ** 2 = x and r = RESULT) and
+	RESULT >= 0; --get principal square root
+
+static public root_impli: real * real -> real
+root_impli(x, eps) == is not yet specified
+pre
+	x >= 0
+post
+	RESULT in set {r | r : real & EQ(r ** 2, x, eps)};
+
+operations
+public root_imp: real * real * real ==> real
+root_imp(x, var, eps) == 
+	Newton`newton_method_imp(x, 0, var, eps)
+pre
+	x >= 0
+post
+	EQ(RESULT ** 2, x, eps);
+
+functions
+static public root_func: real * real * real -> real
+root_func(x, eps, var) == newton_method_func(lambda y : real & y ** 2 - x, x, eps, var)
+pre 
+	x >= 0
+post 
+	EQ(RESULT ** 2, x, eps);
+
+end Root

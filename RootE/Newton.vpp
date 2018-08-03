@@ -1,0 +1,39 @@
+class Newton is subclass of NewtonCommon
+
+functions
+--functional programming
+static public newton_method_func: (real -> real) * real * real * real -> real
+newton_method_func(f, x, eps, var) ==
+  let  end_condition = lambda y : real &  abs(f(y)) < eps,
+    next_approximation = lambda y : real & y - (f(y) / derivative_func(f, y, var))  in
+  Funtil(end_condition, next_approximation, x);
+
+static public derivative_func : (real -> real) * real * real-> real
+derivative_func(f, x, var) == (f(x+var) - f(x)) / var
+pre
+	var <> 0;
+
+-- Imperative programming
+operations
+public newton_method_imp: real * real * real * real ==> real
+newton_method_imp(x, i, var, eps) == (
+	dcl r : real := i;
+	while not (abs(get_difference(x, r)) < eps) do
+		r := r - (get_difference(x, r)/ derivative_imp(x, r, var));
+	return r
+	)
+pre
+	x >= 0
+post
+	abs get_difference(x, RESULT) < eps;
+
+functions
+static public derivative_imp : real * real * real -> real
+derivative_imp(x, i, var) == (get_difference(x, i+var) - get_difference(x, i)) / var
+pre
+	var <> 0;
+
+static public get_difference : real * real -> real
+get_difference(x, r) == x - r ** 2;
+  
+end Newton

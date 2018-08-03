@@ -1,0 +1,39 @@
+class RootT is subclass of Root
+values
+protected eps = 1e-10;	--error in calculation
+protected var = 1e-5;	--variable quantity for derivative
+
+operations
+public run : () ==> seq of char * bool * map nat to bool
+run() == 
+	let testcases = [
+			t1(), t2(), t3()
+		],
+		testResults = makeOrderMap(testcases)
+	in
+	return
+		mk_("The result of regression test = ", forall i in set inds testcases & testcases(i), testResults);
+
+functions
+static public makeOrderMap : seq of bool +> map nat to bool
+makeOrderMap(s) == {i |-> s(i) | i in set inds s};
+ 
+operations
+public t1: () ==> bool
+t1() == 
+	let f = root_imp(2, var, eps) in
+	return EQ(f, MATH`sqrt(2), eps);
+
+public t2: () ==> bool
+t2() == 
+	let f = root_imp(0, var, eps) in
+	return EQ(f, MATH`sqrt(0), eps);
+
+public t3: () ==> bool
+t3() == 
+	trap <RuntimeError>  with (
+		let - = new IO().echo("I succeeded of detecting intentional error in t3.\n") in return true
+	) in
+	return EQ(root_imp(-1, var, eps), MATH`sqrt(-1), eps);
+
+end RootT

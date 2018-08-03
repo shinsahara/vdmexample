@@ -1,0 +1,41 @@
+class NewtonT is subclass of Root
+
+values
+protected eps = 1e-10;	--error in calculation
+protected var = 1e-5;	--variable quantity for derivative
+
+operations
+public run : () ==> seq of char * bool * map nat to bool
+run() == 
+	let testcases = [
+			t1(), t2(), t3()
+		],
+		testResults = make_order_map(testcases)
+	in
+	return
+		mk_("The result of regression test = ", 
+			forall i in set inds testcases & testcases(i), testResults);
+
+functions
+static public make_order_map : seq of bool +> map nat to bool
+make_order_map(s) == {i |-> s(i) | i in set inds s};	
+
+operations
+t1: () ==> bool
+t1() == 
+	return EQ(root_func(2, eps, var), MATH`sqrt(2), eps);
+
+
+t2: () ==> bool
+t2() == 
+	return EQ(root_func(0, eps, var), MATH`sqrt(0), eps);
+
+t3: () ==> bool
+t3() == 
+	trap <RuntimeError>  with (
+		let - = new IO().echo("I succeeded of detecting intentional error in t3.\n") in return true
+	) in
+	return EQ(root_func(-1, eps, var), MATH`sqrt(-1), eps);
+
+end NewtonT
+

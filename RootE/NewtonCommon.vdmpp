@@ -1,0 +1,10 @@
+class NewtonCommon
+
+functions
+static public EQ : real * real * real -> bool
+EQ(r1, r2, eps) == abs(r1 - r2) < eps;
+
+static public Funtil : (real -> bool) * (real -> real) * real -> real
+Funtil(p,f,x) == if p(x) then x else Funtil(p,f,f(x));
+
+end NewtonCommon

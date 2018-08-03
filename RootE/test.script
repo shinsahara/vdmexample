@@ -1,0 +1,2 @@
+debug new NewtonT().run()
+debug new RootT().run()
