@@ -11,12 +11,10 @@ T1:
 	)
 
 T2: 
-	let p1,p2 in set {mk_token("Sakoh"), mk_token("Sakoh")} in 
-	let c1,c2 in set {mk_token("OO Construction_1"), mk_token("VDM_1")} in 
-  (
-		sL.add_user(p1) | sL.add_user(p2); 
-		sL.add_book(c1); sL.add_book(c2)
-	)
+	let p1,p2 in set {mk_token("Sakoh"), mk_token("Larsen")} in 
+		(
+		 sL.add_user(p1); sL.add_user(p2)
+		)
 
 T3:
 	let p1,p2 in set {mk_token("Sakoh"), mk_token("Larsen")} in 
