@@ -1,0 +1,35 @@
+\section {TestApp Class}
+\subsection {責任}
+「運賃を得る」クラス、及び関連するクラスの回帰テストを行う。
+
+\begin{vdm_al}
+class TestApp
+operations
+\end{vdm_al}
+
+\subsection {操作 : run}
+回帰テストケースをTestsuiteに追加し、回帰テストを行い、結果を判定する。
+
+\begin{vdm_al}
+public run : () ==> ()
+run() == (
+	dcl ts : TestSuite := new TestSuite("鉄道運賃計算の回帰テスト。\n"),
+	    tr : TestResult := new TestResult();
+	tr.addListener(new PrintTestListener());
+	ts.addTest(new TestCaseT0001("TestCaseT0001 計算に成功するケース。\n"));
+	ts.addTest(new TestCaseT0002("TestCaseT0002 計算に成功するケース。\n"));
+	ts.addTest(new TestCaseT0003("TestCaseT0003 事前条件エラーを検出するケース。\n"));
+	ts.addTest(new TestCaseT0004("TestCaseT0004 事前条件エラーを検出するケース。\n"));
+	ts.run(tr);
+	if tr.wasSuccessful() = true then
+	  def - = new IO().echo("*** すべての回帰テストが成功した。 ***\n") in skip
+	else
+	  def - = new IO().echo("*** 失敗した回帰テストケースがある。 ***\n") in skip
+);
+    
+end TestApp
+\end{vdm_al}
+
+\begin{rtinfo}
+[TotalxCoverage]{vdm.tc}[TestApp]
+\end{rtinfo}
