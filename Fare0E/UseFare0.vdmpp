@@ -1,0 +1,37 @@
+\section {Combinatorial test (UseFare0)}
+\index{Combinatorial test (UseFare0)}
+I'm a combinatorial test of calculating fare.
+
+\begin{vdm_al}
+class UseFare0 is subclass of Fare
+
+instance variables
+sSetOfFare : set of FareRecord := {
+	mk_FareRecord("Tokyo", "Shinagawa", 220),
+	mk_FareRecord("Tokyo", "Shinjuku", 180),
+	mk_FareRecord("Shinjuku", "Shinagawa", 190),
+	mk_FareRecord("Shinagawa", "Shinjuku", 290)
+};
+
+sTest : Test := new Test();
+
+traces
+
+T0 : sTest.run() -- calling a regression test
+
+T1: let s1 in set {"Tokyo", "Shinagawa", "Shinjuku"} in
+	let s2 in set {"Tokyo", "Shinagawa", "Shinjuku"} in
+	Calculate_fare(sSetOfFare, s1, s2)
+
+T2: let s1 in set {"Tokyo", "Shinagawa", "Shinjuku"} in
+	let s2 in set {"Tokyo", "Shinagawa", "Shinjuku", "Musasisakai", ""} in 
+	Calculate_fare(sSetOfFare, s1, s2)
+
+T3: let s1 in set {"Tokyo", "Shinagawa", "Shinjuku"} in
+	let s2 in set {"Tokyo", "Shinagawa", "Shinjuku"} in
+	let	wSetOfFare = sSetOfFare union {mk_FareRecord("Shinjuku", "Shinagawa", 170)} in 
+	Calculate_fare(wSetOfFare, s1, s2)
+	
+
+end UseFare0
+\end{vdm_al}

@@ -1,0 +1,44 @@
+\section {Fare}
+\index{Fare}
+I'm a train fare.
+
+\begin{vdm_al}
+class Fare
+
+types
+public Station = seq of char
+inv s == s <> ""; 
+
+public FareRecord ::
+	fDeparture : Station
+	fArrival	 : Station
+	fFare : nat
+inv
+	fr == fr.fDeparture <> fr.fArrival;
+
+functions
+\end{vdm_al}
+\subsection {Calculate\_fare}
+\index{Calculate\_fare}
+Calculate train fare between 2 stations.
+
+\begin{vdm_al}
+static public Calculate_fare : set of FareRecord * Station * Station -> nat
+Calculate_fare(aSetOfFare, aDeparture, anArrival) ==
+	let wFareRecord in set aSetOfFare be st 
+		{aDeparture, anArrival} = {wFareRecord.fDeparture, wFareRecord.fArrival}
+	in	wFareRecord.fFare
+pre
+	exists1 wFareRecord in set aSetOfFare & 
+		{aDeparture, anArrival} = {wFareRecord.fDeparture, wFareRecord.fArrival} 
+post
+	exists1 wFareRecord in set aSetOfFare & 
+		{aDeparture, anArrival} = {wFareRecord.fDeparture, wFareRecord.fArrival} and
+		RESULT = wFareRecord.fFare;
+
+end Fare
+\end{vdm_al}
+
+\begin{rtinfo}
+{vdm.tc}[Fare]
+\end{rtinfo}
