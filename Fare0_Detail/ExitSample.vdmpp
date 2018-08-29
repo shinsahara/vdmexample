@@ -1,0 +1,17 @@
+class 例外処理例
+
+operations
+public 割る : nat * nat ==> real
+割る(n1, n2) == 
+	if n2 = 0 then
+		exit <割り算の分母が0である> -- このexit文は、<割り算の分母が0である>という引用型の例外を発生させる。
+	else
+		return n1 / n2;
+
+public 例外処理をする : nat * nat ==> bool * real --この返値は、bool型とreal型の組型を返す
+例外処理をする(n1, n2) ==
+	trap <割り算の分母が0である> -- このtrap文は、in以下のreturn文で <割り算の分母が0である>というパターンに一致する例外が発生したら、mk_(false, -1)という組型の値を返す
+		with return mk_(false, -1) in 
+		return mk_(true, 割る(n1, n2)); -- 例外が発生しなければ、mk_(true, 割る(n1, n2)の結果) という組型の結果を返す
+
+end 例外処理例
