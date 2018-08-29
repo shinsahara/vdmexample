@@ -1,0 +1,74 @@
+\section {Fare}
+\index{Fare}
+I'm a train fare in requirement specification layer.
+
+\begin{vdm_al}
+class Fare
+
+types
+public Station = seq of char
+inv wStation == wStation <> "";
+
+public FareRecord ::
+	fDeparture : Station
+	fArrival : Station
+	fFare :- nat
+inv
+	fr == fr.fDeparture <> fr.fArrival;
+	
+instance variables
+sFareSet : set of FareRecord := {};
+
+operations
+public Fare : set of FareRecord ==> Fare
+Fare(aFareSet) == (
+	sFareSet := aFareSet;
+	return self
+);
+\end{vdm_al}
+
+\subsection {Calculate\_fare}
+\index{Calculate\_fare}
+Calculate fare between 2 stations from set of FareRecord.
+
+\begin{vdm_al}
+public Calculate_fare : Station * Station ==> nat
+Calculate_fare(aDeparture, anArrival) ==
+	let wFareRecord in set sFareSet be st 
+		{aDeparture, anArrival} = {wFareRecord.fDeparture, wFareRecord.fArrival}
+	in return wFareRecord.fFare
+pre
+	exists1 wFareRecord in set sFareSet & 
+		{aDeparture, anArrival} = {wFareRecord.fDeparture, wFareRecord.fArrival}
+post
+	exists1 wFareRecord in set sFareSet & 
+		{aDeparture, anArrival} = {wFareRecord.fDeparture, wFareRecord.fArrival} and
+		RESULT = wFareRecord.fFare;
+\end{vdm_al}
+
+\subsection {AppendFareRecord}
+\index{AppendFareRecord}
+Append FareRecord to the instance variable sFareSet.
+
+There is an error processing example. 
+
+\begin{vdm_al}
+public AppendFareRecord : FareRecord ==> ()
+AppendFareRecord(aFareRecord) ==
+	/*
+	if aFareRecord in set sFareSet then
+		exit <DuplicatedFareRecord>
+	else
+	*/
+		sFareSet := sFareSet union {aFareRecord}
+pre
+	aFareRecord not in set sFareSet
+post
+	sFareSet = sFareSet~ union {aFareRecord}
+
+end Fare
+\end{vdm_al}
+
+\begin{rtinfo}
+{vdm.tc}[Fare]
+\end{rtinfo}

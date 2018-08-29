@@ -1,0 +1,58 @@
+\section {Testクラス}
+\index{てすと@Test}
+運賃の回帰テストケースである。
+
+エラーケースを、一部考慮している。
+
+\begin{vdm_al}
+class Test
+
+instance variables
+public s運賃 : 運賃 := new 運賃({
+	mk_運賃`運賃レコード("東京", "品川", 220),
+	mk_運賃`運賃レコード("東京", "新宿", 180)
+	});
+
+operations
+public run : () ==> bool * seq1 of bool
+run() == 
+	let testcases = [t1(), t2(), t3(), t4()] in
+	return mk_(forall i in set inds testcases & testcases(i), testcases);
+
+public t1 : () ==> bool
+t1() == 
+	return s運賃.運賃を得る("東京", "品川")  = 220;
+
+public t2 : () ==> bool
+t2() == 
+	return s運賃.運賃を得る("東京", "新宿")  = 180;
+
+public t3 : () ==> bool
+t3() == (
+	s運賃.運賃レコードを追加する(mk_運賃`運賃レコード("新宿", "品川", 190));
+	return s運賃.運賃を得る("新宿", "品川")  = 190
+);
+\end{vdm_al}
+
+\subsection {エラー処理をテストするテストケースt4}
+\index{えらしよりをてすと@エラー処理をテスト}
+\index{れいかいしより@例外処理}
+運賃レコードがt3で追加したものと重複したため、例外\texttt{<運賃データの重複>}が発生することを確認している。
+
+\begin{vdm_al}
+public t4 : () ==> bool
+t4() == (
+	trap <運賃データの重複> with return true in
+	--trap <RuntimeError> with return true in
+	(
+	s運賃.運賃レコードを追加する(mk_運賃`運賃レコード("新宿", "品川", 290));
+	return false
+	)
+);
+  	
+end Test
+\end{vdm_al}
+
+\begin{rtinfo}
+{vdm.tc}[Test]
+\end{rtinfo}

@@ -1,0 +1,22 @@
+\section {組み合わせテストケースUseFare1}
+\index{くみあわせてすとけす@組み合わせテストケース}
+運賃の組み合わせテストケースである。
+
+組み合わせテスト自体は、まだプロトタイプであるため説明しない。
+
+\begin{vdm_al}
+class UseFare1 is subclass of 運賃
+
+values
+public v運賃 = new 運賃({
+	mk_運賃`運賃レコード("東京", "品川", 220),
+	mk_運賃`運賃レコード("東京", "新宿", 180)
+	});
+
+traces
+
+T1: let s1 in set {"東京", "品川", "新宿"} in
+	let s2 in set {"東京", "品川", "新宿"} in v運賃.運賃を得る(s1, s2)
+
+end UseFare1
+\end{vdm_al}

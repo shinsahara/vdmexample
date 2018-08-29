@@ -1,0 +1,22 @@
+\section {UseFare1 -- Combinatorial test}
+\index{Combinatorial test}
+\index{Combinatorial UseFare1}
+I am a combinatoial test of calculating fare.
+
+\begin{vdm_al}
+class UseFare1 is subclass of Fare
+
+values
+public vFare = new Fare({
+	mk_Fare`FareRecord("Tokyo", "Shinagawa", 220),
+	mk_Fare`FareRecord("Tokyo", "Shinjuku", 180),
+	mk_Fare`FareRecord("Shinjuku", "Tokyo", 280)
+	});
+
+traces
+
+T1: let s1 in set {"Tokyo", "Shinagawa", "Shinjuku"} in
+	let s2 in set {"Tokyo", "Shinagawa", "Shinjuku"} in vFare.Calculate_fare(s1, s2)
+
+end UseFare1
+\end{vdm_al}

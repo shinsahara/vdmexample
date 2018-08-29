@@ -1,0 +1,72 @@
+\section {運賃クラス}
+\index{うんちん@運賃}
+要求仕様レベルの運賃を表す。
+
+\begin{vdm_al}
+class 運賃
+
+types
+public 駅 = seq of char
+inv w駅 == w駅 <> "";
+
+public 運賃レコード ::
+	f駅1 : 駅
+	f駅2 : 駅
+	f運賃 :- nat
+inv
+	w運賃レコード == w運賃レコード.f駅1 <> w運賃レコード.f駅2;
+	
+instance variables
+s運賃集合 : set of 運賃レコード := {};
+
+operations
+public 運賃 : set of 運賃レコード ==> 運賃
+運賃(a運賃集合) == (
+	s運賃集合 := a運賃集合;
+	return self
+);
+\end{vdm_al}
+
+\subsection {運賃を得る}
+\index{うんちんをえる@運賃を得る}
+運賃レコードの集合であるs運賃集合から、2駅間の運賃を計算する。
+
+\begin{vdm_al}
+public 運賃を得る : 駅 * 駅 ==> nat
+運賃を得る(a駅1, a駅2) ==
+	let w運賃レコード in set s運賃集合 be st 
+		{a駅1, a駅2} = {w運賃レコード.f駅1, w運賃レコード.f駅2}
+	in	return w運賃レコード.f運賃
+pre
+	{a駅1, a駅2} in set {{e.f駅1, e.f駅2} | e in set s運賃集合}
+post
+	exists1 w運賃レコード in set s運賃集合 & 
+		{a駅1, a駅2} = {w運賃レコード.f駅1, w運賃レコード.f駅2} and
+		RESULT = w運賃レコード.f運賃;
+\end{vdm_al}
+
+\subsection {運賃レコードを追加する}
+\index{うんちんれことをついかする@運運賃レコードを追加する}
+運賃レコードの集合であるs運賃集合に、運賃レコードを追加する。
+
+要求仕様レベルのエラー処理を行っている例である。
+a運賃レコードが、すでにs運賃集合にある場合は、\texttt{<運賃データの重複>}例外を発生させる。
+
+\begin{vdm_al}
+public 運賃レコードを追加する : 運賃レコード ==> ()
+運賃レコードを追加する(a運賃レコード) ==
+	/*
+	if a運賃レコード in set s運賃集合 then
+		exit <運賃データの重複>
+	else
+	*/
+		s運賃集合 := s運賃集合 union {a運賃レコード}
+pre
+	a運賃レコード not in set s運賃集合
+
+end 運賃
+\end{vdm_al}
+
+\begin{rtinfo}
+{vdm.tc}[運賃]
+\end{rtinfo}

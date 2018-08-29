@@ -1,0 +1,65 @@
+\section {Test}
+\index{Test}
+I'm a regression test case of train fare.
+
+I take care of some error case.
+
+\begin{vdm_al}
+class Test
+
+instance variables
+public sFare : Fare := new Fare({
+	mk_Fare`FareRecord("Tokyo", "Shinagawa", 220),
+	mk_Fare`FareRecord("Tokyo", "Shinjuku", 180)
+	});
+
+functions
+static public makeOrderMap : seq of bool +> map nat to bool
+makeOrderMap(s) == {i |-> s(i) | i in set inds s};
+
+operations
+public run : () ==> seq of char * bool * map nat to bool
+run() == 
+	let testcases = [t1(), t2(), t3(), t4()],
+		testResults = makeOrderMap(testcases)
+	in
+	return mk_("The result of regression test = ", forall i in set inds testcases & testcases(i), testResults);
+
+
+public t1 : () ==> bool
+t1() == 
+	return sFare.Calculate_fare("Tokyo", "Shinagawa")  = 220;
+
+public t2 : () ==> bool
+t2() == 
+	return sFare.Calculate_fare("Tokyo", "Shinjuku")  = 180;
+
+public t3 : () ==> bool
+t3() == (
+	sFare.AppendFareRecord(mk_Fare`FareRecord("Shinjuku", "Shinagawa", 190));
+	return sFare.Calculate_fare("Shinjuku", "Shinagawa")  = 190
+);
+\end{vdm_al}
+
+\subsection {t4 -- testing error processing}
+\index{error processing}
+\index{exception}
+FareRecord is duplicated, 
+so \texttt{<DuplicateFareRecord>} exception have to occur.
+
+\begin{vdm_al}
+public t4 : () ==> bool
+t4() == (
+	--trap <DuplicatedFareRecord> with return true in
+	trap <RuntimeError> with return true in (
+	sFare.AppendFareRecord(mk_Fare`FareRecord("Shinjuku", "Shinagawa", 290));
+	return false
+	)
+);
+  	
+end Test
+\end{vdm_al}
+
+\begin{rtinfo}
+{vdm.tc}[Test]
+\end{rtinfo}
