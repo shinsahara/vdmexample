@@ -1,0 +1,70 @@
+\section {運賃クラス}
+\index{うんちん@運賃}
+要求仕様レベルの運賃を表す。
+
+\begin{vdm_al}
+class 運賃
+
+types
+public 金額 = nat;
+public 区間 = set of 駅;
+public 駅 = seq of char
+inv s == s <> "";
+
+public 運賃表 = map 区間 to 金額;
+	
+instance variables
+s運賃表 : 運賃表 := { |-> };
+
+operations
+public 運賃 : 運賃表 ==> 運賃
+運賃(a運賃表) == (
+	s運賃表 := a運賃表;
+	return self
+);
+\end{vdm_al}
+
+\subsection {運賃を得る}
+\index{うんちんをえる@運賃を得る}
+区間から金額への写像であるs運賃表から、区間の運賃を計算する。
+区間が運賃表に存在しない場合、\texttt{<運賃表に存在しない区間>}例外を発生させる。
+
+\begin{vdm_al}
+public 運賃を得る : 区間 ==> 金額
+運賃を得る(a区間) ==
+	if a区間 not in set dom s運賃表 then
+		exit <運賃表に存在しない区間>
+	else
+		return s運賃表(a区間)
+--pre
+--	a区間 in set dom s運賃表
+post
+	RESULT =  s運賃表(a区間);
+\end{vdm_al}
+
+\subsection {運賃表に追加する}
+\index{うんちんひようについかする@運賃表に追加する}
+区間から金額への写像であるs運賃表に、運賃表を追加する。
+
+要求仕様レベルのエラー処理を行っている例である。
+運賃表に区間がすでにある場合は、\texttt{<運賃データの重複>}例外を発生させる。
+
+\begin{vdm_al}
+public 運賃表に追加する : 運賃表 ==> ()
+運賃表に追加する(a運賃表) ==
+	if dom a運賃表 subset dom s運賃表 then
+		exit <運賃データの重複>
+	else
+		s運賃表 := s運賃表 munion a運賃表;
+--pre
+--	not dom a運賃表 subset dom s運賃表
+
+public 運賃表を得る : () ==> 運賃表
+運賃表を得る() == return s運賃表;
+
+end 運賃
+\end{vdm_al}
+
+\begin{rtinfo}
+{vdm.tc}[運賃]
+\end{rtinfo}

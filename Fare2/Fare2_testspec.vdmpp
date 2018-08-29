@@ -1,0 +1,100 @@
+\section {Testクラス}
+\index{てすと@Test}
+運賃の回帰テストケースである。
+
+エラーケースを、一部考慮している。
+
+\begin{vdm_al}
+class Test
+
+instance variables
+public s運賃 : 運賃 := 
+	new 運賃({{"東京", "品川"} |-> 220, {"東京", "新宿"} |-> 180});
+
+functions
+static public makeOrderMap : seq of bool +> map nat to bool
+makeOrderMap(s) == {i |-> s(i) | i in set inds s};
+
+operations
+public run : () ==> seq of char * bool * map nat to bool
+run() == 
+	let testcases = [t1(), t2(), t3(), t4(), t5(), t6(), t7()],
+		testResults = makeOrderMap(testcases) 
+	in
+	return mk_("The result of regression test = ", 
+		forall i in set inds testcases & testcases(i), testResults);
+
+
+public t1 : () ==> bool
+t1() == 
+	return s運賃.運賃を得る({"東京", "品川"})  = 220;
+
+public t2 : () ==> bool
+t2() == 
+	return s運賃.運賃を得る({"東京", "新宿"})  = 180;
+public t3 : () ==> bool
+t3() == (
+	s運賃.運賃表に追加する({{"新宿", "品川"} |-> 190});
+	return s運賃.運賃を得る({"新宿", "品川"})  = 190
+);
+\end{vdm_al}
+
+\subsection {運賃データの重複例外処理をテストするテストケースt4}
+\index{えらしよりをてすと@エラー処理をテスト}
+\index{れいかいしより@例外処理}
+運賃レコードがt3で追加したものと重複したため、例外\texttt{<運賃データの重複>}が発生することを確認している。
+
+\begin{vdm_al}
+public t4 : () ==> bool
+t4() == (
+	trap <運賃データの重複> with return true in (
+	s運賃.運賃表に追加する({{"新宿", "品川"} |-> 290});
+	return false
+	)
+);
+
+public t5 : () ==> bool
+t5() == (
+	def w運賃表 = s運賃.運賃表を得る();
+		w許容運賃 = 200 in
+	return
+		{w区間 |-> w運賃表(w区間) | w区間 in set dom w運賃表 & w運賃表(w区間) < w許容運賃} =
+		{{"東京", "新宿"} |-> 180, {"新宿", "品川"} |-> 190}
+);
+\end{vdm_al}
+
+\subsection {運賃表に存在しない区間例外処理をテストするテストケースt6}
+\index{えらしよりをてすと@エラー処理をテスト}
+\index{れいかいしより@例外処理}
+運賃表に該当区間が存在しないため、例外\texttt{<運賃表に存在しない区間>}が発生することを確認している。
+
+\begin{vdm_al}
+public t6 : () ==> bool
+t6() == (
+	trap <運賃表に存在しない区間> with return true in (
+	def - = s運賃.運賃を得る({"大阪", "京都"}) = 190 in
+	return false
+	)
+);
+\end{vdm_al}
+
+\subsection {RuntimeError例外処理をテストするテストケースt7}
+\index{えらしよりをてすと@エラー処理をテスト}
+\index{れいかいしより@例外処理}
+実行時エラー「Run-Time Error 67: 重複要素は異なる値を持ちます」が発生することを確認している。
+
+\begin{vdm_al}
+public t7 : () ==> bool
+t7() == (
+	trap <RuntimeError> with return true in (
+	def - = s運賃.運賃表を得る() munion {{"東京", "品川"} |-> 320} in
+	return false
+	)
+);
+  	
+end Test
+\end{vdm_al}
+
+\begin{rtinfo}
+{vdm.tc}[Test]
+\end{rtinfo}

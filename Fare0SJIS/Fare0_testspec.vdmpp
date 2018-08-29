@@ -1,0 +1,43 @@
+\section {Testクラス}
+\index{てすと@Test}
+運賃の回帰テストケースである。
+
+エラーケースは、まだ考慮していない。
+
+\begin{vdm_al}
+class Test is subclass of 運賃
+
+values
+w運賃集合 = {
+	mk_運賃レコード("東京", "品川", 220),
+	mk_運賃レコード("東京", "新宿", 180),
+	mk_運賃レコード("新宿", "品川", 190)
+};
+
+functions
+public run : () -> bool * seq1 of bool
+run() == 
+	let testcases = [t1(), t2(), t3()] in
+	mk_(forall i in set inds testcases & testcases(i), testcases);
+
+functions
+public t1 : () -> bool
+t1() == 
+	運賃を得る(w運賃集合, "東京", "品川")  = 220;
+
+
+public t2 : () -> bool
+t2() == 
+	運賃を得る(w運賃集合, "東京", "新宿")  = 180;
+
+
+public t3 : () -> bool
+t3() == 
+	運賃を得る(w運賃集合, "新宿", "品川")  = 190;
+  	
+end Test
+\end{vdm_al}
+
+\begin{rtinfo}
+{vdm.tc}[Test]
+\end{rtinfo}

@@ -1,0 +1,35 @@
+\section {組み合わせテストケースUseFare0}
+\index{くみあわせてすとけす@組み合わせテストケース}
+運賃の組み合わせテストケースである。
+
+インスタンス変数の不変条件の例がある。
+
+組み合わせテスト自体は、まだプロトタイプであるため説明しない。
+
+\begin{vdm_al}
+class UseFare0 is subclass of 運賃
+
+instance variables
+s運賃集合 : set of 運賃レコード := {
+	mk_運賃レコード("東京", "品川", 220),
+	mk_運賃レコード("東京", "新宿", 180),
+	mk_運賃レコード("新宿", "品川", 190),
+	mk_運賃レコード("新宿", "品川", 170)
+};
+inv
+	forall w運賃レコード1, w運賃レコード2 in set s運賃集合 &
+		w運賃レコード1.f駅1 = w運賃レコード2.f駅1 and
+		w運賃レコード1.f駅2 = w運賃レコード2.f駅2 => 
+			w運賃レコード1.f運賃 = w運賃レコード2.f運賃;
+
+sTest : Test := new Test();
+
+traces
+
+T0 : sTest.run() -- 回帰テストの呼び出し
+
+T1: let s1 in set {"東京", "品川", "新宿"} in
+	let s2 in set {"東京", "品川", "新宿", "武蔵境", ""} in 運賃を得る(s運賃集合, s1, s2)
+
+end UseFare0
+\end{vdm_al}
