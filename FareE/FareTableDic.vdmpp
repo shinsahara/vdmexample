@@ -1,0 +1,61 @@
+\section{FareTableDictionary}
+I am a requirement dictionary that defines the term of Fare Table. 
+I define the noun by the class, the type, the value, and the instance variable. 
+Moreover, I define the predicate by the function and the operation. 
+
+\begin{vdm_al}
+class FareTableDictionary -- is subclass of RailNet
+
+types
+public Fare = nat;
+public FareDatum ::
+	fLower : RailNet`Distance
+	fUpper : RailNet`Distance
+	fFare :- Fare;
+\end{vdm_al}
+
+\subsection{FareTable type}
+Each element of FareTable doesn't overlap.
+
+\begin{vdm_al}
+public FareTable = seq of FareDatum
+inv wFareTable == 
+	forall i, j in set inds wFareTable & 
+		less_than(wFareTable(i).fLower, wFareTable(i).fUpper) and
+		j = i + 1 => equal(wFareTable(i).fUpper, wFareTable(j).fLower);
+
+functions
+static public Calculate_fare_by_distance : FareTable * RailNet`Distance -> Fare
+Calculate_fare_by_distance(aFareTable, aDistance) ==
+	let n = index_of_FareTable(aFareTable, aDistance) in
+	aFareTable(n).fFare
+pre
+	isUnique(aFareTable, aDistance)
+post
+	let n = index_of_FareTable(aFareTable, aDistance) in
+	RESULT = aFareTable(n).fFare;
+
+static public isExist : FareDatum * RailNet`Distance +> bool
+isExist(aFareDatum, aDistance) ==
+	aFareDatum.fLower <= aDistance and aDistance < aFareDatum.fUpper;
+
+static public isUnique : FareTable * RailNet`Distance -> bool
+isUnique(aFareTable, aDistance) ==
+	exists1 i in set inds aFareTable & isExist(aFareTable(i), aDistance);
+
+static public index_of_FareTable : FareTable * RailNet`Distance -> nat1
+index_of_FareTable(aFareTable, aDistance) ==
+	let i in set inds aFareTable be st isExist(aFareTable(i), aDistance) in i;
+
+static public less_than : Fare * Fare -> bool
+less_than(aLower, aUpper) == aLower < aUpper;
+
+static public equal : Fare * Fare -> bool
+equal(aLower, aUpper) == aLower = aUpper;
+
+end FareTableDictionary
+\end{vdm_al}
+
+\begin{rtinfo}
+{vdm.tc}[FareTableDictionary]
+\end{rtinfo}

@@ -1,0 +1,73 @@
+\section {Fare}
+\index{Fare}
+I'm a train fare in requirement specification layer.
+
+\begin{vdm_al}
+class Fare
+
+types
+public Money = nat;
+public Section = set of Station
+inv s == card s = 2;
+public Station = seq of char
+inv s == s <> "";
+
+public FareTable = map Section to Money;
+	
+instance variables
+sFareTable : FareTable := { |-> };
+
+operations
+public Fare : FareTable ==> Fare
+Fare(aFareTable) == (
+	sFareTable := aFareTable;
+	return self
+);
+\end{vdm_al}
+
+\subsection {Calculate\_fare}
+\index{Calculate\_fare}
+Calculate fare of section using a map which maps section to money.
+
+This operation is a sample of exception processing.
+
+\begin{vdm_al}
+public Calculate_fare : Section ==> Money
+Calculate_fare(aSection) ==
+	if aSection not in set dom sFareTable then
+		exit <SectionIsNotInFareTable>
+	else
+		return sFareTable(aSection)
+--pre
+--	aSection in set dom sFareTable
+post
+	RESULT =  sFareTable(aSection);
+\end{vdm_al}
+
+\subsection {AppendFareTable}
+\index{AppendFareTable}
+Append a maplet to sFareTable.
+
+This operation is a sample of exception processing.
+
+\begin{vdm_al}
+public AppendFareTable : FareTable ==> ()
+AppendFareTable(aFareTable) ==
+	if dom aFareTable subset dom sFareTable then
+		exit <DuplicatedFareData>
+	else
+		sFareTable := sFareTable munion aFareTable
+--pre
+--	not (dom aFareTable subset dom sFareTable)
+post
+	sFareTable = sFareTable~ munion aFareTable;
+
+public GetFareTable : () ==> FareTable
+GetFareTable() == return sFareTable;
+
+end Fare
+\end{vdm_al}
+
+\begin{rtinfo}
+{vdm.tc}[Fare]
+\end{rtinfo}

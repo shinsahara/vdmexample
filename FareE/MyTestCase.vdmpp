@@ -1,0 +1,108 @@
+\section {TestCaseT0001,T0002,T0003,T0004 classes}
+\subsection {Responsibility}
+I'm testcases of the Get\_shortest\_distance and the Calculate\_fare.
+
+\begin{vdm_al}
+class TestCaseT  is subclass of TestCase, RailNetData
+values
+public vRouteSearch =  
+	new RouteSearchByDijkstras(RailNetData`vStationSet, RailNetData`vRailUnitSet);
+public vMaxValue = 1E8;
+public vCalculate_fare = 
+	new Calculate_fare(
+			RailNetData`vStationSet,
+			RailNetData`vRailUnitSet,
+			[
+			mk_FareTableDictionary`FareDatum(0,3,150),
+			mk_FareTableDictionary`FareDatum(3,8,160),
+			mk_FareTableDictionary`FareDatum(8,10,190),
+			mk_FareTableDictionary`FareDatum(10,20,220),
+			mk_FareTableDictionary`FareDatum(20,vMaxValue,250)
+			]);
+
+operations
+public print : seq of char ==> ()
+print(s) == 
+	let - = new IO().echo(s) in skip;
+
+end TestCaseT
+
+class TestCaseT0001 is subclass of TestCaseT
+operations
+-- constructor
+public TestCaseT0001: seq of char ==> TestCaseT0001
+TestCaseT0001(name) == setName(name);
+
+public test01: () ==> ()
+test01 () == (
+	def wDistance = 
+			vRouteSearch.Get_shortest_distance(vTokyo, vShinjuku)
+	in
+	assertTrue("\t test01 Fault in calculating.\n",
+		wDistance = 7.7 and
+  		vCalculate_fare.apply(vTokyo, vShinjuku) = 160
+	)
+);
+
+end TestCaseT0001
+
+class TestCaseT0002 is subclass of TestCaseT
+operations
+-- constructor
+public TestCaseT0002: seq of char ==> TestCaseT0002
+TestCaseT0002(name) == setName(name);
+
+public test01: () ==> ()
+test01 () == (
+	def wDistance = 
+			vRouteSearch.Get_shortest_distance(vIkebukuro, vYotsuya)
+	in
+	assertTrue("\t test01 Fault in calculating.\n",	
+		wDistance = 8.6 and
+  		vCalculate_fare.apply(vIkebukuro, vYotsuya) = 190
+	)
+);
+
+end TestCaseT0002
+
+class TestCaseT0003 is subclass of TestCaseT
+operations
+-- constructor
+public TestCaseT0003: seq of char ==> TestCaseT0003
+TestCaseT0003(name) == setName(name);
+
+public test01: () ==> ()
+test01 () == (
+	def wDistance = 
+			vRouteSearch.Get_shortest_distance(vYotsuya, vShinagawa)
+	in
+	assertTrue("\t test01 Fault in calculating.\n",	
+		wDistance = 9.5 and
+  		vCalculate_fare.apply(vYotsuya, vShinagawa) = 190
+	)
+);
+
+end TestCaseT0003
+
+class TestCaseT0004 is subclass of TestCaseT
+operations
+-- constructor
+public TestCaseT0004: seq of char ==> TestCaseT0004
+TestCaseT0004(name) == setName(name);
+
+public test01: () ==> ()
+test01 () == (
+	trap <RuntimeError> with (
+		print("\t TestCaseT0004`test01 meet the planned pre-condition error.\n");
+	) in
+	def wDistance = 
+			vRouteSearch.Get_shortest_distance(vYotsuya, vCopenhagen)
+	in
+	assertTrue("\t test01 Fault in calculating.\n",	
+		wDistance = 9.5 and
+  		vCalculate_fare.apply(vYotsuya, vShinagawa) = 190
+	)
+);
+
+end TestCaseT0004
+\end{vdm_al}

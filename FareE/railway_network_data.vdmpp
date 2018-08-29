@@ -1,0 +1,41 @@
+\section{RailNetData}
+I have data of a Rail Net.
+
+\begin{vdm_al}
+class RailNetData
+
+values
+public vTokyo : RailNet`Station= mk_token("Tokyo");
+public vShinjuku : RailNet`Station= mk_token("Shinjuku");
+public vShinagawa : RailNet`Station= mk_token("Shinagawa");
+public vYotsuya : RailNet`Station= mk_token("Yotsuya");
+public vIkebukuro : RailNet`Station= mk_token("Ikebukuro");
+public vCopenhagen : RailNet`Station= mk_token("Copenhagen");
+
+public vStationSet : RailNet`StationSet ={vTokyo,vShinjuku,vShinagawa,vYotsuya,vIkebukuro,vCopenhagen};
+
+public vTokyo2Yotsuya : RailNet`RailUnit = mk_RailNet`RailUnit(vTokyo, vYotsuya, 4.2); 
+public vYotsuya2Tokyo : RailNet`RailUnit = mk_RailNet`RailUnit(vYotsuya, vTokyo, 4.2); 
+public vYotsuya2Shinjuku : RailNet`RailUnit = mk_RailNet`RailUnit(vYotsuya, vShinjuku, 3.5);
+public vShinjuku2Yotsuya : RailNet`RailUnit = mk_RailNet`RailUnit(vShinjuku, vYotsuya, 3.5);
+public vTokyo2Ikebukuro : RailNet`RailUnit = mk_RailNet`RailUnit(vTokyo, vIkebukuro, 10); 
+public vIkebukuro2Tokyo : RailNet`RailUnit = mk_RailNet`RailUnit(vIkebukuro, vTokyo, 10); 
+public vIkebukuro2Shinjuku : RailNet`RailUnit = mk_RailNet`RailUnit(vIkebukuro, vShinjuku, 5.1); 
+public vShinjuku2Ikebukuro : RailNet`RailUnit = mk_RailNet`RailUnit(vShinjuku, vIkebukuro, 5.1); 
+public vShinjuku2Shinagawa : RailNet`RailUnit = mk_RailNet`RailUnit(vShinjuku, vShinagawa, 9.8); 
+public vShinagawa2Shinjuku : RailNet`RailUnit = mk_RailNet`RailUnit(vShinagawa, vShinjuku, 9.9); 
+public vShinagawa2Tokyo : RailNet`RailUnit = mk_RailNet`RailUnit(vShinagawa, vTokyo, 5.1);
+public vTokyo2Shinagawa : RailNet`RailUnit = mk_RailNet`RailUnit(vTokyo, vShinagawa, 5.3);  
+
+public vRailUnitSet : RailNet`RailUnitSet = {
+				vTokyo2Yotsuya, vYotsuya2Tokyo, vYotsuya2Shinjuku, vShinjuku2Yotsuya,  
+				vTokyo2Ikebukuro, vIkebukuro2Tokyo, vIkebukuro2Shinjuku, vShinjuku2Ikebukuro,
+				vShinjuku2Shinagawa, vShinagawa2Shinjuku, vShinagawa2Tokyo, vTokyo2Shinagawa
+			};
+
+end RailNetData
+\end{vdm_al}
+
+\begin{rtinfo}
+{vdm.tc}[RailNetData]
+\end{rtinfo}

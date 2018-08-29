@@ -1,0 +1,37 @@
+\section{RouteSearch}
+\index{RouteSearch}
+I am an abstract class of route search.
+
+\begin{vdm_al}
+class RouteSearch is subclass of RailNet
+                      
+instance variables
+protected sStationSet : StationSet;
+protected sRailUnitSet : RailUnitSet;
+inv
+	let	wStationSet = Get_set_of_station(sRailUnitSet)
+	in	wStationSet subset sStationSet;
+	
+operations
+public Shortest_route : Station * Station ==> seq of Station * Distance
+Shortest_route(aDeparture, anArrival) == is subclass responsibility;
+
+public Get_shortest_distance : Station * Station ==> Distance
+Get_shortest_distance(aDeparture, anArrival) == (
+	def	mk_(-, distance) = Shortest_route(aDeparture, anArrival) in
+	return distance;
+)
+pre
+	isReachable(aDeparture, anArrival);
+
+public isReachable : Station * Station ==> bool
+isReachable(aDeparture, anArrival) ==
+	let mk_(r, -) = Shortest_route(aDeparture, anArrival) in
+	return len r > 0
+
+end RouteSearch
+\end{vdm_al}
+
+\begin{rtinfo}
+{vdm.tc}[RouteSearch]
+\end{rtinfo}

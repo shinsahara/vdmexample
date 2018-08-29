@@ -1,0 +1,98 @@
+\section {Test2}
+\index{Test2}
+I'm a regression test.
+
+This is a sample of exception handling by using trap statement.
+
+\begin{vdm_al}
+class Test2
+
+instance variables
+public sFare : Fare := 
+	new Fare({{"Tokyo", "Shinagawa"} |-> 220, {"Tokyo", "Shinjuku"} |-> 180});
+
+functions
+static public makeOrderMap : seq of bool +> map nat to bool
+makeOrderMap(s) == {i |-> s(i) | i in set inds s};
+
+operations
+public run : () ==> seq of char * bool * map nat to bool
+run() == 
+	let testcases = [t1(), t2(), t3(), t4(), t5(), t6(), t7()],
+	--let testcases = [t1(), t2(), t3(), t4(), t5(), t6()],
+		testResults = makeOrderMap(testcases) 
+	in
+	return mk_("The result of regression test = ", 
+		forall i in set inds testcases & testcases(i), testResults);
+
+public t1 : () ==> bool
+t1() == 
+	return sFare.Calculate_fare({"Tokyo", "Shinagawa"})  = 220;
+
+public t2 : () ==> bool
+t2() == 
+	return sFare.Calculate_fare({"Tokyo", "Shinjuku"})  = 180;
+
+public t3 : () ==> bool
+t3() == (
+	sFare.AppendFareTable({{"Shinjuku", "Shinagawa"} |-> 190});
+	return sFare.Calculate_fare({"Shinjuku", "Shinagawa"})  = 190
+);
+\end{vdm_al}
+
+\subsection {Handling duplicating data exception, t4}
+\index{Handling duplicating data exception}
+Confirm duplication data exception occurred by the appended data in test case t3.
+
+\begin{vdm_al}
+public t4 : () ==> bool
+t4() == (
+	trap <DuplicatedFareData> with return true in (
+	sFare.AppendFareTable({{"Shinjuku", "Shinagawa"} |-> 290});
+	return false
+	)
+);
+
+public t5 : () ==> bool
+t5() == (
+	def wFareTable = sFare.GetFareTable();
+		wMaxFare = 200 in
+	return
+		{wSection |-> wFareTable(wSection) | wSection in set dom wFareTable & wFareTable(wSection) < wMaxFare} =
+		{{"Tokyo", "Shinjuku"} |-> 180, {"Shinjuku", "Shinagawa"} |-> 190}
+);
+\end{vdm_al}
+
+\subsection {Handling a section is not in FareTable, t6}
+\index{Handling a section is not in FareTable}
+Confirm a section is not in FareTable.
+
+\begin{vdm_al}
+public t6 : () ==> bool
+t6() == (
+	trap <SectionIsNotInFareTable> with return true in (
+	def - = sFare.Calculate_fare({"Osaka", "Kyoto"}) = 190 in
+	return false
+	)
+);
+\end{vdm_al}
+
+\subsection {Handling RuntimeError exception, t7}
+\index{Handling RuntimeError exception}
+Confirm an error occurred, because duplicating data has different value.
+
+\begin{vdm_al}
+public t7 : () ==> bool
+t7() == (
+	trap <RuntimeError> with return true in (
+	def - = sFare.GetFareTable() munion {{"Tokyo", "Shinagawa"} |-> 320} in
+	return false
+	)
+);
+  	
+end Test2
+\end{vdm_al}
+
+\begin{rtinfo}
+{vdm.tc}[Test2]
+\end{rtinfo}

@@ -1,0 +1,40 @@
++++ CallGraph +++ Analysing [ "RailNet", "RouteSearch", "Calculate_fare", "DijkstrasAlgorithm", "FareTableDictionary" ]. Wait for a while...
+Calculate_fare{ 6, 16 }{ 6, 16, 17, 32 }	
+-apply{ 25 }{ 25, 26 }	
+----Get_shortest_distance{ 19 }{ 27 }	
+-----Calculate_fare_by_distance{ 28 }{ 28 }	
+---isReachable{ 27 }{ 30 }	
+-Calculate_fare{ 6, 16 }{ 6, 16, 17, 32 }	
+DijkstrasAlgorithm{ 7, 26 }{ 7, 26, 27, 93 }	
+-d{ 74 }{ 52, 74, 75 }	
+-makeRoot{ 80 }{ 67, 80, 81 }	
+-Shortest_route{ 16, 33 }{ 33, 34 }	
+-------------d{ 74 }{ 52, 74, 75 }	
+-----makeRoot{ 80 }{ 67, 80, 81 }	
+-DijkstrasAlgorithm{ 7, 26 }{ 7, 26, 27, 93 }	
+FareTableDictionary{ 7 }{ 7, 56 }	
+-equal{ 53 }{ 25, 53, 54 }	
+-isExist{ 38 }{ 38, 39, 44, 48 }	
+-isUnique{ 42 }{ 33, 42, 43 }	
+----isExist{ 38 }{ 38, 39, 44, 48 }	
+-less_than{ 50 }{ 24, 50, 51 }	
+-index_of_FareTable{ 46 }{ 30, 35, 46, 47 }	
+----isExist{ 38 }{ 38, 39, 44, 48 }	
+-Calculate_fare_by_distance{ 28 }{ 28, 29 }	
+----index_of_FareTable{ 46 }{ 30, 35, 46, 47 }	
+---isUnique{ 42 }{ 33, 42, 43 }	
+----index_of_FareTable{ 46 }{ 30, 35, 46, 47 }	
+RailNet{ 7 }{ 7, 41 }	
+-wf_RailUnit{ 27 }{ 21, 27, 28 }	
+----isDifferent_station{ 31 }{ 29, 31, 32 }	
+----isDistance_not_zero{ 34 }{ 29, 34, 35 }	
+-Get_set_of_station{ 37 }{ 37, 38 }	
+-isDifferent_station{ 31 }{ 29, 31, 32 }	
+-isDistance_not_zero{ 34 }{ 29, 34, 35 }	
+RouteSearch{ 6 }{ 6, 32 }	
+-isReachable{ 27 }{ 25, 27, 28 }	
+----Shortest_route{ 16, 33 }{ 16, 17, 21, 29 }	
+-Shortest_route{ 16, 33 }{ 16, 17, 21, 29 }	
+-Get_shortest_distance{ 19 }{ 19, 20 }	
+-----Shortest_route{ 16, 33 }{ 16, 17, 21, 29 }	
+---isReachable{ 27 }{ 25, 27, 28 }	

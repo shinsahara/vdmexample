@@ -1,0 +1,49 @@
+\section{UseFare}
+I'm a combinatoial test of calculating fare.
+
+\begin{vdm_al}
+class UseFare is subclass of RailNetData
+
+values
+public vRouteSearch =  
+	--new RouteSearchByDijkstras(RailNetData`vStationSet,RailNetData`vRouteSet, RailNetData`vRailUnitSet);
+	new RouteSearchByDijkstras(RailNetData`vStationSet, RailNetData`vRailUnitSet);
+public vMaxValue = 1E8;
+public vCalculate_fare = 
+	new Calculate_fare(
+			RailNetData`vStationSet,
+			--RailNetData`vRouteSet,
+			RailNetData`vRailUnitSet,
+			[
+			mk_FareTableDictionary`FareDatum(0,1,150),
+			mk_FareTableDictionary`FareDatum(1,2,160),
+			mk_FareTableDictionary`FareDatum(2,3,190),
+			mk_FareTableDictionary`FareDatum(3,4,220),
+			mk_FareTableDictionary`FareDatum(4,vMaxValue,250)
+			]);
+
+instance variables
+public t0 : TestSimple := new TestSimple();
+public t1 : TestApp := new TestApp();
+
+traces
+T0 : t0.run() 
+
+T1 : t1.run() 
+
+T2 :
+	let s1 in set {vTokyo, vShinjuku, vShinagawa, vYotsuya, vIkebukuro, vCopenhagen} in 
+	let s2 in set {vShinjuku, vShinagawa, vYotsuya, vIkebukuro, vTokyo, vCopenhagen} in 
+	vRouteSearch.Get_shortest_distance(s1, s2)
+
+T3 : 
+	let s1 in set {vTokyo, vShinjuku, vShinagawa, vYotsuya, vIkebukuro, vCopenhagen} in 
+	let s2 in set {vShinjuku, vShinagawa, vYotsuya, vIkebukuro, vTokyo, vCopenhagen} in
+	vCalculate_fare.apply(s1, s2)
+
+end UseFare
+\end{vdm_al}
+
+\begin{rtinfo}
+{vdm.tc}[UseFare]
+\end{rtinfo}

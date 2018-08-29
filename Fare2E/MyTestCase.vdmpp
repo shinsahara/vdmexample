@@ -1,0 +1,49 @@
+\section {TestCaseT}
+\subsection {Responsibility}
+Test the Get\_shortest\_distance and the Calculate\_fare.
+
+\begin{vdm_al}
+class TestCaseT  is subclass of TestCase
+
+instance variables
+public sFare : Fare := 
+	new Fare({{"Tokyo", "Shinagawa"} |-> 220, {"Tokyo", "Shinjuku"} |-> 180});
+
+operations
+public print : seq of char ==> ()
+print(s) == 
+	let - = new IO().echo(s) in skip;
+
+end TestCaseT
+
+class TestCaseT0001 is subclass of TestCaseT
+operations
+-- constructor
+public TestCaseT0001: seq of char ==> TestCaseT0001
+TestCaseT0001(name) == setName(name);
+
+public test01: () ==> ()
+test01 () == (
+	assertTrue("\n test01 Fault in calculating.\n",
+		sFare.Calculate_fare({"Tokyo", "Shinagawa"})  = 220
+	)
+);
+
+end TestCaseT0001
+
+class TestCaseT0002 is subclass of TestCaseT
+operations
+-- constructor
+public TestCaseT0002: seq of char ==> TestCaseT0002
+TestCaseT0002(name) == setName(name);
+
+public test01: () ==> ()
+test01 () == 
+	trap <SectionIsNotInFareTable> with print("\t test01 meet the deliberate <SectionIsNotInFareTable> exception.\n") in (
+		assertTrue("\t test01 didn't meet the deliberate <SectionIsNotInFareTable> exception.\n",
+			sFare.Calculate_fare({"Osaka", "Kyoto"}) = 190
+		)
+	);
+
+end TestCaseT0002
+\end{vdm_al}

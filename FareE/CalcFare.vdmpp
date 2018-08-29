@@ -1,0 +1,37 @@
+\section{Calculate\_fare}
+\index{Calculate\_fare}
+I am a requirement specification of calculating fare.
+
+\begin{vdm_al}
+class Calculate_fare is subclass of FareTableDictionary
+	
+instance variables
+sFareTable : FareTable;
+sStationSet : RailNet`StationSet;
+sRailUnitSet : RouteSearch`RailUnitSet;
+--sRouteSet : RouteSet;
+sRouteSearch : RouteSearch;
+
+operations
+public Calculate_fare : RailNet`StationSet * RouteSearch`RailUnitSet * FareTable ==> Calculate_fare
+Calculate_fare(aStationSet, aRailUnitSet, aFareTable) == (
+	sFareTable := aFareTable;
+	sStationSet := aStationSet;
+	sRailUnitSet := aRailUnitSet;
+	sRouteSearch := new RouteSearchByDijkstras(aStationSet, aRailUnitSet);
+	return self
+	);
+
+public apply : RailNet`Station * RailNet`Station ==> Fare
+apply(aDeparture, anArrival) ==
+	let	distance = sRouteSearch.Get_shortest_distance(aDeparture, anArrival) in
+	return Calculate_fare_by_distance(sFareTable, distance)
+pre
+	sRouteSearch.isReachable(aDeparture, anArrival);
+
+end Calculate_fare
+\end{vdm_al}
+
+\begin{rtinfo}
+{vdm.tc}[Calculate_fare]
+\end{rtinfo}

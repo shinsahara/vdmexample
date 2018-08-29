@@ -1,0 +1,33 @@
+\section{RouteSearchByDijkstras}
+\index{RouteSearchByDijkstras}
+I am a concrete class of route search using Dijkstra's Algorithm.
+
+\begin{vdm_al}
+class  RouteSearchByDijkstras is subclass of RouteSearch
+
+operations
+public RouteSearchByDijkstras : StationSet * RailUnitSet ==> RouteSearchByDijkstras
+RouteSearchByDijkstras(aStationSet, aRailUnitSet)== atomic (
+	sStationSet := aStationSet;
+	sRailUnitSet := aRailUnitSet
+);
+\end{vdm_al}
+
+\section{Shortest\_route}
+\index{@Shortest\_route}
+I get a shortest rojute by using Dijkstra's Algorithm.
+
+\begin{vdm_al}
+public Shortest_route : Station * Station ==> seq of Station * real
+Shortest_route(aDeparture, anArrival) == (
+	dcl	wAlgorithm : DijkstrasAlgorithm := 
+			new DijkstrasAlgorithm(sRailUnitSet, sStationSet);
+	return wAlgorithm.Shortest_route(aDeparture, anArrival);
+);
+
+end RouteSearchByDijkstras
+\end{vdm_al}
+
+\begin{rtinfo}
+{vdm.tc}[RouteSearchByDijkstras]
+\end{rtinfo}

@@ -1,0 +1,33 @@
+\section {TestApp Class}
+\subsection {Responsibility}
+Do the regression test of calculating railway fare.
+
+\begin{vdm_al}
+class TestApp
+operations
+\end{vdm_al}
+
+\subsection {Operation : run}
+Appending regression test cases to Testsuite, executing, and decides succeeded.
+
+\begin{vdm_al}
+public run : () ==> ()
+run() == (
+	dcl ts : TestSuite := new TestSuite("The regression test of calculating railway fare.\n"),
+	    tr : TestResult := new TestResult();
+	tr.addListener(new PrintTestListener());
+	ts.addTest(new TestCaseT0001("TestCaseT0001 succeeded calculating.\n"));
+	ts.addTest(new TestCaseT0002("TestCaseT0002 not succeeded calculating.\n"));
+	ts.run(tr);
+	if tr.wasSuccessful() = true then
+	  def - = new IO().echo("*** All regression test succeeded. ***\n") in skip
+	else
+	  def - = new IO().echo("*** There are errors in the regression test cases. ***\n") in skip
+);
+    
+end TestApp
+\end{vdm_al}
+
+\begin{rtinfo}
+[TotalxCoverage]{vdm.tc}[TestApp]
+\end{rtinfo}

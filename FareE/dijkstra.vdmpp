@@ -1,0 +1,99 @@
+\section{DijkstrasAlgorithm}
+\index{Dijkstras Algorithm}
+I'm the Dijkstra's Algorithm.
+I get the shortest route from a vertex to another vertex.
+
+\begin{vdm_al}
+class  DijkstrasAlgorithm is subclass of RailNet
+
+types
+public Decided = <NotDecided> | <Decided>;
+public XDecided = map Station to Decided;
+public VShortest = map Station to real;
+public PPrevStation = map Station to Station;
+
+instance variables
+public sRailUnitSet : RailUnitSet;
+public sStationSet : StationSet;
+public x : XDecided := {|->};
+public v : VShortest := {|->};
+public p : PPrevStation := {|->};
+
+values
+vStation = 1E16;
+
+operations
+public  DijkstrasAlgorithm: set of RailUnit * set of Station ==> DijkstrasAlgorithm
+DijkstrasAlgorithm(aRailUnitSet, aStationSet) == (
+   sRailUnitSet:= aRailUnitSet;
+   sStationSet := aStationSet
+);
+
+operations
+public Shortest_route: Station * Station ==> seq of Station * real
+Shortest_route(aDeparture, anArrival) == (
+	dcl i : Station := aDeparture;
+	for all wStation in set sStationSet do
+		if wStation = aDeparture then (
+			x(aDeparture) := <Decided>;
+			v(aDeparture) := 0
+		)
+		else (
+			x(wStation) := <NotDecided>;
+			v(wStation) := vStation;
+		);
+	--for all wStation in set sStationSet do (
+  for all - in set sStationSet do (
+		def Ni = {u.fArrival | u in set sRailUnitSet & u.fDeparture = i};
+			Nu = {u | u in set sRailUnitSet & u.fDeparture = i};
+		in (
+			--Calculate the shortest route
+			for all j in set Ni do (
+				if x(j) = <NotDecided> then
+					def w = v(i) + d(Nu, i,j) in
+					if w < v(j) then (
+						v(j) := w;
+						p(j) := i
+					);
+			);
+			def NiNotDecided = {e | e in set Ni & x(e) = <NotDecided>} in
+			if NiNotDecided <> {} then
+				let s in set NiNotDecided be st forall s1 in set NiNotDecided & v(s) <= v(s1)
+				in (
+					i := s;
+					x(i) := <Decided>
+				)
+		)
+	);
+	def wShortestPath = makeRoot(p, aDeparture, anArrival);
+		wShortest = v(anArrival)
+	in
+	return mk_(wShortestPath, wShortest)
+);
+
+functions
+d : RailUnitSet * Station * Station -> real
+d(aRailUnitSet, aStation1, aStation2) ==
+	let di in set aRailUnitSet be st di.fDeparture = aStation1 and di.fArrival = aStation2 in
+	di.fDistance;
+
+operations
+makeRoot : PPrevStation * Station * Station ==> seq of Station
+makeRoot(aPPrevStation, aDeparture, anArrival) == (
+	dcl wShortestPath : seq of Station := [],
+		wStation : Station := anArrival;
+	while wStation <> aDeparture do (
+		wShortestPath := [wStation] ^ wShortestPath;
+		wStation := aPPrevStation(wStation);
+	);
+	return [aDeparture] ^ wShortestPath
+)
+pre
+	anArrival in set dom aPPrevStation;
+
+end DijkstrasAlgorithm
+\end{vdm_al}
+
+\begin{rtinfo}
+{vdm.tc}[DijkstrasAlgorithm]
+\end{rtinfo}

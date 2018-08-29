@@ -1,0 +1,103 @@
+\section{Test}
+I'm a simple regression test.
+
+\begin{vdm_al}
+class TestSimple is subclass of RailNetData
+values
+--public vRouteSearch =  new RouteSearchByDijkstras(RailNetData`vStationSet,RailNetData`vRouteSet, RailNetData`vRailUnitSet);
+public vRouteSearch =  new RouteSearchByDijkstras(RailNetData`vStationSet, RailNetData`vRailUnitSet);
+public vMaxValue = 1E8;
+public vCalculate_fare = 
+	new Calculate_fare(
+			RailNetData`vStationSet,
+			--RailNetData`vRouteSet,
+			RailNetData`vRailUnitSet,
+			[
+			mk_FareTableDictionary`FareDatum(0,3,150),
+			mk_FareTableDictionary`FareDatum(3,8,160),
+			mk_FareTableDictionary`FareDatum(8,10,190),
+			mk_FareTableDictionary`FareDatum(10,20,220),
+			mk_FareTableDictionary`FareDatum(20,vMaxValue,250)
+			]);
+
+operations
+public run : () ==> seq of char * bool * map nat to bool
+run() == 
+	let testcases = [
+		t1(), t2(), t3(), t4(), t5(),
+		t6(), t7(), t8()
+		],
+		testResults = makeOrderMap(testcases)
+	in
+	return
+		mk_("The result of regression test = ", forall i in set inds testcases & testcases(i), testResults);
+
+functions
+static public makeOrderMap : seq of bool +> map nat to bool
+makeOrderMap(s) == {i |-> s(i) | i in set inds s};
+
+operations
+public print : seq of char ==> ()
+print(s) == 
+	let - = new IO().echo(s) in skip;
+
+public t1 : () ==> bool
+t1() == 
+	let mk_(-, d) = vRouteSearch.Shortest_route(vYotsuya, vShinagawa) in
+	return
+  		d = 9.5 and
+		vRouteSearch.Get_shortest_distance(vYotsuya, vShinagawa) = 9.5;
+	
+public t2 : () ==> bool
+t2() == 
+	trap <RuntimeError> with (
+		print("\t t2 meet the deliberate pre-condition error.\n");
+		return
+  			true
+		)
+	in 
+	return
+  		vRouteSearch.isReachable(vTokyo, vCopenhagen) = false;
+
+public t3 : () ==> bool
+t3() == 
+	let mk_(r, d) = vRouteSearch.Shortest_route(vTokyo, vShinjuku) in
+	return
+  		r = [vTokyo, vYotsuya, vShinjuku] and
+		d = 7.7;
+
+public t4 : () ==> bool
+t4() == 
+	let mk_(r, d) = vRouteSearch.Shortest_route(vIkebukuro, vYotsuya) in
+	return
+  		r = [vIkebukuro, vShinjuku, vYotsuya] and
+  		d = 8.6;
+
+public t5 : () ==> bool
+t5() == 
+	let mk_(r, d) = vRouteSearch.Shortest_route(vShinagawa, vYotsuya) in
+	return
+  		r = [vShinagawa, vTokyo, vYotsuya] and
+  		d = 9.3;
+
+public t6 : () ==> bool
+t6() == 
+	return	
+  		vCalculate_fare.apply(vIkebukuro, vTokyo) = 220;
+
+public t7 : () ==> bool
+t7() == 
+	return	
+  		vCalculate_fare.apply(vIkebukuro, vShinjuku) = 160;
+
+public t8 : () ==> bool
+t8() == 
+	return	
+  		vCalculate_fare.apply(vYotsuya, vShinagawa) = 190
+
+end TestSimple
+\end{vdm_al}
+
+\begin{rtinfo}
+{vdm.tc}[TestSimple]
+\end{rtinfo}

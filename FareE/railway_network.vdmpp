@@ -1,0 +1,46 @@
+\section{RailNet}
+\index{RailNet}
+I am a domain model of the Rail Net.
+I am independent of calculating fare model.
+
+\begin{vdm_al}
+class RailNet
+
+types
+public Station = token;
+public Distance = real;
+
+public StationSet = set of Station
+inv wStationSet == card wStationSet >= 2;
+
+public RailUnit :: 
+	fDeparture : Station
+	fArrival : Station
+	fDistance : Distance
+inv wRailUnit == 
+	wf_RailUnit(wRailUnit.fDeparture, wRailUnit.fArrival, wRailUnit.fDistance);
+
+public RailUnitSet = set of RailUnit
+	inv wRailUnitSet == wRailUnitSet <> {};
+
+functions
+static wf_RailUnit : Station * Station * Distance +> bool
+wf_RailUnit(aDeparture, anArrival, aDistance) == 
+	isDifferent_station(aDeparture, anArrival) and isDistance_not_zero(aDistance);
+
+static isDifferent_station : Station * Station -> bool
+isDifferent_station(aStation1, aStation2) == aStation1 <> aStation2;
+
+static isDistance_not_zero : Distance -> bool
+isDistance_not_zero(aDistance) == aDistance > 0;
+
+static public Get_set_of_station : RailUnitSet -> set of Station
+Get_set_of_station(aRailUnitSet) == 
+	dunion {{wRailUnit.fDeparture, wRailUnit.fArrival} | wRailUnit in set aRailUnitSet};
+
+end RailNet
+\end{vdm_al}
+
+\begin{rtinfo}
+{vdm.tc}[RailNet]
+\end{rtinfo}
