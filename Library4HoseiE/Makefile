@@ -15,7 +15,6 @@ CODE = UTF8
 
 # TeX commands
 TEXDIR = /usr/local/texlive/2018/bin/x86_64-darwin
-#TEXDIR = /Applications/UpTeX.app/Contents/Resources/TEX/texbin
 PLATEX = $(TEXDIR)/platex
 #BIBTEX=jbibtex
 BIBTEX=pbibtex --kanji=$(C0DE)
