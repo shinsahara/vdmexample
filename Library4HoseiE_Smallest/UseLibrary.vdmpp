@@ -5,10 +5,10 @@ sL : Library :=  new Library();
 
 traces
 T1:
-	let p1 = mk_token("Sakoh"), p2 = mk_token("Sakoh") in
-  (
-		sL.add_user(p1) | sL.add_user(p2)
-	)
+        let p1, p2 in set { mk_token("Sakoh"), mk_token("Larsen") } in
+        (
+            sL.add_user(p1) | sL.add_user(p2)
+        )
 
 T2: 
 	let p1,p2 in set {mk_token("Sakoh"), mk_token("Larsen")} in 
