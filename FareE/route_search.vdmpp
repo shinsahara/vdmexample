@@ -11,7 +11,7 @@ protected sRailUnitSet : RailUnitSet;
 inv
 	let	wStationSet = Get_set_of_station(sRailUnitSet)
 	in	wStationSet subset sStationSet;
-	
+
 operations
 public Shortest_route : Station * Station ==> seq of Station * Distance
 Shortest_route(aDeparture, anArrival) == is subclass responsibility;

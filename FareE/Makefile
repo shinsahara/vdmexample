@@ -8,11 +8,11 @@
 #encode
 CODE=UTF8
 # TeX commands
-TEXDIR = /usr/local/texlive/2016/bin/x86_64-darwin
+TEXDIR = /usr/local/texlive/2018/bin/x86_64-darwin
 #TEXDIR = /usr/bin  # Ubuntu 10.10
 # PLATEX = platex
 #PLATEX = dotexshop
-PLATEX = $(TEXDIR)/platex --kanji=$(CODE)
+PLATEX = $(TEXDIR)/platex
 #BIBTEX=jbibtex
 BIBTEX=pbibtex --kanji=$(CODE)
 #DVIPDFM = dvipdfmx
@@ -27,13 +27,12 @@ OUTDOC = Fare
 
 # VPP files
 VPPFILES = \
-CalcFare.vdmpp			VDMUtil.vpp			route_search.vdmpp \
+CalcFare.vdmpp			route_search.vdmpp \
 FareTableDic.vdmpp		dijkstra.vdmpp			route_search_by_dijkstra.vdmpp \
-MyTest.vdmpp			route_search_testspec.vdmpp \
-MyTestCase.vdmpp		io.vpp	\
+MyTest.vdmpp			MyTestCase.vdmpp	route_search_testspec.vdmpp \
 UseFare.vdmpp			railway_network_data.vdmpp \
-VDMUnit.vpp			railway_network.vdmpp
-
+VDMUnit.vpp			railway_network.vdmpp \
+lib/IO.vdmpp	lib/MATH.vdmpp	lib/VDMUtil.vdmpp
 
 # Test script name
 TESTSCRIPT1 = test1.script

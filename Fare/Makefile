@@ -56,7 +56,7 @@ makevdmtex:
 	# Type check
 	LANG=ja_JP.$(CODE) $(VPPDE) -t $(VPPFILES)
 	# Run Interpreter with TESTSCRIPT
-	#LANG=ja_JP.$(CODE) $(VPPDE) -y -i -D -I -P -Q -R vdm.tc $(TESTSCRIPT) $(VPPFILES)
+	LANG=ja_JP.$(CODE) $(VPPDE) -y -i -D -I -P -Q -R vdm.tc $(TESTSCRIPT) $(VPPFILES)
 	# Pretty print
 	LANG=ja_JP.$(CODE) $(VPPDE)  -l -r $(VPPFILES) 
 	echo Finish runnning VDMTools

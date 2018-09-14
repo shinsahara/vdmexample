@@ -15,12 +15,12 @@ RouteSearchByDijkstras(aStationSet, aRailUnitSet)== atomic (
 
 \section{Shortest\_route}
 \index{@Shortest\_route}
-I get a shortest rojute by using Dijkstra's Algorithm.
+I get a shortest route by using Dijkstra's Algorithm.
 
 \begin{vdm_al}
 public Shortest_route : Station * Station ==> seq of Station * real
 Shortest_route(aDeparture, anArrival) == (
-	dcl	wAlgorithm : DijkstrasAlgorithm := 
+	dcl	wAlgorithm : DijkstrasAlgorithm :=
 			new DijkstrasAlgorithm(sRailUnitSet, sStationSet);
 	return wAlgorithm.Shortest_route(aDeparture, anArrival);
 );
