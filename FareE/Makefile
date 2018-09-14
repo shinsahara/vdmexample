@@ -9,13 +9,9 @@
 CODE=UTF8
 # TeX commands
 TEXDIR = /usr/local/texlive/2018/bin/x86_64-darwin
-#TEXDIR = /usr/bin  # Ubuntu 10.10
-# PLATEX = platex
-#PLATEX = dotexshop
 PLATEX = $(TEXDIR)/platex
 #BIBTEX=jbibtex
-BIBTEX=pbibtex --kanji=$(CODE)
-#DVIPDFM = dvipdfmx
+BIBTEX=pbibtex --kanji=$(C0DE)
 DVIPDFM = $(TEXDIR)/dvipdfmx
 EBB = ebb
 
@@ -50,7 +46,7 @@ $(OUTDOC):  makevdmtex
 	ebb image/*.jpg
 	$(PLATEX) $(OUTDOC)
 	$(BIBTEX) $(OUTDOC)
-#	makeindex  $(OUTDOC).idx
+	makeindex  $(OUTDOC).idx
 	$(PLATEX) $(OUTDOC)
 	$(PLATEX) $(OUTDOC)
 	$(DVIPDFM) $(OUTDOC)
@@ -65,15 +61,15 @@ makevdmtex:
 	LANG=ja_JP.$(CODE) $(VPPDE) -y -i -D -I -P -Q -R vdm1.tc $(TESTSCRIPT1) $(VPPFILES)
 	# Run Interpreter with "set exception" option
 	LANG=ja_JP.$(CODE) time $(VPPDE) -y -i -D -I -P -Q -R vdm2.tc $(TESTSCRIPT2) $(VPPFILES)
-	# Pretty print
-	LANG=ja_JP.$(CODE) $(VPPDE)  -l -r $(VPPFILES) 
 	#marge Test Coverage files
 	mergetc vdm1.tc vdm2.tc > vdm.tc
-
+	# Pretty print
+	LANG=ja_JP.$(CODE) $(VPPDE)  -l -r $(VPPFILES) 
+	
 # Clean files. But Output document is not deleted.
 clean:
 	rm -rf *.aux *.log *.bbl *.blg *.dvi *.toc *.ilg *.ind
-	rm -rf *.out *.v*pp.tex *.v*pp.tex *.idx vdm.tc *.java
+	rm -rf *.out *.v*pp.tex *.idx vdm.tc *.java
 	rm -rf image/*.bb vdm*.tc
 
 # Clean output document
