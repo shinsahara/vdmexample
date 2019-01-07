@@ -1,0 +1,12 @@
+class CRUD_MAP
+
+functions
+public CreateMap1[@Dom, @Rng]: map @Dom to  @Rng * @Dom * @Rng ->  map @Dom to  @Rng
+CreateMap1(m, d, e) ==
+	m ++ {d |-> e}
+pre
+	d not in set dom m
+post
+	RESULT = m ++ {d |-> e};
+
+end CRUD_MAP
