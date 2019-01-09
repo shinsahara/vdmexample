@@ -3,10 +3,32 @@ class CRUD_MAP
 functions
 public CreateMap1[@Dom, @Rng]: map @Dom to  @Rng * @Dom * @Rng ->  map @Dom to  @Rng
 CreateMap1(m, d, e) ==
-	m ++ {d |-> e}
+	m munion {d |-> e}
 pre
 	d not in set dom m
 post
-	RESULT = m ++ {d |-> e};
+	RESULT = m munion {d |-> e};
+	
+public ReadMapRestricToDom[@Dom, @Rng]: map @Dom to  @Rng * set of @Dom -> map @Dom to  @Rng
+ReadMapRestricToDom(m, sd) == 
+	if sd = {} then m
+	else sd <: m;
+
+public ReadMapRestricToDoRng[@Dom, @Rng]: map @Dom to  @Rng * set of @Rng -> map @Dom to  @Rng
+ReadMapRestricToDoRng(m, sr) == 
+	if sr = {} then m
+	else m :> sr;
+
+public UpdateMap[@Dom, @Rng]: map @Dom to  @Rng * @Dom * @Rng ->  map @Dom to  @Rng
+UpdateMap(m, d, e) ==
+	m ++ {d |-> e};
+
+public DeleteMapRestricToDom[@Dom, @Rng]: map @Dom to  @Rng * set of @Dom ->  map @Dom to  @Rng
+DeleteMapRestricToDom(m, sd) ==
+	sd <-: m;
+
+public DeleteMaRestricToDoRng[@Dom, @Rng]: map @Dom to  @Rng * set of @Rng -> map @Dom to  @Rng
+DeleteMaRestricToDoRng(m, sr) == 
+	m :-> sr;
 
 end CRUD_MAP
