@@ -107,24 +107,12 @@ post
 演算子を使って併合する。
 
 \begin{vdm_al}
-/*
-public 本を貸す: 蔵書 * 利用者 * 職員 ==> ()
-本を貸す(a貸出本, a利用者, -) == 
+public 本を貸す: 蔵書 * 利用者 ==> ()
+本を貸す(a貸出本, a利用者) == 
 	if a利用者 in set dom i貸出 then
-		i貸出 := i貸出 ++ {a利用者 |-> (i貸出(a利用者) munion a貸出本)}
+		i貸出 := CRUD_MAP`UpdateMap[利用者, 蔵書](i貸出, a利用者, i貸出(a利用者) munion a貸出本)
 	else
-		i貸出 := i貸出 munion {a利用者 |-> a貸出本}
-pre
-	貸出可能である(a利用者, a貸出本, i貸出, i蔵書, v最大貸出数)
-post
-	貸出に追加されている(a貸出本, a利用者, i貸出, i貸出~);
-*/
-public 本を貸す: 蔵書 * 利用者 * 職員 ==> ()
-本を貸す(a貸出本, a利用者, -) == 
-	if a利用者 in set dom i貸出 then
-		i貸出 := i貸出 ++ {a利用者 |-> (i貸出(a利用者) munion a貸出本)}
-	else
-		i貸出 := i貸出 munion {a利用者 |-> a貸出本}
+		i貸出 := CRUD_MAP`CreateMap1[利用者, 蔵書](i貸出, a利用者, a貸出本)
 pre
 	貸出可能である(a利用者, a貸出本, i貸出, i蔵書, v最大貸出数);
 \end{vdm_al}
@@ -136,15 +124,13 @@ pre
  \textless-: 演算子は、貸出がなくなった利用者の情報を削除するためにも使っている。
 
 \begin{vdm_al}
-public 本を返す: set of 蔵書ID * 利用者 * 職員 ==> ()
-本を返す(anID集合, a利用者, -) ==  
-	let w利用者への貸出本 = i貸出(a利用者),
-		w利用者への貸出本new = anID集合 <-: w利用者への貸出本
-	in
+public 本を返す: set of 蔵書ID * 利用者 ==> ()
+本を返す(anID集合, a利用者) ==  
+	let w利用者への貸出本new = CRUD_MAP`DeleteMapRestricToDom[蔵書ID, 本](i貸出(a利用者), anID集合) in
 	if w利用者への貸出本new = {|->} then
-		i貸出 := {a利用者} <-: i貸出
+		i貸出 := CRUD_MAP`DeleteMapRestricToDom[利用者, 蔵書](i貸出, {a利用者})
 	else
-		i貸出 := i貸出 ++ {a利用者 |-> w利用者への貸出本new}
+		i貸出 := CRUD_MAP`UpdateMap[利用者, 蔵書](i貸出, a利用者, w利用者への貸出本new)
 pre
 	貸出に存在する(anID集合, i貸出);
 \end{vdm_al}
