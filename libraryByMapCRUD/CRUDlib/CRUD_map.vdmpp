@@ -14,8 +14,8 @@ ReadMapRestricToDom(m, sd) ==
 	if sd = {} then m
 	else sd <: m;
 
-public ReadMapRestricToDoRng[@Dom, @Rng]: map @Dom to  @Rng * set of @Rng -> map @Dom to  @Rng
-ReadMapRestricToDoRng(m, sr) == 
+public ReadMapRestricToRng[@Dom, @Rng]: map @Dom to  @Rng * set of @Rng -> map @Dom to  @Rng
+ReadMapRestricToRng(m, sr) == 
 	if sr = {} then m
 	else m :> sr;
 
@@ -27,8 +27,8 @@ public DeleteMapRestricToDom[@Dom, @Rng]: map @Dom to  @Rng * set of @Dom ->  ma
 DeleteMapRestricToDom(m, sd) ==
 	sd <-: m;
 
-public DeleteMaRestricToDoRng[@Dom, @Rng]: map @Dom to  @Rng * set of @Rng -> map @Dom to  @Rng
-DeleteMaRestricToDoRng(m, sr) == 
+public DeleteMapRestricToRng[@Dom, @Rng]: map @Dom to  @Rng * set of @Rng -> map @Dom to  @Rng
+DeleteMapRestricToRng(m, sr) == 
 	m :-> sr;
 
 end CRUD_MAP

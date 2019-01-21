@@ -47,9 +47,22 @@ public 貸出に存在する : set of 蔵書ID * 貸出 +> bool
 \end{vdm_al}
 
 \begin{vdm_al}
+public 貸出に存在する : 本 * 貸出 +> bool
+貸出に存在する(a本, a貸出) == 
+	let	w蔵書 = merge rng a貸出 in
+	a本 in set rng w蔵書;
+\end{vdm_al}
+
+\begin{vdm_al}
 public 貸出に存在しない : set of 蔵書ID * 貸出 +> bool
 貸出に存在しない(anID集合, a貸出) ==
 	not 貸出に存在する(anID集合, a貸出);
+\end{vdm_al}
+
+\begin{vdm_al}
+public 貸出に存在しない : 本 * 貸出 +> bool
+貸出に存在しない(a本, a貸出) ==
+	not 貸出に存在する(a本, a貸出);
 \end{vdm_al}
 
 \begin{vdm_al}

@@ -63,6 +63,16 @@ pre
 	貸出に存在しない(anID集合, i貸出);
 \end{vdm_al}
 
+\subsubsection{蔵書を削除する}
+	\index{ぞうしょをさくじょする@蔵書を削除する}
+\begin{vdm_al}
+public 蔵書を削除する: 本 ==> ()
+蔵書を削除する(a本) == 
+	i蔵書 := CRUD_MAP`DeleteMapRestricToRng[蔵書ID, 本](i蔵書, {a本})
+pre 
+	貸出に存在しない(a本, i貸出);
+\end{vdm_al}
+
 \subsubsection{題名と著者と分野で本を検索する}
 	\index{だいめいとちょしゃとぶんやでほんをけんさくする@題名と著者と分野で本を検索する}
 ここでは、写像の内包式

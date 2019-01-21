@@ -40,9 +40,8 @@ RQFILE = \
 	ReqDict/LibraryRQ1.vdmpp 
 	
 UTILITYFILES = \
-	./Utilities/Character.vpp	./Utilities/Sequence.vpp	./Utilities/String.vpp \
 	./CRUDlib/CRUD_map.vdmpp \
-	./lib/IO.vdmpp	./lib/VDMUnit.vdmpp	./lib/VDMUtil.vdmpp
+	./lib/VDMUnit.vdmpp	./lib/IO.vdmpp	./lib/VDMUtil.vdmpp
 	
 # Test script name
 TESTSCRIPT = test.script
@@ -93,7 +92,10 @@ vdmjdebug:
 
 # Command-Line Interface to Overture
 overture:
-	overture -vdmpp -i -e "test蔵書を追加する1()" $(VPPFILES)	
+	#overture -vdmpp -i -e "run()" $(VPPFILES)
+	echo "After Interpreter started."
+	echo "print new TestRunner().run()"
+	overture -vdmpp -i $(VPPFILES)
 
 # Clean files. But Output document is not deleted.
 clean:

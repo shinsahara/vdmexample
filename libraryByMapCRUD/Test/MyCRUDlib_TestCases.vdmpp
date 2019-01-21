@@ -16,8 +16,7 @@ test01() == (
 		蔵書ID3 = mk_token(103),
 		蔵書ID4 = mk_token(104),
 		利用者1 = mk_token("利用者1"),
-		利用者2 = mk_token("利用者2"),
-		職員1 = mk_token("職員1")
+		利用者2 = mk_token("利用者2")
 	in (
 		w図書館.蔵書を追加する(蔵書ID1, 本1);
 		w図書館.蔵書を追加する(蔵書ID2, 本1);
@@ -25,6 +24,10 @@ test01() == (
 		w図書館.蔵書を追加する(蔵書ID4, 本2);
 		assertTrue("test01 蔵書の追加がおかしい。",
 			CRUD_MAP`ReadMapRestricToDom[蔵書ID, 本](w図書館.蔵書を得る(), {}) =  
+				{mk_token(101) |-> 本1, mk_token(102) |-> 本1, mk_token(103) |-> 本2, mk_token(104) |-> 本2}
+		);
+		assertTrue("test01 蔵書の追加がおかしい。",
+			CRUD_MAP`ReadMapRestricToRng[蔵書ID, 本](w図書館.蔵書を得る(), {}) =  
 				{mk_token(101) |-> 本1, mk_token(102) |-> 本1, mk_token(103) |-> 本2, mk_token(104) |-> 本2}
 		);
 		let w見つかった本1 = w図書館.本を検索する("井上ひさし"),
@@ -41,11 +44,15 @@ test01() == (
 			CRUD_MAP`ReadMapRestricToDom[利用者, 蔵書](w図書館.貸出を得る(), {利用者1, 利用者2}) = 
 				{利用者1 |-> {mk_token(101) |-> 本1, mk_token(103) |-> 本2}, 利用者2 |-> {mk_token(104) |-> 本2}} 
 		);
+		assertTrue("test01 CRUD_MAP`ReadMapRestricToRngによる本の貸出がおかしい。",
+			let w貸出 = CRUD_MAP`ReadMapRestricToRng[利用者, 蔵書](w図書館.貸出を得る(), {}) in 
+			w貸出 = {利用者1 |-> {mk_token(101) |-> 本1, mk_token(103) |-> 本2}, 利用者2 |-> {mk_token(104) |-> 本2}} 
+		);
+		w図書館.本を返す({mk_token(101)}, 利用者1);
 		w図書館.本を返す({mk_token(103)}, 利用者1);
 		w図書館.本を返す({mk_token(104)}, 利用者2);
 		assertTrue("test01 本の返却がおかしい。",
-			CRUD_MAP`ReadMapRestricToDom[利用者, 蔵書](w図書館.貸出を得る(), {利用者1, 利用者2}) = 
-				{利用者1 |-> {mk_token(101) |-> 本1}} 
+			CRUD_MAP`ReadMapRestricToDom[利用者, 蔵書](w図書館.貸出を得る(), {利用者1, 利用者2}) = {|->} 
 		);
 		w図書館.蔵書を削除する({mk_token(104)});
 		assertTrue("test01 蔵書の削除がおかしい。",
@@ -53,6 +60,11 @@ test01() == (
 			CRUD_MAP`ReadMapRestricToDom[蔵書ID, 本](w図書館.蔵書を得る(), {mk_token(102)}) = {mk_token(102) |-> 本1} and 
 			CRUD_MAP`ReadMapRestricToDom[蔵書ID, 本](w図書館.蔵書を得る(), {mk_token(103)}) = {mk_token(103) |-> 本2} 
 		);	
+		w図書館.蔵書を削除する(本2);
+		assertTrue("test01 ReadMapRestricToRngによる蔵書の削除がおかしい。",
+			let w蔵書 = CRUD_MAP`ReadMapRestricToRng[蔵書ID, 本](w図書館.蔵書を得る(), {本1}) in
+			w蔵書 =  {mk_token(101) |-> 本1, mk_token(102) |-> 本1}
+		);
 	)
 );
 
@@ -86,34 +98,33 @@ testE02() == (
 		蔵書ID3 = mk_token(103),
 		蔵書ID4 = mk_token(104),
 		利用者1 = mk_token("利用者1"),
-		利用者2 = mk_token("利用者2"),
-		職員1 = mk_token("職員1")
+		利用者2 = mk_token("利用者2")
 	in (
 		w図書館.蔵書を追加する(蔵書ID1, 本1);
 		w図書館.蔵書を追加する(蔵書ID2, 本1);
 		w図書館.蔵書を追加する(蔵書ID3, 本2);
 		w図書館.蔵書を追加する(蔵書ID4, 本2);
-		assertTrue("test01 蔵書の追加がおかしい。",
+		assertTrue("testE02 蔵書の追加がおかしい。",
 			CRUD_MAP`ReadMapRestricToDom[蔵書ID, 本](w図書館.蔵書を得る(), {}) =  
 				{mk_token(101) |-> 本1, mk_token(102) |-> 本1, mk_token(103) |-> 本2, mk_token(104) |-> 本2}
 		);
 		let w見つかった本1 = w図書館.本を検索する("井上ひさし"),
 			w見つかった本2 = w図書館.本を検索する("工学")
 		in
-		assertTrue("test01 本の検索がおかしい。",
+		assertTrue("testE02 本の検索がおかしい。",
 			w見つかった本1 = {mk_token(103) |-> 本2, mk_token(104) |-> 本2} and
 			w見つかった本2 = {mk_token(101) |-> 本1, mk_token(102) |-> 本1}
 		);
 		w図書館.本を貸す({mk_token(101) |-> 本1}, 利用者1);
 		w図書館.本を貸す({mk_token(103) |-> 本2}, 利用者1);
 		w図書館.本を貸す({mk_token(104) |-> 本2}, 利用者2);
-		assertTrue("test01 本の貸出がおかしい。",
+		assertTrue("testE02 本の貸出がおかしい。",
 			CRUD_MAP`ReadMapRestricToDom[利用者, 蔵書](w図書館.貸出を得る(), {利用者1, 利用者2}) = 
 				{利用者1 |-> {mk_token(101) |-> 本1, mk_token(103) |-> 本2}, 利用者2 |-> {mk_token(104) |-> 本2}} 
 		);
 		w図書館.本を返す({mk_token(103)}, 利用者1);
 		w図書館.本を返す({mk_token(104)}, 利用者2);
-		assertTrue("test01 本の返却がおかしい。",
+		assertTrue("testE02 本の返却がおかしい。",
 			CRUD_MAP`ReadMapRestricToDom[利用者, 蔵書](w図書館.貸出を得る(), {利用者1, 利用者2}) = 
 				{利用者1 |-> {mk_token(101) |-> 本1}} 
 		);
@@ -136,21 +147,20 @@ testE03() == (
 		蔵書ID3 = mk_token(103),
 		蔵書ID4 = mk_token(104),
 		利用者1 = mk_token("利用者1"),
-		利用者2 = mk_token("利用者2"),
-		職員1 = mk_token("職員1")
+		利用者2 = mk_token("利用者2")
 	in (
 		w図書館.蔵書を追加する(蔵書ID1, 本1);
 		w図書館.蔵書を追加する(蔵書ID2, 本1);
 		w図書館.蔵書を追加する(蔵書ID3, 本2);
 		w図書館.蔵書を追加する(蔵書ID4, 本2);
-		assertTrue("test01 蔵書の追加がおかしい。",
+		assertTrue("testE03 蔵書の追加がおかしい。",
 			CRUD_MAP`ReadMapRestricToDom[蔵書ID, 本](w図書館.蔵書を得る(), {}) =  
 				{mk_token(101) |-> 本1, mk_token(102) |-> 本1, mk_token(103) |-> 本2, mk_token(104) |-> 本2}
 		);
 		let w見つかった本1 = w図書館.本を検索する("井上ひさし"),
 			w見つかった本2 = w図書館.本を検索する("工学")
 		in
-		assertTrue("test01 本の検索がおかしい。",
+		assertTrue("testE03 本の検索がおかしい。",
 			w見つかった本1 = {mk_token(103) |-> 本2, mk_token(104) |-> 本2} and
 			w見つかった本2 = {mk_token(101) |-> 本1, mk_token(102) |-> 本1}
 		);
@@ -174,21 +184,20 @@ testE04() == (
 		蔵書ID2 = mk_token(102),
 		蔵書ID3 = mk_token(103),
 		蔵書ID4 = mk_token(104),
-		利用者1 = mk_token("利用者1"),
-		職員1 = mk_token("職員1")
+		利用者1 = mk_token("利用者1")
 	in (
 		w図書館.蔵書を追加する(蔵書ID1, 本1);
 		w図書館.蔵書を追加する(蔵書ID2, 本1);
 		w図書館.蔵書を追加する(蔵書ID3, 本2);
 		w図書館.蔵書を追加する(蔵書ID4, 本2);
-		assertTrue("test01 蔵書の追加がおかしい。",
+		assertTrue("testE04 蔵書の追加がおかしい。",
 			CRUD_MAP`ReadMapRestricToDom[蔵書ID, 本](w図書館.蔵書を得る(), {}) =  
 				{mk_token(101) |-> 本1, mk_token(102) |-> 本1, mk_token(103) |-> 本2, mk_token(104) |-> 本2}
 		);
 		let w見つかった本1 = w図書館.本を検索する("井上ひさし"),
 			w見つかった本2 = w図書館.本を検索する("工学")
 		in
-		assertTrue("test01 本の検索がおかしい。",
+		assertTrue("testE04 本の検索がおかしい。",
 			w見つかった本1 = {mk_token(103) |-> 本2, mk_token(104) |-> 本2} and
 			w見つかった本2 = {mk_token(101) |-> 本1, mk_token(102) |-> 本1}
 		);
