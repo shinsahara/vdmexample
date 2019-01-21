@@ -1,0 +1,53 @@
+class CRUD_SET
+
+functions
+public CreateSet1[@Elem]: set of @Elem * @Elem ->  set of @Elem
+CreateSet1(s, e) ==
+	s union {e}
+pre
+	e not in set s
+post
+	RESULT = s union {e};
+	
+public CreateSet[@Elem]: set of @Elem * set of @Elem ->  set of @Elem
+CreateSet(s, as) ==
+	s union as
+pre
+	as inter s = {}
+post
+	RESULT = s union as;
+	
+public ReadSets[@Elem]: set of @Elem * bool -> set of @Elem
+ReadSets(s, b) == 
+	{e | e in set s & b}
+pre 
+	s <> {}
+post 
+	RESULT = {e | e in set s & b};
+	
+public ReadFromSet[@Elem]: set of @Elem * @Elem -> @Elem
+ReadFromSet(s, e) == 
+	let es in set s be st es = e in es
+pre 
+	e in set s
+post 
+	RESULT = e;
+
+public UpdateSet[@Elem]: set of @Elem * @Elem * @Elem ->  set of @Elem
+UpdateSet(s, de, ae) ==
+	let ws = DeleteFromSet[@Elem](s, de) in
+	CreateSet1[@Elem](ws, ae)
+pre 
+	de in set s and ae not in set s
+post
+	de not in set s and ae in set s;
+
+public DeleteFromSet[@Elem]: set of @Elem * @Elem  -> set of @Elem
+DeleteFromSet(s, e) == 
+	s \ {e}
+pre 
+	e in set s
+post 
+	RESULT = s \ {e};
+
+end CRUD_SET
