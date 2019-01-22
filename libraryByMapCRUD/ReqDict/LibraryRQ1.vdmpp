@@ -29,10 +29,69 @@ public 貸出 = inmap 利用者 to 蔵書;
 
 \subsection{関数定義}
 
+\subsubsection{蔵書を追加する}
+	\index{ぞうしょをついかする@蔵書を追加する}
+\begin{vdm_al}
+functions
+public 蔵書を追加する : 蔵書 * 蔵書ID * 本 -> 蔵書
+蔵書を追加する(a蔵書, a蔵書ID, a本) == 
+	CRUD_MAP`CreateMap1[蔵書ID, 本](a蔵書, a蔵書ID, a本);
+\end{vdm_al}
+
+\subsubsection{蔵書を削除する}
+	\index{ぞうしょをさくじょする@蔵書を削除する}
+\begin{vdm_al}
+public 蔵書を削除する: 蔵書 * set of 蔵書ID -> 蔵書 
+蔵書を削除する(a蔵書, anID集合) == 
+	CRUD_MAP`DeleteMapRestricToDom[蔵書ID, 本](a蔵書, anID集合);
+\end{vdm_al}
+
+\subsubsection{蔵書を削除する}
+	\index{ぞうしょをさくじょする@蔵書を削除する}
+\begin{vdm_al}
+public 蔵書を削除する: 蔵書 * 本 -> 蔵書
+蔵書を削除する(a蔵書, a本) == 
+	CRUD_MAP`DeleteMapRestricToRng[蔵書ID, 本](a蔵書, {a本});
+\end{vdm_al}
+
+\subsubsection{本を貸す}
+	\index{ほんをかす@本を貸す}
+利用者がすでに本を借りている場合と、初めて借りる場合で、処理が異なる。
+
+すでに借りている場合は、貸出の写像を上書きし、
+まだ借りていない場合は、貸出の写像に追加する。
+
+初めて借りる場合は、単純に利用者と貸出本の写を、従来の貸出写像に munion
+	\index{munion}
+演算子を使って併合する。
+
+\begin{vdm_al}
+public 本を貸す: 貸出 * 蔵書 * 利用者-> 貸出
+本を貸す(a貸出, a貸出本, a利用者) == 
+	if a利用者 in set dom a貸出 then
+		CRUD_MAP`UpdateMap[利用者, 蔵書](a貸出, a利用者, a貸出(a利用者) munion a貸出本)
+	else
+		CRUD_MAP`CreateMap1[利用者, 蔵書](a貸出, a利用者, a貸出本);
+\end{vdm_al}
+
+\subsubsection{本を返す}
+貸出情報から、返却する蔵書に関するデータを削除する。
+
+貸出が残っている利用者の蔵書は貸出に上書きし、貸出が残っていない利用者の情報は貸出から削除する。
+
+\begin{vdm_al}
+public 本を返す: 貸出 * set of 蔵書ID * 利用者 -> 貸出
+本を返す(a貸出, anID集合, a利用者) ==  
+	let w利用者への貸出本new = CRUD_MAP`DeleteMapRestricToDom[蔵書ID, 本](a貸出(a利用者), anID集合) in
+	if w利用者への貸出本new = {|->} then
+		CRUD_MAP`DeleteMapRestricToDom[利用者, 蔵書](a貸出, {a利用者})
+	else
+		CRUD_MAP`UpdateMap[利用者, 蔵書](a貸出, a利用者, w利用者への貸出本new);
+\end{vdm_al}
+
 \subsubsection{蔵書の状態に関する関数}
 	\index{ぞうしょのじょうたいにかんするかんすう@蔵書の状態に関する関数}
 \begin{vdm_al}
-functions
 public 蔵書に存在する : set of 蔵書ID * 蔵書 +> bool
 蔵書に存在する(anID集合, a図書館蔵書) ==
 	if anID集合 = {} then true
@@ -94,7 +153,3 @@ public 検索キーが空でない : 題名 | 著者 | 分野 +> bool
 \begin{vdm_al}
 end 図書館RD
 \end{vdm_al}
-
-\begin{rtinfo}
-{vdm.tc}[図書館RD]
-\end{rtinfo}

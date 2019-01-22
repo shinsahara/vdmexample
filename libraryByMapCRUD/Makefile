@@ -28,7 +28,8 @@ VPPDE = vppde
 VDMJ = vdmj_UTF8
 
 # Output document name
-OUTDOC = VPP-Intro
+OUTDOC = Library
+OUTDOC4ss2019 = Library4ss2019
 
 # VDM files
 VPPFILES = $(VPPFILES1) $(VPPFILES2) $(RQFILE) $(UTILITYFILES)
@@ -62,6 +63,18 @@ $(OUTDOC):  makevdmtex
 	$(PLATEX) $(OUTDOC)
 	$(PLATEX) $(OUTDOC)
 	$(DVIPDFM) $(OUTDOC)
+
+# make target
+ss2019: $(OUTDOC4ss2019)
+
+$(OUTDOC4ss2019):  makevdmtex
+#$(OUTDOC4ss2019): 
+	$(PLATEX) $(OUTDOC4ss2019)
+	$(BIBTEX) $(OUTDOC4ss2019)
+	makeindex $(OUTDOC4ss2019).idx
+	$(PLATEX) $(OUTDOC4ss2019)
+	$(PLATEX) $(OUTDOC4ss2019)
+	$(DVIPDFM) $(OUTDOC4ss2019)
 
 # run VDMTools
 makevdmtex:
