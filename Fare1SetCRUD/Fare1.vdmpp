@@ -3,18 +3,7 @@
 要求仕様レベルの運賃を表す。
 
 \begin{vdm_al}
-class 運賃
-
-types
-public 駅 = seq of char
-inv w駅 == w駅 <> "";
-
-public 運賃レコード ::
-	f駅1 : 駅
-	f駅2 : 駅
-	f運賃 :- nat
-inv
-	w運賃レコード == w運賃レコード.f駅1 <> w運賃レコード.f駅2;
+class 運賃 is subclass of 運賃RD
 	
 instance variables
 s運賃集合 : set of 運賃レコード := {};
@@ -34,7 +23,7 @@ public 運賃 : set of 運賃レコード ==> 運賃
 \begin{vdm_al}
 public 運賃を得る : 駅 * 駅 ==> nat
 運賃を得る(a駅1, a駅2) ==
-	let w運賃レコード = CRUD_SET`ReadFromSet[運賃レコード](s運賃集合, mk_運賃`運賃レコード(a駅1, a駅2, 0))
+	let w運賃レコード = 運賃レコードを得る(s運賃集合, a駅1, a駅2)
 	in return w運賃レコード.f運賃;
 \end{vdm_al}
 
@@ -48,10 +37,27 @@ a運賃レコードが、すでにs運賃集合にある場合は、\texttt{<運
 \begin{vdm_al}
 public 運賃レコードを追加する : 運賃レコード ==> ()
 運賃レコードを追加する(a運賃レコード) ==
-	if a運賃レコード in set s運賃集合 then
+	let w運賃集合 = 運賃集合を得る() in
+	if a運賃レコード in set w運賃集合 then
 		exit <運賃データの重複>
 	else
-		s運賃集合 := CRUD_SET`CreateSet1[運賃レコード](s運賃集合, a運賃レコード);
+		s運賃集合 := 運賃RD`運賃レコードを追加する(w運賃集合, a運賃レコード);
+\end{vdm_al}
+
+\subsection {運賃レコードを更新する}
+\index{うんちんれこーどをこうしんかする@運賃レコードを更新する}
+運賃レコードを更新する
+\begin{vdm_al}
+public 運賃レコードを更新する : 運賃レコード * 運賃レコード ==> set of 運賃レコード
+運賃レコードを更新する(anOld, aNew) == 運賃RD`運賃レコードを更新する(s運賃集合, anOld, aNew);
+\end{vdm_al}
+
+\subsection {運賃集合を得る}
+\index{うんちんしゅうごうをえる@運賃集合を得る}
+運賃集合を得る。
+\begin{vdm_al}
+public 運賃集合を得る : () ==> set of 運賃レコード
+運賃集合を得る() == return  運賃RD`運賃集合を得る(s運賃集合);
 
 end 運賃
 \end{vdm_al}
