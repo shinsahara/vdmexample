@@ -23,13 +23,13 @@ inv
 \end{vdm_al}
 
 \subsection{関数定義}
-\begin{vdm_al}
-functions
+
 \subsection {運賃レコードを得る}
 \index{うんちんれこーどをえる@運賃を得る}
 運賃レコードの集合から、2駅間の運賃レコードを得る。
 
 \begin{vdm_al}
+functions
 public 運賃レコードを得る : set of 運賃レコード * 駅 * 駅 -> 運賃レコード
 運賃レコードを得る(a運賃レコード集合, a駅1, a駅2) ==
 	CRUD_SET`ReadFromSet[運賃レコード](a運賃レコード集合, mk_運賃レコード(a駅1, a駅2, 0));
@@ -53,6 +53,14 @@ public 運賃レコード集合を得る : (運賃レコード -> bool) -> set o
 \begin{vdm_al}
 public 運賃レコードを追加する : set of 運賃レコード * 運賃レコード -> set of 運賃レコード
 運賃レコードを追加する(sr, r) == CRUD_SET`CreateSet1[運賃レコード](sr, r);
+\end{vdm_al}
+
+\subsection {運賃レコードを追加する}
+\index{うんちんれこーどをついかする@運賃レコードを追加する}
+運賃レコードを追加する。
+\begin{vdm_al}
+public 運賃レコードを追加する : set of 運賃レコード * set of 運賃レコード -> set of 運賃レコード
+運賃レコードを追加する(sr1, sr2) ==CRUD_SET`CreateSet[運賃レコード](sr1, sr2);
 \end{vdm_al}
 
 \subsection {運賃レコードを更新する}

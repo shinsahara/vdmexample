@@ -1,3 +1,8 @@
+\section {CRUD\_SET}
+	\index{しゅうごうのCRUD@集RUD\_SET}
+集合のCRUD関数ライブラリー。
+
+\begin{vdm_al}
 class CRUD_SET
 
 functions
@@ -51,3 +56,4 @@ post
 	RESULT = s \ {e};
 
 end CRUD_SET
+\end{vdm_al}

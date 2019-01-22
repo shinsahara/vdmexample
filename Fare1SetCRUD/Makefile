@@ -22,7 +22,9 @@ OUTDOC = Fare1
 
 # VPP files
 VPPFILES = \
-	Fare1.vdmpp	  Fare1_testspec.vdmpp UseFare1.vdmpp
+	Fare1.vdmpp	./ReqDict/FareRQ.vdmpp  Fare1_TestCase.vdmpp UseFare1.vdmpp \
+	./CRUDlib/CRUD_set.vdmpp \
+	./lib/VDMUnit.vdmpp
 
 # Test script name
 TESTSCRIPT = test.script

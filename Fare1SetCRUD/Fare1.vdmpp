@@ -11,7 +11,8 @@ s運賃集合 : set of 運賃レコード := {};
 operations
 public 運賃 : set of 運賃レコード ==> 運賃
 運賃(a運賃集合) == (
-	s運賃集合 :=  CRUD_SET`CreateSet[運賃レコード](s運賃集合, a運賃集合);
+	--s運賃集合 := 運賃RD`運賃レコードを追加する(s運賃集合, );
+	s運賃集合 := a運賃集合;
 	return self
 );
 \end{vdm_al}
