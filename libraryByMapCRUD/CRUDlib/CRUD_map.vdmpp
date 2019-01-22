@@ -1,3 +1,8 @@
+\section {CRUD\_MAP}
+	\index{CRUD\_MAP@CRUD\_MAP}
+写像のCRUDライブラリー。
+
+\begin{vdm_al}
 class CRUD_MAP
 
 functions
@@ -32,3 +37,4 @@ DeleteMapRestricToRng(m, sr) ==
 	m :-> sr;
 
 end CRUD_MAP
+\end{vdm_al}
