@@ -1,85 +1,79 @@
-\section {図書館要求辞書}
-	\index{としょかんようきゅうじしょ@図書館要求辞書}
-図書館のドメイン知識を持つ。
+\section {運賃要求辞書}
+	\index{うんちんようきゅうじしょ@運賃要求辞書}
+運賃のドメイン知識を持つ。
 
-図書館に関する要求辞書の役割も持つ。クラス名に付いているRDは、Requirement Dictionaryの略である。
-
-実行不可能な陰仕様を記述した図書館0クラスで定義されていた、関数群に対応した関数群を持つ。
+運賃に関する要求辞書の役割も持つ。クラス名に付いているRDは、Requirement Dictionaryの略である。
 
 \begin{vdm_al}
-class 図書館RD
+class 運賃RD
 \end{vdm_al}
 
 \subsection{型定義}
 \begin{vdm_al}
 types
-public 蔵書 = map 蔵書ID to 本;
-public 本 ::
-	f題名 : 題名
-	f著者 : 著者
-	f分野集合 : set of 分野;
-public 題名 = seq of char;
-public 著者 = seq of char;
-public 分野 = seq of char;
-public 蔵書ID = token;
-public 職員 = token ;
-public 利用者 = token;
-public 貸出 = inmap 利用者 to 蔵書;
+public 駅 = seq of char
+inv w駅 == w駅 <> "";
+
+public 運賃レコード ::
+	f駅1 : 駅
+	f駅2 : 駅
+	f運賃 :- nat
+inv
+	w運賃レコード == w運賃レコード.f駅1 <> w運賃レコード.f駅2;
 \end{vdm_al}
 
 \subsection{関数定義}
-
-\subsubsection{蔵書の状態に関する関数}
-	\index{ぞうしょのじょうたいにかんするかんすう@蔵書の状態に関する関数}
 \begin{vdm_al}
 functions
-public 蔵書に存在する : set of 蔵書ID * 蔵書 +> bool
-蔵書に存在する(anID集合, a図書館蔵書) ==
-	if anID集合 = {} then true
-	else exists id in set anID集合 & id in set dom a図書館蔵書;
+\subsection {運賃レコードを得る}
+\index{うんちんれこーどをえる@運賃を得る}
+運賃レコードの集合から、2駅間の運賃レコードを得る。
+
+\begin{vdm_al}
+public 運賃レコードを得る : set of 運賃レコード * 駅 * 駅 -> 運賃レコード
+運賃レコードを得る(a運賃レコード集合, a駅1, a駅2) ==
+	CRUD_SET`ReadFromSet[運賃レコード](a運賃レコード集合, mk_運賃レコード(a駅1, a駅2, 0));
+\end{vdm_al}
+
+\subsection {運賃レコード集合を得る}
+\index{うんちんれこーどをえる@運賃レコード集合を得る}
+運賃レコード集合から、条件を満たす運賃レコード集合を得る。
+
+\begin{vdm_al}
+public 運賃レコード集合を得る : (運賃レコード -> bool) -> set of 運賃レコード -> set of 運賃レコード
+運賃レコード集合を得る(aレコード選択関数)(a運賃レコード集合) ==
+	CRUD_SET`ReadSets[運賃`運賃レコード](aレコード選択関数)(a運賃レコード集合);
+\end{vdm_al}
+
+
+
+\subsection {運賃レコードを追加する}
+\index{うんちんれこーどをついかする@運賃レコードを追加する}
+運賃レコードを追加する。
+\begin{vdm_al}
+public 運賃レコードを追加する : set of 運賃レコード * 運賃レコード -> set of 運賃レコード
+運賃レコードを追加する(sr, r) == CRUD_SET`CreateSet1[運賃レコード](sr, r);
+\end{vdm_al}
+
+\subsection {運賃レコードを更新する}
+\index{うんちんれこーどをこうしんかする@運賃レコードを更新する}
+運賃レコードを更新する
+\begin{vdm_al}
+public 運賃レコードを更新する : set of 運賃レコード * 運賃レコード * 運賃レコード -> set of 運賃レコード
+運賃レコードを更新する(sr, anOld, aNew) == CRUD_SET`UpdateSet[運賃レコード](sr, anOld, aNew);
+\end{vdm_al}
+
+\subsection {運賃集合を得る}
+\index{うんちんしゅうごうをえる@運賃集合を得る}
+運賃集合を得る。
+\begin{vdm_al}
+public 運賃集合を得る : set of 運賃レコード -> set of 運賃レコード
+運賃集合を得る(sr) ==
+	CRUD_SET`ReadSets[運賃レコード](lambda - : 運賃`運賃レコード & true)(sr);
 \end{vdm_al}
 
 \begin{vdm_al}
-public 貸出に存在する : set of 蔵書ID * 貸出 +> bool
-貸出に存在する(anID集合, a貸出) == 
-	let	w蔵書 = merge rng a貸出 in
-	exists id in set anID集合 & id in set dom w蔵書;
-\end{vdm_al}
-
-\begin{vdm_al}
-public 貸出に存在しない : set of 蔵書ID * 貸出 +> bool
-貸出に存在しない(anID集合, a貸出) ==
-	not 貸出に存在する(anID集合, a貸出);
-\end{vdm_al}
-
-\begin{vdm_al}
-public 貸出可能である : 利用者 * 蔵書 * 貸出 * 蔵書 * nat1 +> bool
-貸出可能である(a利用者, a貸出本, a貸出, a図書館蔵書, a最大貸出数) ==
-	蔵書に存在する(dom a貸出本, a図書館蔵書) and
-	貸出に存在しない(dom a貸出本, a貸出) and
-	最大貸出数を超えていない(a利用者, a貸出本, a貸出, a最大貸出数);
-\end{vdm_al}
-
-\subsubsection{最大貸出数を超えていない}
-		\index{さいだいかしだしすうをこえていない@最大貸出数を超えていない}
-\begin{vdm_al}
-public 最大貸出数を超えていない : 利用者 * 蔵書 * 貸出 * nat1  +> bool
-最大貸出数を超えていない(a利用者, a貸出本, a貸出, a最大貸出数) ==
-	if a利用者 not in set dom a貸出 then
-		card dom a貸出本 <= a最大貸出数
-	else
-		card dom a貸出(a利用者) + card dom a貸出本 <= a最大貸出数;
-\end{vdm_al}
-
-\subsubsection{蔵書の検索に関する関数}
-		\index{ぞうしょのけんさくにかんするかんすう@蔵書の検索に関する関数}
-\begin{vdm_al}
-public 検索キーが空でない : 題名 | 著者 | 分野 +> bool
-検索キーが空でない(a検索キー) == a検索キー <> "";
-\end{vdm_al}
-
-\begin{vdm_al}
-end 図書館RD
+end 運賃RD
 \end{vdm_al}
 
 \begin{rtinfo}

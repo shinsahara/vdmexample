@@ -17,13 +17,13 @@ pre
 post
 	RESULT = s union as;
 	
-public ReadSets[@Elem]: set of @Elem * bool -> set of @Elem
-ReadSets(s, b) == 
-	{e | e in set s & b}
+public ReadSets[@Elem]: (@Elem -> bool) -> set of @Elem -> set of @Elem
+ReadSets(f)(s) == 
+	{e | e in set s & f(e)}
 pre 
 	s <> {}
 post 
-	RESULT = {e | e in set s & b};
+	RESULT = {e | e in set s & f(e)};
 	
 public ReadFromSet[@Elem]: set of @Elem * @Elem -> @Elem
 ReadFromSet(s, e) == 
@@ -38,9 +38,9 @@ UpdateSet(s, de, ae) ==
 	let ws = DeleteFromSet[@Elem](s, de) in
 	CreateSet1[@Elem](ws, ae)
 pre 
-	de in set s and ae not in set s
+	de in set s
 post
-	de not in set s and ae in set s;
+	ae in set s;
 
 public DeleteFromSet[@Elem]: set of @Elem * @Elem  -> set of @Elem
 DeleteFromSet(s, e) == 

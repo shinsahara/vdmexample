@@ -18,11 +18,6 @@ inv
 	
 instance variables
 s運賃集合 : set of 運賃レコード := {};
-inv forall e1, e2 in set s運賃集合 &
-	if e1.f駅1 = e2.f駅1 and e1.f駅2 = e2.f駅2 then
-		e1.f運賃 = e2.f運賃
-	else
-		false;
 
 operations
 public 運賃 : set of 運賃レコード ==> 運賃
