@@ -1,0 +1,18 @@
+\section {CRUD\_SEQ}
+	\index{しゅうごうのCRUD@集RUD\_SEQ}
+列のCRUD関数ライブラリー。
+
+\begin{vdm_al}
+class CRUD_SEQ
+
+functions
+public CreateSeqH[@Elem]: @Elem * seq of @Elem -> seq of @Elem
+CreateSeqH(e, s) ==
+	[e] ^ s
+post
+	RESULT = [e] ^ s;
+
+
+
+end CRUD_SEQ
+\end{vdm_al}

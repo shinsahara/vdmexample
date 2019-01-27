@@ -1,0 +1,59 @@
+\section{運賃表辞書}
+運賃表の用語(名詞と述語）を定義する要求辞書(Requirement Dictionary)である。
+
+\begin{vdm_al}
+class 運賃表辞書
+
+types
+public 運賃 = nat;
+public 行 ::
+	f下限 : 路線網`距離
+	f上限 : 路線網`距離
+	f運賃 :- 運賃;
+\end{vdm_al}
+
+\subsection{運賃表(型)}
+運賃表の各行の上限と下限は重複しないこと。
+
+\begin{vdm_al}
+public 運賃表 = seq of 行
+inv w運賃表 == 
+	forall i, j in set inds w運賃表 & 
+		下限より上限が大きい(w運賃表(i).f下限, w運賃表(i).f上限) and
+		j = i + 1 => 上限と次の行の下限は等しい(w運賃表(i).f上限, w運賃表(j).f下限);
+
+functions
+static public 距離に比例した運賃を得る : 運賃表 * 路線網`距離  -> 運賃
+距離に比例した運賃を得る(a運賃表, a距離) ==
+	let n = 運賃表の何番目かを得る(a運賃表, a距離) in
+	a運賃表(n).f運賃
+pre
+	運賃表にただ一つ存在する(a運賃表, a距離)
+post
+	let n = 運賃表の何番目かを得る(a運賃表, a距離) in
+	RESULT = a運賃表(n).f運賃;
+
+static public 運賃表のある行に存在する : 行 * 路線網`距離 +> bool
+運賃表のある行に存在する(a行, a距離) ==
+	a行.f下限 <= a距離 and a距離 < a行.f上限;
+
+static public 運賃表にただ一つ存在する : 運賃表 * 路線網`距離 -> bool
+運賃表にただ一つ存在する(a運賃表, a距離) ==
+	exists1 i in set inds a運賃表 & 運賃表のある行に存在する(a運賃表(i), a距離);
+
+static public 運賃表の何番目かを得る : 運賃表 * 路線網`距離 -> nat1
+運賃表の何番目かを得る(a運賃表, a距離) ==
+	let i in set inds a運賃表 be st 運賃表のある行に存在する(a運賃表(i), a距離) in i;
+
+static public 下限より上限が大きい : 運賃 * 運賃 -> bool
+下限より上限が大きい(a下限, a上限) == a下限 < a上限;
+
+static public 上限と次の行の下限は等しい : 運賃 * 運賃 -> bool
+上限と次の行の下限は等しい(a下限, a上限) == a下限 = a上限;
+
+end 運賃表辞書
+\end{vdm_al}
+
+\begin{rtinfo}
+{vdm.tc}[運賃表辞書]
+\end{rtinfo}
