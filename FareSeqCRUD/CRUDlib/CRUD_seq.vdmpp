@@ -74,3 +74,7 @@ RemoveMembers(ds)(s) ==
   
 end CRUD_SEQ
 \end{vdm_al}
+
+\begin{rtinfo}
+{vdm.tc}[CRUD_SEQ]
+\end{rtinfo}
