@@ -86,10 +86,10 @@ operations
 		exit <到着駅が直前の駅の中に存在しない> 
 	else
 		while w駅 <> a出発駅 do (
-			w最短経路 := CRUD_SEQ`CreateSeqH[駅](w駅, w最短経路);
+			w最短経路 := CRUD_SEQ`CreateSeqH[駅](w駅)(w最短経路);
 			w駅 := aP直前の駅(w駅);
 		);
-	return CRUD_SEQ`CreateSeqH[駅](a出発駅, w最短経路)
+	return CRUD_SEQ`CreateSeqH[駅](a出発駅)(w最短経路)
 );
 
 end ダイクストラ算法

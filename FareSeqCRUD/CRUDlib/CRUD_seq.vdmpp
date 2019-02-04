@@ -6,13 +6,71 @@
 class CRUD_SEQ
 
 functions
-public CreateSeqH[@Elem]: @Elem * seq of @Elem -> seq of @Elem
-CreateSeqH(e, s) ==
+\end{vdm_al}
+
+Append an element as a 1st element.
+\begin{vdm_al}
+public CreateSeqH[@T]: @T -> seq of @T -> seq of @T
+CreateSeqH(e)(s) ==
 	[e] ^ s
 post
 	RESULT = [e] ^ s;
+\end{vdm_al}
 
+Remove n-th element.
+\begin{vdm_al}
+public RemoveAt[@T]: nat1 -> seq of @T -> seq of @T
+RemoveAt(n)(s) ==
+	cases mk_(n, s) :
+		mk_(1, [-] ^ ts)		-> ts,
+		mk_(wn, [h] ^ ts)	-> [h] ^ RemoveAt[@T](wn - 1)(ts),
+		mk_(-, [])				-> []
+	end;
 
+length_measure[@T] : seq of @T -> nat
+length_measure(s) == len s;
+\end{vdm_al}
 
+Remove all element e from s.
+\begin{vdm_al}
+public RemoveAllMember[@T] :  @T -> seq of @T -> seq of @T
+RemoveAllMember(e)(s) == [s(i) | i in set inds s & e <> s(i)];
+\end{vdm_al}
+
+--Remove all duplicated element.
+\begin{vdm_al}
+public RemoveDup[@T] :  seq of @T ->  seq of @T
+RemoveDup(s) == 
+  cases s :
+  [h] ^ ts  -> [h] ^ RemoveDup[@T](filter[@T](lambda x : @T & x <> h)(ts)) ,
+  []			-> []
+  end;
+\end{vdm_al}
+ 
+\begin{vdm_al}
+ --関数によって列を濾過する。つまり、列のうち関数を満たすものの列を返す。
+public filter[@T]: (@T -> bool) -> seq of @T -> seq of @T
+filter(f)(s) == [s(i) | i in set inds s & f(s(i))];
+\end{vdm_al}
+ 
+--列から指定された要素の先頭の一つを削除する
+\begin{vdm_al}
+public RemoveMember[@T] :  @T -> seq of @T -> seq of @T
+RemoveMember(e)(s) == 
+  cases s :
+  [h] ^ ts  -> if e = h then ts else [h] ^ RemoveMember[@T](e)(ts),
+  []			-> []
+  end;
+\end{vdm_al}
+
+\begin{vdm_al}
+--列から要素列の要素を削除する
+public RemoveMembers[@T] :  seq of @T -> seq of @T -> seq of @T
+RemoveMembers(ds)(s) == 
+  cases ds :
+  []		-> s,
+  [h] ^ ts  -> RemoveMembers[@T](ts)(RemoveMember[@T](h)(s))
+  end;
+  
 end CRUD_SEQ
 \end{vdm_al}

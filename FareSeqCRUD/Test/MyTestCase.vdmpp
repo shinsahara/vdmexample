@@ -39,36 +39,56 @@ test01 () == (
 	def wDistance = 
 			s路線検索.最短距離(v東京, v新宿)
 	in
-	assertTrue("\t test01 計算結果が間違っている\n",
+	assertTrue("\t test01 適用する(v東京, v新宿)の計算結果が間違っている\n",
 		wDistance = 7.7 and
   	s運賃を得る.適用する(v東京, v新宿) = 220
-	)
-);
-
-public test02: () ==> ()
-test02 () == (
+	);
 	def wDistance = 
 			s路線検索.最短距離(v四ツ谷, v品川)
 	in
-	assertTrue("\t test02 計算結果が間違っている。\n",	
+	assertTrue("\t test02 適用する(v四ツ谷, v品川) の計算結果が間違っている。\n",	
 		wDistance = 9.5 and
   	s運賃を得る.適用する(v四ツ谷, v品川) = 220
-	)
-);
-
-public test03: () ==> ()
-test03 () == (
-	assertTrue("\t test03 計算結果が間違っている。\n",	
+	);
+	assertTrue("\t test03 最短経路(v池袋, v品川)の計算結果が間違っている。\n",	
 	let mk_(w最短経路, w最短距離) = s路線検索.最短経路(v池袋, v品川) in
 		w最短経路 = [mk_token("池袋"), mk_token("新宿"), mk_token("品川")] and
 		w最短距離 = 14.9
 	)
 );
 
+public test02: () ==> ()
+test02 () == (
+	assertTrue("\t test02 Remove*の計算結果が間違っている。\n",	
+		let	
+			RemoveAt = CRUD_SEQ`RemoveAt[int],
+			RemoveAllMember = CRUD_SEQ`RemoveAllMember [int],
+			removeDup = CRUD_SEQ`RemoveDup[int],
+			removeMember = CRUD_SEQ`RemoveMember[int],
+			removeMembers = CRUD_SEQ`RemoveMembers[int]
+		in
+			removeDup([]) = [] and
+			removeDup([1,1,2,2,2,3,4,4,4,4]) = [1,2,3,4] and
+			removeDup([1,2,3,4]) = [1,2,3,4] and
+			removeMember(1)([]) = [] and
+			removeMember(1)([1,2,3]) = [2,3] and
+			removeMember(4)([1,2,3]) = [1,2,3] and
+			removeMembers([])([]) = [] and
+			removeMembers([])([1,2,3]) = [1,2,3] and
+			removeMembers([1,2,3])([]) = [] and
+			removeMembers([1,2,3])([1,2,3]) = [] and
+			removeMembers([1,4,5])([1,2,3,4]) = [2,3] and
+			RemoveAt(2)([1,3,5,2]) = [1,5,2] and
+			RemoveAt(3)([1,1,2,2,2,3,4,4,4,4]) =[1,1,2,2,3,4,4,4,4] and
+			RemoveAt(4)([]) =[] and
+			RemoveAllMember(4)([1,4,2,4,3,4]) = [1,2,3] 
+	)
+);
+
 public testE01: () ==> ()
 testE01 () == (
 	trap  <到着駅が直前の駅の中に存在しない>  with
-		print("\t testE01 期待した事前条件エラーを検出した。\n") in (
+		print("\t testE01 最短距離(v東京, v東京)。期待した<到着駅が直前の駅の中に存在しない>例外を検出した。\n") in (
 	def - = 
 		s路線検索.最短距離(v東京, v東京) 
 	in
@@ -79,7 +99,7 @@ testE01 () == (
 public testE02: () ==> ()
 testE02 () == (
 	trap  <到着駅が直前の駅の中に存在しない>  with
-		print("\t testE02 期待した事前条件エラーを検出した。\n") in (
+		print("\t testE02 最短距離(v東京, vコペンハーゲン)。期待した<到着駅が直前の駅の中に存在しない>例外を検出した。\n") in (
 	def - = 
 		s路線検索.最短距離(v東京, vコペンハーゲン) 
 	in

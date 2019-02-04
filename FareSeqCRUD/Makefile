@@ -10,8 +10,8 @@ CODE=UTF8
 # TeX commands
 TEXDIR = /usr/local/texlive/2018/bin/x86_64-darwin
 PLATEX = $(TEXDIR)/platex
-#BIBTEX=jbibtex
-BIBTEX=pbibtex --kanji=$(C0DE)
+BIBTEX=pbibtex
+#BIBTEX=pbibtex --kanji=$(C0DE)
 DVIPDFM = $(TEXDIR)/dvipdfmx
 EBB = ebb
 
