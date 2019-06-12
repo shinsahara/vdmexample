@@ -29,10 +29,9 @@ VDMJ = vdmj_UTF8
 
 # Output document name
 OUTDOC = Library
-OUTDOC4ss2019 = Library4ss2019
 
 # VDM files
-VPPFILES = $(VPPFILES1) $(VPPFILES2) $(RQFILE) $(UTILITYFILES)
+VPPFILES = $(VPPFILES1) $(RQFILE) $(UTILITYFILES)
 		
 VPPFILES1 = \
 	Test/MyCRUDlib_TestCases.vdmpp BLogic/Library1.vpp \
@@ -41,8 +40,7 @@ RQFILE = \
 	ReqDict/LibraryRQ1.vdmpp 
 	
 UTILITYFILES = \
-	./CRUDlib/CRUD_map.vdmpp \
-	./lib/VDMUnit.vdmpp	./lib/IO.vdmpp	./lib/VDMUtil.vdmpp
+	./lib/VDMUnit.vdmpp	./lib/IO.vdmpp	./lib/VDMUtil.vdmpp ./CRUDlib/CRUD_map.vdmpp
 	
 # Test script name
 TESTSCRIPT = test.script
@@ -64,18 +62,6 @@ $(OUTDOC):  makevdmtex
 	$(PLATEX) $(OUTDOC)
 	$(DVIPDFM) $(OUTDOC)
 
-# make target
-ss2019: $(OUTDOC4ss2019)
-
-$(OUTDOC4ss2019):  makevdmtex
-#$(OUTDOC4ss2019): 
-	$(PLATEX) $(OUTDOC4ss2019)
-	$(BIBTEX) $(OUTDOC4ss2019)
-	makeindex $(OUTDOC4ss2019).idx
-	$(PLATEX) $(OUTDOC4ss2019)
-	$(PLATEX) $(OUTDOC4ss2019)
-	$(DVIPDFM) $(OUTDOC4ss2019)
-
 # run VDMTools
 makevdmtex:
 	# Read & Syntax check
@@ -86,29 +72,6 @@ makevdmtex:
 	LANG=ja_JP.$(CODE) $(VPPDE) -y -i -D -I -P -Q -R vdm1.tc $(TESTSCRIPT) $(VPPFILES1) $(RQFILE) $(UTILITYFILES)
 	# Pretty print
 	LANG=ja_JP.$(CODE) $(VPPDE)  -l -r $(VPPFILES)
-
-# run VDMJ
-vdmj:
-	vdmj_UTF8 -r classic -exceptions -e "run()" $(VPPFILES1) $(RQFILE) $(UTILITYFILES)
-	echo  "you have to type 'latex' and 'q'"
-	vdmj_UTF8 -r classic -exceptions $(VPPFILES1) $(RQFILE) $(UTILITYFILES) 
-	echo  "you have to type 'latex' and 'q'"
-	$(PLATEX) $(OUTDOC)
-	$(BIBTEX) $(OUTDOC)
-	makeindex $(OUTDOC).idx
-	$(PLATEX) $(OUTDOC)
-	$(PLATEX) $(OUTDOC)
-	$(DVIPDFM) $(OUTDOC)
-
-vdmjdebug:
-	vdmj_UTF8 -exceptions $(VPPFILES2) $(UTILITYFILES)
-
-# Command-Line Interface to Overture
-overture:
-	#overture -vdmpp -i -e "run()" $(VPPFILES)
-	echo "After Interpreter started."
-	echo "print new TestRunner().run()"
-	overture -vdmpp -i $(VPPFILES)
 
 # Clean files. But Output document is not deleted.
 clean:

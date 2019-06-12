@@ -1,3 +1,8 @@
+\section {MyCRUDlib\_TestCase}
+	\index{CMyCRUDlib\_TestCase}
+写像のCRUDライブラリーの回帰テストケース。
+
+\begin{vdm_al}
 class MyCRUDlib_TestCase is subclass of TestCase, 図書館RD
 
 operations
@@ -209,3 +214,4 @@ testE04() == (
 );
 
 end MyCRUDlib_TestCase
+\end{vdm_al}

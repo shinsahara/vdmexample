@@ -98,7 +98,7 @@ end TestCaseT0002
 	回帰テスト中に実行時エラーが発生した旨のエラー・ウィンドウが表示されるが、
 	回帰テストの実行は最後まで行われ、
 	他に予想外のエラーが無ければ、回帰テストは正常終了したとログに表示される
-	\footnote{Overture toolは、実行時エラーを補足する機能がないので、最初のエラー発生時点で回帰テストが終了してしまう。}。
+	\footnote{Overture Toolは、実行時エラーを補足する機能がないので、最初のエラー発生時点で回帰テストが終了してしまう。}。
 \begin{vdm_al}
 class TestCaseT0003 is subclass of TestCaseT
 operations
