@@ -1,0 +1,13 @@
+class CT1
+
+functions
+public f : int * int -> real
+f(i1, i2) == i1 / i2;
+
+traces
+
+T1: let i1 in set {2,3,4} in
+	let i2 in set {0,1} in
+	f(i1, i2)
+	
+end CT1
