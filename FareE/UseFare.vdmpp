@@ -32,14 +32,19 @@ T0 : t0.run()
 T1 : t1.run() 
 
 T2 :
-	let s1 in set {vTokyo, vShinjuku, vShinagawa, vYotsuya, vIkebukuro, vCopenhagen} in 
-	let s2 in set {vShinjuku, vShinagawa, vYotsuya, vIkebukuro, vTokyo, vCopenhagen} in 
+	let s1 in set {vTokyo, vShinjuku, vShinagawa, vYotsuya, vIkebukuro, vCopenhagen, vHelsingborg} in 
+	let s2 in set {vShinjuku, vShinagawa, vYotsuya, vIkebukuro, vTokyo, vCopenhagen, vHelsingborg} in 
 	vRouteSearch.Get_shortest_distance(s1, s2)
 
 T3 : 
-	let s1 in set {vTokyo, vShinjuku, vShinagawa, vYotsuya, vIkebukuro, vCopenhagen} in 
-	let s2 in set {vShinjuku, vShinagawa, vYotsuya, vIkebukuro, vTokyo, vCopenhagen} in
+	let s1 in set {vTokyo, vShinjuku, vShinagawa, vYotsuya, vIkebukuro, vCopenhagen, vHelsingborg} in 
+	let s2 in set {vShinjuku, vShinagawa, vYotsuya, vIkebukuro, vTokyo, vCopenhagen, vHelsingborg} in
 	vCalculate_fare.apply(s1, s2)
+	
+T4:
+	let s1 in set {vTokyo, vShinjuku, vShinagawa, vYotsuya, vIkebukuro, vCopenhagen, vHelsingborg} in 
+	let s2 in set {vShinjuku, vShinagawa, vYotsuya, vIkebukuro, vTokyo, vCopenhagen, vHelsingborg} in
+	vRouteSearch.Shortest_route(s1, s2)
 
 end UseFare
 \end{vdm_al}

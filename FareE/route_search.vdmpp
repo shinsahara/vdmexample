@@ -10,7 +10,9 @@ protected sStationSet : StationSet;
 protected sRailUnitSet : RailUnitSet;
 inv
 	let	wStationSet = Get_set_of_station(sRailUnitSet)
-	in	wStationSet subset sStationSet;
+	in	wStationSet subset sStationSet
+;
+
 
 operations
 public Shortest_route : Station * Station ==> seq of Station * Distance

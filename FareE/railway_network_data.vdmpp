@@ -11,8 +11,9 @@ public vShinagawa : RailNet`Station= mk_token("Shinagawa");
 public vYotsuya : RailNet`Station= mk_token("Yotsuya");
 public vIkebukuro : RailNet`Station= mk_token("Ikebukuro");
 public vCopenhagen : RailNet`Station= mk_token("Copenhagen");
+public vHelsingborg : RailNet`Station= mk_token("Helsingborg");
 
-public vStationSet : RailNet`StationSet ={vTokyo,vShinjuku,vShinagawa,vYotsuya,vIkebukuro,vCopenhagen};
+public vStationSet : RailNet`StationSet ={vTokyo,vShinjuku,vShinagawa,vYotsuya,vIkebukuro,vCopenhagen,vHelsingborg};
 
 public vTokyo2Yotsuya : RailNet`RailUnit = mk_RailNet`RailUnit(vTokyo, vYotsuya, 4.2); 
 public vYotsuya2Tokyo : RailNet`RailUnit = mk_RailNet`RailUnit(vYotsuya, vTokyo, 4.2); 
@@ -26,11 +27,13 @@ public vShinjuku2Shinagawa : RailNet`RailUnit = mk_RailNet`RailUnit(vShinjuku, v
 public vShinagawa2Shinjuku : RailNet`RailUnit = mk_RailNet`RailUnit(vShinagawa, vShinjuku, 9.9); 
 public vShinagawa2Tokyo : RailNet`RailUnit = mk_RailNet`RailUnit(vShinagawa, vTokyo, 5.1);
 public vTokyo2Shinagawa : RailNet`RailUnit = mk_RailNet`RailUnit(vTokyo, vShinagawa, 5.3);  
+public vCopenhagen2Helsingborg : RailNet`RailUnit = mk_RailNet`RailUnit(vCopenhagen, vHelsingborg, 100);  
 
 public vRailUnitSet : RailNet`RailUnitSet = {
 				vTokyo2Yotsuya, vYotsuya2Tokyo, vYotsuya2Shinjuku, vShinjuku2Yotsuya,  
 				vTokyo2Ikebukuro, vIkebukuro2Tokyo, vIkebukuro2Shinjuku, vShinjuku2Ikebukuro,
-				vShinjuku2Shinagawa, vShinagawa2Shinjuku, vShinagawa2Tokyo, vTokyo2Shinagawa
+				vShinjuku2Shinagawa, vShinagawa2Shinjuku, vShinagawa2Tokyo, vTokyo2Shinagawa,
+				vCopenhagen2Helsingborg
 			};
 
 end RailNetData

@@ -32,8 +32,8 @@ Calculate_fare_by_distance(aFareTable, aDistance) ==
 pre
 	isUnique(aFareTable, aDistance)
 post
-	let n = index_of_FareTable(aFareTable, aDistance) in
-	RESULT = aFareTable(n).fFare;
+	let i = index_of_FareTable(aFareTable, aDistance) in
+	RESULT = aFareTable(i).fFare;
 
 static public isExist : FareDatum * RailNet`Distance +> bool
 isExist(aFareDatum, aDistance) ==

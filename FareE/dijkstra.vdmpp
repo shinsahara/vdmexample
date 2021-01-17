@@ -80,13 +80,13 @@ d(aRailUnitSet, aStation1, aStation2) ==
 operations
 makeRoot : PPrevStation * Station * Station ==> seq of Station
 makeRoot(aPPrevStation, aDeparture, anArrival) == (
-	dcl wShortestPath : seq of Station := [],
-		wStation : Station := anArrival;
-	while wStation <> aDeparture do (
-		wShortestPath := [wStation] ^ wShortestPath;
-		wStation := aPPrevStation(wStation);
-	);
-	return [aDeparture] ^ wShortestPath
+		dcl wShortestPath : seq of Station := [],
+			wStation : Station := anArrival;
+		while wStation <> aDeparture do (
+			wShortestPath := [wStation] ^ wShortestPath;
+			wStation := aPPrevStation(wStation);
+		);
+		return [aDeparture] ^ wShortestPath
 )
 pre
 	anArrival in set dom aPPrevStation;

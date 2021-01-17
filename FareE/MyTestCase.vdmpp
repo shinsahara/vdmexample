@@ -35,15 +35,29 @@ TestCaseT0001(name) == setName(name);
 
 public test01: () ==> ()
 test01 () == (
-	def wDistance = 
-			vRouteSearch.Get_shortest_distance(vTokyo, vShinjuku)
-	in
-	assertTrue("\t test01 Fault in calculating.\n",
-		wDistance = 7.7 and
-  		vCalculate_fare.apply(vTokyo, vShinjuku) = 160
+	def wDistance1 = vRouteSearch.Get_shortest_distance(vTokyo, vShinjuku);
+			wDistance2 = vRouteSearch.Get_shortest_distance(vIkebukuro, vYotsuya);
+			wDistance3 = vRouteSearch.Get_shortest_distance(vYotsuya, vShinagawa);
+			wDistance4 = vRouteSearch.Get_shortest_distance(vCopenhagen, vHelsingborg);
+	in (
+		assertTrue("\t TestCaseT0001.test01 Fault in calculating.\n",
+			wDistance1 = 7.7 and
+  			vCalculate_fare.apply(vTokyo, vShinjuku) = 160
+		);
+		assertTrue("\t TestCaseT0001.test01 Fault in calculating.\n",	
+			wDistance2 = 8.6 and
+  			vCalculate_fare.apply(vIkebukuro, vYotsuya) = 190
+		);
+		assertTrue("\t TestCaseT0001.test01 Fault in calculating.\n",	
+			wDistance3 = 9.5 and
+  			vCalculate_fare.apply(vYotsuya, vShinagawa) = 190
+		);
+		assertTrue("\t TestCaseT0001.test01 Fault in calculating.\n",	
+			wDistance4 = 100 and
+  			vCalculate_fare.apply(vCopenhagen, vHelsingborg) = 250
+		)
 	)
 );
-
 end TestCaseT0001
 
 class TestCaseT0002 is subclass of TestCaseT
@@ -54,15 +68,17 @@ TestCaseT0002(name) == setName(name);
 
 public test01: () ==> ()
 test01 () == (
+	trap <RuntimeError> with (
+		print("\t TestCaseT0002.test01 Copenhagen station is not reachable from Yotsuya station.\n");
+	) in
 	def wDistance = 
-			vRouteSearch.Get_shortest_distance(vIkebukuro, vYotsuya)
+			vRouteSearch.Get_shortest_distance(vYotsuya, vCopenhagen)
 	in
-	assertTrue("\t test01 Fault in calculating.\n",	
-		wDistance = 8.6 and
-  		vCalculate_fare.apply(vIkebukuro, vYotsuya) = 190
+	assertTrue("\t TestCaseT0002.test01 Fault in calculating.\n",	
+		wDistance = 9.5 and
+  		vCalculate_fare.apply(vYotsuya, vCopenhagen) = 190
 	)
 );
-
 end TestCaseT0002
 
 class TestCaseT0003 is subclass of TestCaseT
@@ -73,36 +89,56 @@ TestCaseT0003(name) == setName(name);
 
 public test01: () ==> ()
 test01 () == (
-	def wDistance = 
-			vRouteSearch.Get_shortest_distance(vYotsuya, vShinagawa)
-	in
-	assertTrue("\t test01 Fault in calculating.\n",	
-		wDistance = 9.5 and
-  		vCalculate_fare.apply(vYotsuya, vShinagawa) = 190
+	trap <RuntimeError> with (
+		print("\t TestCaseT0003.test01 departure and arrival stasion is same.\n");
+	) in (
+		def wDistance = 
+			vRouteSearch.Get_shortest_distance(vIkebukuro, vIkebukuro)
+		in
+		assertTrue("\t TestCaseT0003.test01 Fault in calculating.\n",	
+			wDistance = 0 and
+  			vCalculate_fare.apply(vIkebukuro, vIkebukuro) = 160
+		)
 	)
 );
-
 end TestCaseT0003
 
+/*
 class TestCaseT0004 is subclass of TestCaseT
 operations
 -- constructor
 public TestCaseT0004: seq of char ==> TestCaseT0004
 TestCaseT0004(name) == setName(name);
 
+values
+public eCalculate_fare = 
+	new Calculate_fare(
+			RailNetData`vStationSet,
+			RailNetData`vRailUnitSet,
+			[
+			mk_FareTableDictionary`FareDatum(0,3,150),
+			mk_FareTableDictionary`FareDatum(3,9,160),
+			mk_FareTableDictionary`FareDatum(8,10,190),
+			mk_FareTableDictionary`FareDatum(10,25,220),
+			mk_FareTableDictionary`FareDatum(20,vMaxValue,250)
+			]);
+
+operations
 public test01: () ==> ()
 test01 () == (
 	trap <RuntimeError> with (
-		print("\t TestCaseT0004`test01 meet the planned pre-condition error.\n");
-	) in
-	def wDistance = 
-			vRouteSearch.Get_shortest_distance(vYotsuya, vCopenhagen)
-	in
-	assertTrue("\t test01 Fault in calculating.\n",	
-		wDistance = 9.5 and
-  		vCalculate_fare.apply(vYotsuya, vShinagawa) = 190
+		print("\t TestCaseT0004.test01 FareTable type_invariant error occurred.\n");
+	) in (
+		def wDistance = 
+			vRouteSearch.Get_shortest_distance(vTokyo, vShinjuku)
+		in
+		assertTrue("\t TestCaseT0004.test01 Fault in calculating.\n",	
+			wDistance = 0 and
+  			eCalculate_fare.apply(vTokyo, vShinjuku) = 160
+		)
 	)
 );
 
 end TestCaseT0004
+*/
 \end{vdm_al}

@@ -16,10 +16,10 @@ run() == (
 	dcl ts : TestSuite := new TestSuite("The regression test of calculating railway fare.\n"),
 	    tr : TestResult := new TestResult();
 	tr.addListener(new PrintTestListener());
-	ts.addTest(new TestCaseT0001("TestCaseT0001 Calculate fare from Tokyo to Shinjuku.\n"));
-	ts.addTest(new TestCaseT0002("TestCaseT0002 Calculate fare from vIkebukuro to vYotsuya. \n"));
-	ts.addTest(new TestCaseT0003("TestCaseT0003 Calculate fare from Yotsuya to Shinagawa. \n"));
-	ts.addTest(new TestCaseT0004("TestCaseT0004 Calculate fare from Yotsuya to Copenhagen. Error occurred.\n"));
+	ts.addTest(new TestCaseT0001("TestCaseT0001 Calculate fare from x to y.\n"));
+	ts.addTest(new TestCaseT0002("TestCaseT0002 Calculate fare from Yotsuya to Copenhagen. Error occurred.\n"));
+	ts.addTest(new TestCaseT0003("TestCaseT0003 Calculate fare from Ikebukuro to Ikebukuro. Error occurred.\n"));
+	--ts.addTest(new TestCaseT0004("TestCaseT0004 FareTable type_invariant error occurred.\n"));
 	ts.run(tr);
 	if tr.wasSuccessful() = true then
 	  def - = new IO().echo("*** All regression test succeeded. ***\n") in skip
