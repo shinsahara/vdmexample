@@ -1,0 +1,41 @@
+module ATCMODULE
+exports all
+definitions 
+
+types 
+	Space = token;
+	Aircraft = token;
+	Controller = token;
+
+state ATC of
+	onduty : set of Controller
+	control : inmap Space to Controller
+	capacity : map Space to nat
+	location : map Aircraft to Space
+inv mk_ATC(cs,con,cap,loc) ==
+	rng con subset cs and 
+  dom con subset dom cap and
+	rng loc subset dom con and
+	forall s in set rng loc & numOfAircraft(s, loc) <= cap(s)
+init σ == σ.onduty = { } and σ.capacity = {|->}
+end;
+
+values 
+-- TODO Define values here
+functions 
+numOfAircraft : Space * map Aircraft to Space -> nat
+numOfAircraft(s, loc) == card dom (loc :> {s});
+
+isactivated : Space * ATC -> bool
+isactivated(s, δ) == s in set dom (δ.control);
+
+isKnown : Aircraft * ATC -> bool
+isKnown(p, δ) == p in set dom (δ.location);
+
+controllerOf : Aircraft * ATC -> Controller
+controllerOf(p, δ) == δ.control(δ.location(p))
+pre isKnown(p, δ);
+
+operations 
+-- TODO Define operations here
+end ATCMODULE
