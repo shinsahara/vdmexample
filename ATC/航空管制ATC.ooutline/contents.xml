@@ -2,50 +2,50 @@
 <?xml-model href="http://www.omnigroup.com/namespace/OmniOutliner/xmloutline-v5.rng" type="application/xml" schematypens="http://relaxng.org/ns/structure/1.0?>
 <outline xmlns="http://www.omnigroup.com/namespace/OmniOutliner/v5" type-of-file-on-disk="package">
   <style-attribute-registry>
-    <style-attribute version="0" key="font-family" group="フォント" name="ファミリ" class="string">Helvetica</style-attribute>
-    <style-attribute version="1" key="font-fill" group="フォント" name="塗りつぶしの色" class="color">
+    <style-attribute version="0" key="font-family" group="font" name="family" class="string">Helvetica</style-attribute>
+    <style-attribute version="1" key="font-fill" group="font" name="fill color" class="color">
       <color space="gg22" w="0"/>
     </style-attribute>
-    <style-attribute version="0" key="font-fixed-pitch" group="フォント" name="固定ピッチ" class="bool">no</style-attribute>
-    <style-attribute version="0" key="font-size" group="フォント" name="サイズ" class="number" integral="0" min="1" max="65536">12</style-attribute>
-    <style-attribute version="1" key="font-stroke" group="フォント" name="ボーダーの色" class="color">
+    <style-attribute version="0" key="font-fixed-pitch" group="font" name="fixed pitch" class="bool">no</style-attribute>
+    <style-attribute version="0" key="font-size" group="font" name="size" class="number" integral="0" min="1" max="65536">12</style-attribute>
+    <style-attribute version="1" key="font-stroke" group="font" name="border color" class="color">
       <color space="gg22" w="0"/>
     </style-attribute>
-    <style-attribute version="0" key="font-weight" group="フォント" name="ウェイト" class="number" integral="1" min="1" max="14">5</style-attribute>
-    <style-attribute version="0" key="heading-type(com.omnigroup.OmniOutliner)" group="見出し" name="タイプ" class="string">None</style-attribute>
-    <style-attribute version="0" key="item-row-padding(com.omnigroup.OmniOutliner)" group="行" name="行パディング" class="number" integral="1" min="0" max="1000">4</style-attribute>
-    <style-attribute version="0" key="kerning-adjust" group="カーニング" name="調整" class="number" integral="0" min="-1000" max="1000">NaN</style-attribute>
-    <style-attribute version="0" key="paragraph-alignment" group="段落" name="位置揃え" class="enum">
+    <style-attribute version="0" key="font-weight" group="font" name="weight" class="number" integral="1" min="1" max="14">5</style-attribute>
+    <style-attribute version="0" key="heading-type(com.omnigroup.OmniOutliner)" group="heading" name="type" class="string">None</style-attribute>
+    <style-attribute version="0" key="item-row-padding(com.omnigroup.OmniOutliner)" group="row" name="row padding" class="number" integral="1" min="0" max="1000">4</style-attribute>
+    <style-attribute version="0" key="kerning-adjust" group="kerning" name="adjust" class="number" integral="0" min="-1000" max="1000">NaN</style-attribute>
+    <style-attribute version="0" key="paragraph-alignment" group="paragraph" name="alignment" class="enum">
       <enum-name-table default-value="4">
-        <enum-name-table-element value="0" name="left" display-name="左"/>
-        <enum-name-table-element value="1" name="right" display-name="右"/>
-        <enum-name-table-element value="2" name="center" display-name="中央"/>
-        <enum-name-table-element value="3" name="justified" display-name="両端"/>
-        <enum-name-table-element value="4" name="natural" display-name="標準"/>
+        <enum-name-table-element value="0" name="left"/>
+        <enum-name-table-element value="1" name="right"/>
+        <enum-name-table-element value="2" name="center"/>
+        <enum-name-table-element value="3" name="justified"/>
+        <enum-name-table-element value="4" name="natural"/>
       </enum-name-table>
     </style-attribute>
-    <style-attribute version="0" key="paragraph-base-writing-direction" group="段落" name="文章の方向" class="enum">
+    <style-attribute version="0" key="paragraph-base-writing-direction" group="paragraph" name="writing direction" class="enum">
       <enum-name-table default-value="-1">
-        <enum-name-table-element value="-1" name="natural" display-name="標準"/>
-        <enum-name-table-element value="0" name="left-to-right" display-name="左から右"/>
-        <enum-name-table-element value="1" name="right-to-left" display-name="右から左"/>
+        <enum-name-table-element value="-1" name="natural"/>
+        <enum-name-table-element value="0" name="left-to-right"/>
+        <enum-name-table-element value="1" name="right-to-left"/>
       </enum-name-table>
     </style-attribute>
-    <style-attribute version="0" key="paragraph-line-height-multiple" group="段落" name="行の高さ（倍数）" class="number" integral="0" min="0" max="1000">0</style-attribute>
-    <style-attribute version="0" key="paragraph-minimum-line-height" group="段落" name="最小の行の高さ" class="number" integral="1" min="-1000" max="1000">0</style-attribute>
-    <style-attribute version="0" key="paragraph-spacing" group="段落" name="間隔" class="number" integral="1" min="-1000" max="1000">0</style-attribute>
-    <style-attribute version="0" key="paragraph-tab-stop-interval" group="段落" name="タブ間隔" class="number" integral="0" min="0" max="1000">0</style-attribute>
-    <style-attribute version="0" key="text-background-color" group="テキスト" name="背景色" class="color">
+    <style-attribute version="0" key="paragraph-line-height-multiple" group="paragraph" name="line height multiple" class="number" integral="0" min="0" max="1000">0</style-attribute>
+    <style-attribute version="0" key="paragraph-minimum-line-height" group="paragraph" name="minimum line height" class="number" integral="1" min="-1000" max="1000">0</style-attribute>
+    <style-attribute version="0" key="paragraph-spacing" group="paragraph" name="spacing" class="number" integral="1" min="-1000" max="1000">0</style-attribute>
+    <style-attribute version="0" key="paragraph-tab-stop-interval" group="paragraph" name="tab stop interval" class="number" integral="0" min="0" max="1000">0</style-attribute>
+    <style-attribute version="0" key="text-background-color" group="text" name="background color" class="color">
       <color space="gg22" w="0" a="0"/>
     </style-attribute>
   </style-attribute-registry>
   <named-styles>
-    <named-style id="aGft5oao-Us" name="Heading 1" display-order="0" display-name="見出し 1">
+    <named-style id="aGft5oao-Us" name="Heading 1" display-order="0">
       <style>
         <value key="font-size">28</value>
       </style>
     </named-style>
-    <named-style id="aC3kBDeTc6K" name="Heading 2" display-order="1" display-name="見出し 2">
+    <named-style id="aC3kBDeTc6K" name="Heading 2" display-order="1">
       <style>
         <value key="font-size">20</value>
         <value key="text-background-color">
@@ -53,7 +53,7 @@
         </value>
       </style>
     </named-style>
-    <named-style id="h194vy0Z6dD" name="Heading 3" display-order="2" display-name="見出し 3">
+    <named-style id="h194vy0Z6dD" name="Heading 3" display-order="2">
       <style>
         <inherited-style name="Heading 2" idref="aC3kBDeTc6K"/>
       </style>
@@ -136,24 +136,6 @@
       </style>
     </named-style>
   </named-styles>
-  <attachments>
-    <attachment id="att6" href="attachments/ペーストしたグラフィック.png" type="image"/>
-    <attachment id="att5" href="attachments/ペーストしたグラフィック.tiff" type="image"/>
-    <attachment id="att7" href="attachments/ペーストしたグラフィック_1.png" type="image"/>
-    <attachment id="att0" href="attachments/ペーストしたグラフィック_1.tiff" type="image"/>
-    <attachment id="att8" href="attachments/ペーストしたグラフィック_2.png" type="image"/>
-    <attachment id="att1" href="attachments/ペーストしたグラフィック_2.tiff" type="image"/>
-    <attachment id="att9" href="attachments/ペーストしたグラフィック_3.png" type="image"/>
-    <attachment id="att2" href="attachments/ペーストしたグラフィック_3.tiff" type="image"/>
-    <attachment id="att10" href="attachments/ペーストしたグラフィック_4.png" type="image"/>
-    <attachment id="att3" href="attachments/ペーストしたグラフィック_4.tiff" type="image"/>
-    <attachment id="att11" href="attachments/ペーストしたグラフィック_5.png" type="image"/>
-    <attachment id="att4" href="attachments/ペーストしたグラフィック_5.tiff" type="image"/>
-    <attachment id="att12" href="attachments/ペーストしたグラフィック_6.png" type="image"/>
-    <attachment id="att13" href="attachments/ペーストしたグラフィック_7.png" type="image"/>
-    <attachment id="att14" href="attachments/ペーストしたグラフィック_8.png" type="image"/>
-    <attachment id="att15" href="attachments/ペーストしたグラフィック_9.png" type="image"/>
-  </attachments>
   <settings>
     <base-style>
       <style>
@@ -178,7 +160,7 @@
     </vertical-grid-color>
     <print-info>
       <print-info-key name="NSPaperName" type="string">na-letter</print-info-key>
-      <print-info-key name="NSPaperSize" type="size">{612, 792}</print-info-key>
+      <print-info-key name="NSPaperSize" type="size">{611.99997901916504, 792}</print-info-key>
       <print-info-key name="OOScaleDocumentToFitPageWidth" type="boolean">true</print-info-key>
     </print-info>
   </settings>
@@ -342,7 +324,7 @@
         <p>
           <run>
             <style>
-              <inherited-style name="見出し 2" idref="aC3kBDeTc6K"/>
+              <inherited-style name="Heading 2" idref="aC3kBDeTc6K"/>
               <value key="paragraph-line-height-multiple">0</value>
             </style>
             <lit>12.2 航空交通管制システム</lit>
@@ -1496,7 +1478,7 @@
         <p>
           <run>
             <style>
-              <inherited-style name="見出し 2" idref="aC3kBDeTc6K"/>
+              <inherited-style name="Heading 2" idref="aC3kBDeTc6K"/>
               <value key="font-family">Helvetica</value>
               <value key="paragraph-base-writing-direction">natural</value>
               <value key="paragraph-line-height-multiple">0</value>
@@ -1513,7 +1495,7 @@
         <p>
           <run>
             <style>
-              <inherited-style name="見出し 2" idref="aC3kBDeTc6K"/>
+              <inherited-style name="Heading 2" idref="aC3kBDeTc6K"/>
               <value key="font-family">Helvetica</value>
               <value key="paragraph-base-writing-direction">natural</value>
               <value key="paragraph-line-height-multiple">0</value>
@@ -1734,13 +1716,7 @@
     <item id="basbxHXHDVn" parent-id="cP3dIzv4B1N" rank="">
       <checkbox>unchecked</checkbox>
       <entry/>
-      <text>
-        <p>
-          <run>
-            <lit><cell refid="att2" expanded="yes" name="ペーストしたグラフィック_3"/></lit>
-          </run>
-        </p>
-      </text>
+      <entry/>
     </item>
     <item id="bdwgkLwKnNw" parent-id="dtiZRtUJZQd" rank="0011">
       <style>
@@ -2026,7 +2002,7 @@
         <p>
           <run>
             <style>
-              <inherited-style name="見出し 2" idref="aC3kBDeTc6K"/>
+              <inherited-style name="Heading 2" idref="aC3kBDeTc6K"/>
               <value key="font-family">Helvetica</value>
               <value key="paragraph-base-writing-direction">natural</value>
               <value key="paragraph-line-height-multiple">0</value>
@@ -2062,7 +2038,7 @@
         <p>
           <run>
             <style>
-              <inherited-style name="見出し 2" idref="aC3kBDeTc6K"/>
+              <inherited-style name="Heading 2" idref="aC3kBDeTc6K"/>
               <value key="font-family">Helvetica</value>
               <value key="paragraph-base-writing-direction">natural</value>
               <value key="paragraph-line-height-multiple">0</value>
@@ -2093,13 +2069,7 @@
     <item id="cwblP5ACZ-5" parent-id="crgTDEyHYGW" rank="">
       <checkbox>unchecked</checkbox>
       <entry/>
-      <text>
-        <p>
-          <run>
-            <lit><cell refid="att4" expanded="yes" name="ペーストしたグラフィック_5"/></lit>
-          </run>
-        </p>
-      </text>
+      <entry/>
     </item>
     <item id="d2_qIkuj9L5" parent-id="dtiZRtUJZQd" rank="0010">
       <style>
@@ -2107,13 +2077,7 @@
       </style>
       <checkbox>unchecked</checkbox>
       <entry/>
-      <text>
-        <p>
-          <run>
-            <lit><cell refid="att11" expanded="yes" name="ペーストしたグラフィック_5"/></lit>
-          </run>
-        </p>
-      </text>
+      <entry/>
     </item>
     <item id="d4Ht8z2WvQt" parent-id="hwdHtRvLkMf" rank="0003">
       <checkbox>unchecked</checkbox>
@@ -2136,7 +2100,7 @@
         <p>
           <run>
             <style>
-              <inherited-style name="見出し 2" idref="aC3kBDeTc6K"/>
+              <inherited-style name="Heading 2" idref="aC3kBDeTc6K"/>
               <value key="font-family">Helvetica</value>
               <value key="paragraph-base-writing-direction">natural</value>
               <value key="paragraph-line-height-multiple">0</value>
@@ -2153,7 +2117,7 @@
         <p>
           <run>
             <style>
-              <inherited-style name="見出し 2" idref="aC3kBDeTc6K"/>
+              <inherited-style name="Heading 2" idref="aC3kBDeTc6K"/>
               <value key="font-family">Helvetica</value>
               <value key="paragraph-base-writing-direction">natural</value>
               <value key="paragraph-line-height-multiple">0</value>
@@ -2527,7 +2491,7 @@
         <p>
           <run>
             <style>
-              <inherited-style name="見出し 2" idref="aC3kBDeTc6K"/>
+              <inherited-style name="Heading 2" idref="aC3kBDeTc6K"/>
               <value key="font-family">Helvetica</value>
               <value key="paragraph-base-writing-direction">natural</value>
               <value key="paragraph-line-height-multiple">0</value>
@@ -2653,13 +2617,7 @@
       </style>
       <checkbox>unchecked</checkbox>
       <entry/>
-      <text>
-        <p>
-          <run>
-            <lit><cell refid="att14" expanded="yes" name="ペーストしたグラフィック_8"/></lit>
-          </run>
-        </p>
-      </text>
+      <entry/>
     </item>
     <item id="eGwBAqar8bY" parent-id="e3ONG1BaiXM" rank="0007">
       <checkbox>unchecked</checkbox>
@@ -2673,7 +2631,7 @@
         <p>
           <run>
             <style>
-              <inherited-style name="見出し 2" idref="aC3kBDeTc6K"/>
+              <inherited-style name="Heading 2" idref="aC3kBDeTc6K"/>
               <value key="font-family">Helvetica</value>
               <value key="paragraph-base-writing-direction">natural</value>
               <value key="paragraph-line-height-multiple">0</value>
@@ -2756,7 +2714,7 @@
         <p>
           <run>
             <style>
-              <inherited-style name="見出し 2" idref="aC3kBDeTc6K"/>
+              <inherited-style name="Heading 2" idref="aC3kBDeTc6K"/>
             </style>
             <lit>12.2.2 Analysis</lit>
           </run>
@@ -2783,13 +2741,7 @@
       </style>
       <checkbox>unchecked</checkbox>
       <entry/>
-      <text>
-        <p>
-          <run>
-            <lit><cell refid="att12" expanded="yes" name="ペーストしたグラフィック_6"/></lit>
-          </run>
-        </p>
-      </text>
+      <entry/>
     </item>
     <item id="eQGdznwOgC6" parent-id="pg3vlA_iDJO" rank="000a">
       <checkbox>unchecked</checkbox>
@@ -2875,14 +2827,7 @@
             <lit>Figure12.1 Air-traffic control subsysytem showing major components: airspaces(e,g, NS-2, RA-1, RWY-1), controllers(Roger, Igor, Keis)</lit>
           </run>
         </p>
-        <p>
-          <run>
-            <style>
-              <value key="font-size">20</value>
-            </style>
-            <lit><cell refid="att0" expanded="yes" name="ペーストしたグラフィック_1"/></lit>
-          </run>
-        </p>
+        <p/>
       </text>
     </item>
     <item id="ekMAg5n2bHJ" parent-id="llNf47t-f4A" rank="0002">
@@ -3623,13 +3568,7 @@
     <item id="f6F9YH-IKdt" parent-id="drwksrbgulW" rank="">
       <checkbox>unchecked</checkbox>
       <entry/>
-      <text>
-        <p>
-          <run>
-            <lit><cell refid="att1" expanded="yes" name="ペーストしたグラフィック_2"/></lit>
-          </run>
-        </p>
-      </text>
+      <entry/>
     </item>
     <item id="f6cvQFhUPv4" parent-id="isVYt5lXuo7" rank="0005">
       <checkbox>unchecked</checkbox>
@@ -3680,13 +3619,7 @@
     <item id="fAAGQ0smHcE" parent-id="dtiZRtUJZQd" rank="0008">
       <checkbox>unchecked</checkbox>
       <entry/>
-      <text>
-        <p>
-          <run>
-            <lit><cell refid="att10" expanded="yes" name="ペーストしたグラフィック_4"/></lit>
-          </run>
-        </p>
-      </text>
+      <entry/>
     </item>
     <item id="fBNPzTi-HnF" parent-id="e3ONG1BaiXM" rank="0002">
       <checkbox>unchecked</checkbox>
@@ -4523,7 +4456,7 @@
         <p>
           <run>
             <style>
-              <inherited-style name="見出し 2" idref="aC3kBDeTc6K"/>
+              <inherited-style name="Heading 2" idref="aC3kBDeTc6K"/>
               <value key="font-family">Helvetica</value>
               <value key="paragraph-base-writing-direction">natural</value>
               <value key="paragraph-line-height-multiple">0</value>
@@ -4728,24 +4661,12 @@
     <item id="h3FlcBMQx1F" parent-id="aNONZP0GuDI" rank="0011">
       <checkbox>unchecked</checkbox>
       <entry/>
-      <text>
-        <p>
-          <run>
-            <lit><cell refid="att7" expanded="yes" name="ペーストしたグラフィック_1"/></lit>
-          </run>
-        </p>
-      </text>
+      <entry/>
     </item>
     <item id="hBGcXxmT3-k" parent-id="dtiZRtUJZQd" rank="0002">
       <checkbox>unchecked</checkbox>
       <entry/>
-      <text>
-        <p>
-          <run>
-            <lit><cell refid="att8" expanded="yes" name="ペーストしたグラフィック_2"/></lit>
-          </run>
-        </p>
-      </text>
+      <entry/>
     </item>
     <item id="hIg7f82hVmv" parent-id="keewhekarxK" rank="000a">
       <checkbox>unchecked</checkbox>
@@ -4788,7 +4709,7 @@
         <p>
           <run>
             <style>
-              <inherited-style name="見出し 2" idref="aC3kBDeTc6K"/>
+              <inherited-style name="Heading 2" idref="aC3kBDeTc6K"/>
               <value key="font-family">Helvetica</value>
               <value key="paragraph-base-writing-direction">natural</value>
               <value key="paragraph-line-height-multiple">0</value>
@@ -4804,13 +4725,7 @@
       </style>
       <checkbox>unchecked</checkbox>
       <entry/>
-      <text>
-        <p>
-          <run>
-            <lit><cell refid="att13" expanded="yes" name="ペーストしたグラフィック_7"/></lit>
-          </run>
-        </p>
-      </text>
+      <entry/>
     </item>
     <item id="hoXAZRJNzIC" parent-id="bYhfX9XVY57" rank="0006">
       <checkbox>unchecked</checkbox>
@@ -4819,7 +4734,7 @@
         <p>
           <run>
             <style>
-              <inherited-style name="見出し 2" idref="aC3kBDeTc6K"/>
+              <inherited-style name="Heading 2" idref="aC3kBDeTc6K"/>
               <value key="font-family">Helvetica</value>
               <value key="paragraph-base-writing-direction">natural</value>
               <value key="paragraph-line-height-multiple">0</value>
@@ -4869,7 +4784,7 @@
         <p>
           <run>
             <style>
-              <inherited-style name="見出し 2" idref="aC3kBDeTc6K"/>
+              <inherited-style name="Heading 2" idref="aC3kBDeTc6K"/>
               <value key="paragraph-line-height-multiple">0</value>
             </style>
             <lit>12.2.2分析</lit>
@@ -6239,7 +6154,7 @@
         <p>
           <run>
             <style>
-              <inherited-style name="見出し 3" idref="h194vy0Z6dD"/>
+              <inherited-style name="Heading 3" idref="h194vy0Z6dD"/>
             </style>
             <lit>12.2.1 Description</lit>
           </run>
@@ -6349,7 +6264,7 @@
         <p>
           <run>
             <style>
-              <inherited-style name="見出し 2" idref="aC3kBDeTc6K"/>
+              <inherited-style name="Heading 2" idref="aC3kBDeTc6K"/>
               <value key="font-family">Helvetica</value>
               <value key="paragraph-base-writing-direction">natural</value>
               <value key="paragraph-line-height-multiple">0</value>
@@ -8029,24 +7944,7 @@
             <lit>Figure 12.6: An airspace as its controller might see it via a monitor. </lit>
           </run>
         </p>
-        <p>
-          <run>
-            <style>
-              <value key="font-family">Times</value>
-              <value key="font-fill">
-                <color r="0" g="0" b="0" archive="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"/>
-              </value>
-              <value key="font-size">22</value>
-              <value key="kerning-adjust">0</value>
-              <value key="paragraph-alignment">left</value>
-              <value key="paragraph-line-height-multiple">0</value>
-              <value key="paragraph-minimum-line-height">18</value>
-              <value key="paragraph-spacing">12</value>
-              <value key="paragraph-tab-stop-interval">36</value>
-            </style>
-            <lit><cell refid="att5" expanded="yes" name="ペーストしたグラフィック"/></lit>
-          </run>
-        </p>
+        <p/>
       </text>
     </item>
     <item id="kBt0Rm_uOfi" parent-id="e3ONG1BaiXM" rank="0004">
@@ -8196,7 +8094,7 @@
         <p>
           <run>
             <style>
-              <inherited-style name="見出し 2" idref="aC3kBDeTc6K"/>
+              <inherited-style name="Heading 2" idref="aC3kBDeTc6K"/>
             </style>
             <lit>12.1 Introduction</lit>
           </run>
@@ -8225,13 +8123,7 @@
     <item id="kLWjF04v1z6" parent-id="dWohB_T9-i0" rank="">
       <checkbox>unchecked</checkbox>
       <entry/>
-      <text>
-        <p>
-          <run>
-            <lit><cell refid="att3" expanded="yes" name="ペーストしたグラフィック_4"/></lit>
-          </run>
-        </p>
-      </text>
+      <entry/>
     </item>
     <item id="kNf_jSizogG" parent-id="keewhekarxK" rank="0002">
       <checkbox>unchecked</checkbox>
@@ -9012,7 +8904,7 @@
         <p>
           <run>
             <style>
-              <inherited-style name="見出し 2" idref="aC3kBDeTc6K"/>
+              <inherited-style name="Heading 2" idref="aC3kBDeTc6K"/>
             </style>
             <lit>12.2 The air-traffic control system</lit>
           </run>
@@ -9180,7 +9072,7 @@
         <p>
           <run>
             <style>
-              <inherited-style name="見出し 2" idref="aC3kBDeTc6K"/>
+              <inherited-style name="Heading 2" idref="aC3kBDeTc6K"/>
               <value key="font-family">Helvetica</value>
               <value key="paragraph-base-writing-direction">natural</value>
               <value key="paragraph-line-height-multiple">0</value>
@@ -9224,13 +9116,7 @@
       </style>
       <checkbox>unchecked</checkbox>
       <entry/>
-      <text>
-        <p>
-          <run>
-            <lit><cell refid="att15" expanded="yes" name="ペーストしたグラフィック_9"/></lit>
-          </run>
-        </p>
-      </text>
+      <entry/>
     </item>
     <item id="m27eP5Q6NOD" parent-id="isVYt5lXuo7" rank="">
       <checkbox>unchecked</checkbox>
@@ -9484,7 +9370,7 @@
         <p>
           <run>
             <style>
-              <inherited-style name="見出し 2" idref="aC3kBDeTc6K"/>
+              <inherited-style name="Heading 2" idref="aC3kBDeTc6K"/>
               <value key="paragraph-line-height-multiple">0</value>
             </style>
             <lit>12.2 </lit>
@@ -10430,7 +10316,7 @@
         <p>
           <run>
             <style>
-              <inherited-style name="見出し 2" idref="aC3kBDeTc6K"/>
+              <inherited-style name="Heading 2" idref="aC3kBDeTc6K"/>
               <value key="font-family">Helvetica</value>
               <value key="paragraph-base-writing-direction">natural</value>
               <value key="paragraph-line-height-multiple">0</value>
@@ -10499,13 +10385,7 @@
     <item id="nY0IHsRTX8o" parent-id="dtiZRtUJZQd" rank="0005">
       <checkbox>unchecked</checkbox>
       <entry/>
-      <text>
-        <p>
-          <run>
-            <lit><cell refid="att9" expanded="yes" name="ペーストしたグラフィック_3"/></lit>
-          </run>
-        </p>
-      </text>
+      <entry/>
     </item>
     <item id="naj6mDaRIL-" parent-id="kEehi96eYd9" rank="0002">
       <checkbox>unchecked</checkbox>
@@ -10532,7 +10412,7 @@
         <p>
           <run>
             <style>
-              <inherited-style name="見出し 2" idref="aC3kBDeTc6K"/>
+              <inherited-style name="Heading 2" idref="aC3kBDeTc6K"/>
               <value key="font-family">Helvetica</value>
               <value key="font-size">18</value>
               <value key="paragraph-base-writing-direction">natural</value>
@@ -10687,13 +10567,7 @@
     <item id="oeYkrZWPvyI" parent-id="aNONZP0GuDI" rank="0010">
       <checkbox>unchecked</checkbox>
       <entry/>
-      <text>
-        <p>
-          <run>
-            <lit><cell refid="att6" expanded="yes" name="ペーストしたグラフィック"/></lit>
-          </run>
-        </p>
-      </text>
+      <entry/>
     </item>
     <item id="ohQTYNYTiy2" parent-id="dtiZRtUJZQd" rank="0009">
       <checkbox>unchecked</checkbox>
