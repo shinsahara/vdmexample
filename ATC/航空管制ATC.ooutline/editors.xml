@@ -1,10 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <?xml-model href="http://www.omnigroup.com/namespace/OmniOutliner/xmloutline-editors-v1.rng" type="application/xml" schematypens="http://relaxng.org/ns/structure/1.0?>
 <editors xmlns="http://www.omnigroup.com/namespace/OmniOutliner/editors/v1">
-  <editor content-size="{1047, 938}" scroll-position="{0, 9480}" column-titles-display-mode="auto" auto-size-outline-column="yes">
+  <editor content-size="{1047, 1118}" scroll-position="{0, 13920}" column-titles-display-mode="auto" auto-size-outline-column="yes">
     <sidebar visible="yes" width="185"/>
-    <column-states columns-id="a0_CycPVzoP">
-      <column-state column-id="iDwlrpoiYZI" width="32" summary="state"/>
+    <column-states columns-id="nh_qgHoS5_j">
+      <column-state column-id="hIj6U_9UOM1" width="32" summary="state"/>
       <column-state column-id="dTpN3JwYpBn" width="18"/>
       <column-state column-id="jFqHUGd_Dg1" width="1026"/>
     </column-states>
@@ -58,8 +58,12 @@
       <item item-id="oioNWrDk9Ll" expanded="yes"/>
       <item item-id="pg3vlA_iDJO" expanded="yes"/>
     </item-states>
-    <focused-items>
-      <item item-id="n9Cr4BPjkMA"/>
-    </focused-items>
+    <selected-items>
+      <item item-id="oiMpzoR7tFW"/>
+    </selected-items>
+    <selected-columns>
+      <column-ref idref="jFqHUGd_Dg1"/>
+    </selected-columns>
+    <selected-characters range="{35, 0}"/>
   </editor>
 </editors>
