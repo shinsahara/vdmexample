@@ -17,7 +17,8 @@ inv mk_ATC(cs,con,cap,loc) ==
   dom con subset dom cap and
 	rng loc subset dom con and
 	forall s in set rng loc & numOfAircraft(s, loc) <= cap(s)
-init σ == σ.onduty = { } and σ.capacity = {|->}
+--init σ == σ.onduty = { } and σ.capacity = {|->}
+init σ == σ = mk_ATC({ },{|->},{|->},{|->})
 end;
 
 values 
