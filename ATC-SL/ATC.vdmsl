@@ -17,7 +17,6 @@ inv mk_ATC(cs,con,cap,loc) ==
   dom con subset dom cap and
 	rng loc subset dom con and
 	forall s in set rng loc & numOfAircraft(s, loc) <= cap(s)
---init σ == σ.onduty = { } and σ.capacity = {|->}
 init σ == σ = mk_ATC({ },{|->},{|->},{|->})
 end;
 
@@ -37,6 +36,89 @@ controllerOf : Aircraft * ATC -> Controller
 controllerOf(p, δ) == δ.control(δ.location(p))
 pre isKnown(p, δ);
 
-operations 
--- TODO Define operations here
+operations
+Commission (s:Space, n:nat)
+ext 
+	wr capacity : map Space to nat
+pre s not in set dom capacity
+post capacity = capacity~ ++ {s |-> n};
+
+ResetCapacity (s: Space, n: nat)
+ext rd location : map Aircraft to Space
+		wr capacity : map Space to nat
+pre s in set dom capacity and numOfAircraft(s,location) <= n
+post capacity = capacity~ ++ {s |-> n};
+
+Decommission (s: Space)
+ext rd control : inmap Space to Controller
+		wr capacity : map Space to nat
+pre s in set (dom capacity \ dom control)
+post capacity = {s} <-: capacity~;
+
+ClockOn (c: Controller)
+ext 
+	wr onduty : set of Controller
+pre c not in set onduty
+post onduty = onduty~ union {c};
+
+ClockOff (c: Controller)
+ext wr onduty : set of Controller
+		rd control : inmap Space to Controller 
+pre c in set onduty \ rng control
+post onduty = onduty~ \ {c};
+
+Activate (s:Space, c:Controller)
+ext rd onduty : set of Controller
+		wr control : inmap Space to Controller 
+		rd capacity : map Space to nat
+pre 
+	s in set  (dom capacity \ dom control) and 
+	rng control <> onduty 
+post 
+	control = control~ ++ {s |-> c};
+
+Reassign (s: Space, c: Controller)
+ext rd onduty : set of Controller
+		wr control : inmap Space to Controller 
+pre 
+	s in set dom control and 
+	rng control <> onduty
+post 
+	control = control~ ++ {s |-> c} and 
+	c <> control~(s);
+
+Deactivate (s: Space)
+ext wr control : inmap Space to Controller
+		rd location : map Aircraft to Space 
+pre s in set (dom control \ rng location)
+post control = {s} <-: control~;
+
+AddFlight (p: Aircraft, s: Space)
+ext rd control : inmap Space to Controller 
+		rd capacity : map Space to nat
+		wr location : map Aircraft to Space
+pre 
+	s in set dom control and 
+	p not in set dom location and 
+	numOfAircraft(s, location) < capacity(s) 
+post 
+	location = location~ ++ {p |-> s};
+
+Handover (p: Aircraft, s: Space)
+ext rd control : inmap Space to Controller
+		rd capacity : map Space to nat
+		wr location : map Aircraft to Space
+pre 
+	s in set dom control and
+	p in set dom location and
+	location(p) <> s and
+	numOfAircraft(s, location) < capacity(s) 
+post 
+	location = location~ ++ {p |-> s};
+	
+RemoveFlight (p: Aircraft)
+ext wr location : map Aircraft to Space
+pre p in set dom location
+post location = {p} <-: location~;
+
 end ATCMODULE
