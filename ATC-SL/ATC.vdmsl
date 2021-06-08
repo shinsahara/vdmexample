@@ -1,124 +1,158 @@
-module ATCMODULE
+module ATC
+
+imports 
+	from ATC_TERMINLOGY 
+		types
+			Space renamed 空域;
+			Aircraft renamed 航空機;
+			Controller renamed 管制官;
+		functions
+			numOfAircraft renamed 航空機数;
+			isactivated renamed 活性化された;
+			isKnown renamed 既知である;
+			controllerOf renamed 担当管制官;
+		operations
+			Commission renamed 委託する;
+			ResetCapacity renamed  許容数を設定し直す;
+			Decommission renamed 委託をやめる;
+			ClockOn renamed 出勤する;
+			ClockOff renamed 退勤する;
+			Activate renamed 活性化する;
+			Reassign renamed 再割り当てする;
+			Deactivate renamed 非活性化する;
+			AddFlight renamed フライトを追加する;
+			Handover renamed 空域を切り替える;
+			RemoveFlight renamed フライトを削除する;
+
 exports all
 definitions 
 
-types 
-	Space = token;
-	Aircraft = token;
-	Controller = token;
-
 state ATC of
-	onduty : set of Controller
-	control : inmap Space to Controller
-	capacity : map Space to nat
-	location : map Aircraft to Space
+	onduty : set of 管制官
+	control : inmap 空域 to 管制官
+	capacity : map 空域 to nat
+	location : map 航空機 to 空域
 inv mk_ATC(cs,con,cap,loc) ==
 	rng con subset cs and 
   dom con subset dom cap and
 	rng loc subset dom con and
-	forall s in set rng loc & numOfAircraft(s, loc) <= cap(s)
+	forall s in set rng loc & 航空機数(s, loc) <= cap(s)
 init σ == σ = mk_ATC({ },{|->},{|->},{|->})
-end;
+end
 
-values 
--- TODO Define values here
-functions 
-numOfAircraft : Space * map Aircraft to Space -> nat
-numOfAircraft(s, loc) == card dom (loc :> {s});
-
-isactivated : Space * ATC -> bool
-isactivated(s, δ) == s in set dom (δ.control);
-
-isKnown : Aircraft * ATC -> bool
-isKnown(p, δ) == p in set dom (δ.location);
-
-controllerOf : Aircraft * ATC -> Controller
-controllerOf(p, δ) == δ.control(δ.location(p))
-pre isKnown(p, δ);
+functions
+航空機数 : 空域 * map 航空機 to 空域 -> nat
+航空機数(s, loc) == card dom (loc :> {s});
 
 operations
-Commission (s:Space, n:nat)
-ext 
-	wr capacity : map Space to nat
-pre s not in set dom capacity
+委託する : 空域 * nat ==> map 空域 to nat
+委託する (s,n) == (
+	capacity := capacity ++ {s |-> n};
+	return capacity
+);
+
+許容数を設定し直す : 空域 * nat ==> map 空域 to nat
+許容数を設定し直す(s,n) == (
+	capacity := capacity ++ {s |-> n};
+	return capacity
+)
+pre s in set dom capacity and 航空機数(s,location) <= n
 post capacity = capacity~ ++ {s |-> n};
 
-ResetCapacity (s: Space, n: nat)
-ext rd location : map Aircraft to Space
-		wr capacity : map Space to nat
-pre s in set dom capacity and numOfAircraft(s,location) <= n
-post capacity = capacity~ ++ {s |-> n};
-
-Decommission (s: Space)
-ext rd control : inmap Space to Controller
-		wr capacity : map Space to nat
-pre s in set (dom capacity \ dom control)
-post capacity = {s} <-: capacity~;
-
-ClockOn (c: Controller)
-ext 
-	wr onduty : set of Controller
+出勤する : 管制官 ==> set of 管制官
+出勤する(c) == (
+	onduty := onduty union {c};
+	return onduty
+)
 pre c not in set onduty
 post onduty = onduty~ union {c};
 
-ClockOff (c: Controller)
-ext wr onduty : set of Controller
-		rd control : inmap Space to Controller 
+退勤する : 管制官 ==> set of 管制官
+退勤する (c) == (
+	onduty := onduty \ {c};
+	return onduty
+)
 pre c in set onduty \ rng control
 post onduty = onduty~ \ {c};
 
-Activate (s:Space, c:Controller)
-ext rd onduty : set of Controller
-		wr control : inmap Space to Controller 
-		rd capacity : map Space to nat
-pre 
-	s in set  (dom capacity \ dom control) and 
-	rng control <> onduty 
-post 
-	control = control~ ++ {s |-> c};
+-- Test part.
+values
+	vATC1 = 
+	mk_ATC(
+		{mk_token("佐原"), mk_token("小田"), mk_token("酒匂")}, 
+		{mk_token("横田") |-> mk_token("小田"), mk_token("嘉手納") |-> mk_token("酒匂")},
+		{mk_token("嘉手納") |-> 5, mk_token("横田") |-> 4}, 
+		{|->}
+	);
 
-Reassign (s: Space, c: Controller)
-ext rd onduty : set of Controller
-		wr control : inmap Space to Controller 
-pre 
-	s in set dom control and 
-	rng control <> onduty
-post 
-	control = control~ ++ {s |-> c} and 
-	c <> control~(s);
+operations
+test01 : () ==> bool * bool * bool * bool
+test01() == (
+	def m1 = 委託する(mk_token("嘉手納"), 2);
+			r1 = m1(mk_token("嘉手納")) = 2;
+			m2 = 許容数を設定し直す(mk_token("嘉手納"), 5);
+			r2 = m2(mk_token("嘉手納")) = 5;
+			m3 = 委託する(mk_token("横田"), 3);
+			r3 = m3(mk_token("横田")) = 3;
+			r4 = 航空機数(mk_token("横田"), 
+							{mk_token("F35_1") |-> mk_token("横田"), mk_token("F18_1") |-> mk_token("横田")}
+						) = 2
+	in
+		return mk_(r1, r2, r3, r4);
+);
 
-Deactivate (s: Space)
-ext wr control : inmap Space to Controller
-		rd location : map Aircraft to Space 
-pre s in set (dom control \ rng location)
-post control = {s} <-: control~;
-
-AddFlight (p: Aircraft, s: Space)
-ext rd control : inmap Space to Controller 
-		rd capacity : map Space to nat
-		wr location : map Aircraft to Space
-pre 
-	s in set dom control and 
-	p not in set dom location and 
-	numOfAircraft(s, location) < capacity(s) 
-post 
-	location = location~ ++ {p |-> s};
-
-Handover (p: Aircraft, s: Space)
-ext rd control : inmap Space to Controller
-		rd capacity : map Space to nat
-		wr location : map Aircraft to Space
-pre 
-	s in set dom control and
-	p in set dom location and
-	location(p) <> s and
-	numOfAircraft(s, location) < capacity(s) 
-post 
-	location = location~ ++ {p |-> s};
+traces
+T0: let aOnduty in set {mk_token("佐原"), mk_token("小田"), mk_token("酒匂")} in (
+	出勤する(aOnduty); 退勤する(aOnduty);
+) {2}
 	
-RemoveFlight (p: Aircraft)
-ext wr location : map Aircraft to Space
-pre p in set dom location
-post location = {p} <-: location~;
+/*
+		let m = v航空管制システム0.許容数を設定し直す(mk_token("横田"), 4) in
+		m(mk_token("横田")) = 4
+	);
+	assertTrue(
+		"\ttest01 航空機数が想定した2にならない。 \n",
+		v航空管制システム0.numOfAircraft(mk_token("横田"), {mk_token("F35_1") |-> mk_token("横田"), mk_token("F18_1") |-> mk_token("横田")})  = 2
+	);
+	v航空管制システム0.出勤する(mk_token("小田"));
+	assertTrue(
+		"\ttest01 管制官小田が出勤できない。 \n",
+		mk_token("小田") in set v航空管制システム0.s当直集合
+	);
+	assertTrue(
+		"\ttest01 横田空域で、小田管制官を活性化できない。 \n",
+		v航空管制システム0.活性化する(mk_token("横田"), mk_token("小田")) = mk_token("小田")
+	);
+	v航空管制システム0.フライトを追加する (mk_token("F35_1"), mk_token("横田"));
+	assertTrue(
+		"\ttest01 横田空域にフライトF35_1を追加できない。 \n",
+		v航空管制システム0.s位置(mk_token("F35_1")) = mk_token("横田")
+	);
+	v航空管制システム0.出勤する(mk_token("佐原"));
+	assertTrue(
+		"\ttest01 管制官佐原が出勤できない。 \n",
+		mk_token("佐原") in set v航空管制システム0.s当直集合
+	);
+	assertTrue(
+		"\ttest01 嘉手納空域で、佐原管制官を活性化できない。 \n",
+		v航空管制システム0.活性化する(mk_token("嘉手納"), mk_token("佐原")) = mk_token("佐原")
+	);
+	v航空管制システム0.空域を切り替える (mk_token("F35_1"), mk_token("嘉手納"));
+	v航空管制システム0.フライトを削除する (mk_token("F35_1"));
+	assertTrue(
+		"\ttest01 嘉手納空域でフライトF35_1を削除できない。 \n",
+		mk_token("F35_1") not in set rng v航空管制システム0.s位置
+	);
+	v航空管制システム0.非活性化する(mk_token("嘉手納"));
+	v航空管制システム0.出勤する(mk_token("酒匂"));
+	assertTrue(
+		"\ttest01 嘉手納空域で、酒匂管制官を活性化できない。 \n",
+		v航空管制システム0.活性化する(mk_token("嘉手納"), mk_token("酒匂")) = mk_token("酒匂")
+	);
+	assertTrue(
+		"\ttest01 嘉手納空域で佐原管制官を再割当できない。 \n",
+		v航空管制システム0.再割り当て(mk_token("嘉手納"), mk_token("佐原")) = mk_token("佐原")
+	);
+	*/
 
-end ATCMODULE
+end ATC
