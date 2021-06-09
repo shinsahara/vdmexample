@@ -1,4 +1,5 @@
-module ATC
+module ATC  -- Air-Traffic Control System concreate model from the book "ProofinVDM."
+-- This is the top-level executable specification of the ATC subsystem,
 
 imports 
 	from ATC_TERMINLOGY 
@@ -130,8 +131,7 @@ post
 	control = control~ ++ {s |-> c} and 
 	c <> control~(s);
 
--- Unit test.
-
+-- Unit test with the test result.
 operations
 test01 : () ==> seq of bool
 test01() == (
@@ -155,9 +155,9 @@ test01() == (
 		return r;
 );
 
+-- test cases by using debugger
 test02 : () ==> ATC
 test02() == (
-	dcl cnt : inmap Space to Controller := {|->};
 	onduty := ClockOn(mk_token("Sahara"));
 	onduty := ClockOff (mk_token("Sahara"));
 	onduty := ClockOn(mk_token("Sahara"));

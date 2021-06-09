@@ -1,4 +1,5 @@
-module ATC_TERMINLOGY
+module ATC_TERMINLOGY -- Air-Traffic Control (ATC) System abstract model from the book "ProofinVDM."
+-- This is the top-level specification of the ATC subsystem,
 exports all
 definitions 
 
