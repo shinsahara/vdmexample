@@ -1,0 +1,49 @@
+\section{ガードコマンド\_利用者クラス}
+利用者のガードコマンド。
+
+\begin{vdm_al}
+class ガードコマンド_利用者 is subclass of ガードコマンド
+instance variables
+public s場所ID : 場所グラフ`場所ID;
+
+operations
+public ガードコマンド_利用者 : 場所グラフ`場所ID ==> ガードコマンド_利用者
+ガードコマンド_利用者(a場所ID) == (
+	s場所ID := a場所ID
+);
+\end{vdm_al}
+
+\subsection{ガードコマンド\_利用者のupdate}
+局所黒板の実際の利用者居場所DBと仮想世界利用者居場所DBを大域黒板に設定する。
+
+\begin{vdm_al}
+public update : 黒板 ==> ()
+update(a大域黒板) == 
+	def w更新黒板属性DB = s局所黒板.更新黒板属性を得る();
+		w更新利用者のいる場所DB = w更新黒板属性DB(mk_token("実際の利用者居場所"));
+		w更新仮想利用者のいる場所DB = w更新黒板属性DB(mk_token("仮想世界利用者居場所"))
+	in (
+	a大域黒板.設定する(mk_token("実際の利用者居場所"), w更新利用者のいる場所DB);
+	a大域黒板.設定する(mk_token("仮想世界利用者居場所"), w更新仮想利用者のいる場所DB);
+	skip
+);
+\end{vdm_al}
+
+\subsection{案内すべき利用者である}
+移動する気になった、案内すべき利用者であるか判定する。
+
+\begin{vdm_al}
+protected 案内すべき利用者である : 利用者 * set of 利用者 ==> bool
+案内すべき利用者である(a案内する利用者, a利用者集合) == (
+	if  利用者集合に含まれている(a利用者集合, a案内する利用者) and a案内する利用者.移動する気になった時間である() then
+		return true
+	else
+		return false;
+);
+
+end ガードコマンド_利用者
+\end{vdm_al}
+
+\begin{rtinfo}
+{vdm.tc}[ガードコマンド_利用者]
+\end{rtinfo}

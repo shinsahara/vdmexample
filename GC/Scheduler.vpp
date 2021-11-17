@@ -1,0 +1,39 @@
+\section{スケジューラクラス}
+
+\begin{vdm_al}
+class スケジューラ is subclass of オブジェクト
+
+operations
+public doOneCycle : 黒板 * set of ガードコマンド  ==> ()
+doOneCycle(a大域黒板, aガードコマンド集合 ) == (
+	for all aガードコマンド  in set  aガードコマンド集合  do (
+		def - = 
+			debug >= 8 => new IO().echo(
+				"\nガードコマンド check。" ^
+				VDMUtil`val2seq_of_char[時間 * ガードコマンド](mk_(s現在時間, aガードコマンド)) ^
+				"\n"
+			)
+		in 
+		aガードコマンド.check(a大域黒板)
+	);
+	for all aガードコマンド  in set aガードコマンド集合  do (
+		def - = 
+			debug >= 8 => new IO().echo(
+				"\nガードコマンド update。" ^
+				VDMUtil`val2seq_of_char[時間 * ガードコマンド](mk_(s現在時間, aガードコマンド)) ^
+				"\n"
+			)
+		in 
+		aガードコマンド.update(a大域黒板)
+	);
+	def - = 
+		debug >= 5 => new IO().echo(
+			"\n現在時間=" ^
+			VDMUtil`val2seq_of_char[時間](s現在時間)^
+			"のすべてのガードコマンドupdateを完了しました。\n"
+		)
+	in skip
+);
+
+end スケジューラ
+\end{vdm_al}

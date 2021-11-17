@@ -1,0 +1,75 @@
+\section{ガードコマンド\_利用者\_認証}
+利用者が認証された場合を記述したガードコマンド。
+
+\begin{vdm_al}
+class ガードコマンド_利用者_認証 is subclass of ガードコマンド_利用者
+
+operations
+public ガードコマンド_利用者_認証 : 場所グラフ`場所ID ==> ガードコマンド_利用者_認証
+ガードコマンド_利用者_認証(a場所ID) == (
+	s場所ID := a場所ID
+);
+\end{vdm_al}
+
+\subsection{ガードコマンド\_利用者\_認証のcheck}
+利用者の認証をID端末に依頼する。
+
+認証結果は、局所黒板の更新黒板属性に設定する。
+
+\begin{vdm_al}
+public check : 黒板 ==> ()
+check (a大域黒板) == (
+	def mk_(w黒板属性DB, w更新黒板属性DB) = a大域黒板.得る() in
+	s局所黒板.全属性を設定する(w黒板属性DB, w更新黒板属性DB);
+	def mk_(w黒板属性DB, -) = s局所黒板.得る();
+		w場所グラフ = s局所黒板.s場所グラフ;
+		w利用者のいる場所DB = w黒板属性DB(mk_token("実際の利用者居場所"));
+		wID端末DB : map ID to ID端末 = w黒板属性DB(mk_token("ID端末"));
+		w利用者の居場所ID = s場所ID;
+		wID端末 = wID端末DB(w利用者の居場所ID);
+		w利用者集合 = dom (w利用者のいる場所DB :> {w利用者の居場所ID}) --この場所(w利用者の居場所ID)にいる利用者の集合
+	in (
+	if w利用者集合 = {} then return;
+	def {w案内する利用者} = w利用者集合 in (
+	if w場所グラフ.ID端末がある(w利用者の居場所ID) and not wID端末.既に認証依頼している(w案内する利用者) then (
+		dcl w更新ID端末 : ID端末 := wID端末.コピーする(w利用者の居場所ID);
+		w更新ID端末.認証依頼する(w案内する利用者);
+		s局所黒板.更新黒板属性を設定する(mk_token("ID端末"), {w更新ID端末.位置を得る() |-> w更新ID端末});
+		def - = debug >= 5 => new IO().echo(
+				"\n利用者が、認証を依頼しました。" ^
+				VDMUtil`val2seq_of_char[利用者 * ID端末]
+					(mk_(w案内する利用者, wID端末)) ^
+				"\n") 
+		in skip
+	) --if
+	) -- def in
+	) --def in
+)
+pre
+	let mk_(w黒板属性DB, -) = a大域黒板.得る(),
+		w利用者のいる場所DB = w黒板属性DB(mk_token("実際の利用者居場所")),
+		w利用者の居場所ID = s場所ID,
+		w利用者集合 = dom (w利用者のいる場所DB :> {w利用者の居場所ID}) --この場所(w利用者の居場所ID)にいる利用者の集合
+	in
+	card w利用者集合 in set {0, 1}
+;
+\end{vdm_al}
+
+\subsection{ガードコマンド\_利用者\_認証のupdate}
+局所黒板のID端末DBを大域黒板に設定する。
+
+\begin{vdm_al}
+public update : 黒板 ==> ()
+update(a大域黒板) == 
+	def w更新黒板属性DB = s局所黒板.更新黒板属性を得る();
+		w更新ID端末DB = w更新黒板属性DB(mk_token("ID端末"))
+	in (
+	a大域黒板.設定する(mk_token("ID端末"), w更新ID端末DB);
+);
+
+end ガードコマンド_利用者_認証
+\end{vdm_al}
+
+\begin{rtinfo}
+{vdm.tc}[ガードコマンド_利用者_認証]
+\end{rtinfo}

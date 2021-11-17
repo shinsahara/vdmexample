@@ -1,0 +1,12 @@
+\section{オブジェクトクラス}
+
+\begin{vdm_al}
+class オブジェクト is subclass of 共通定義
+types
+public オブジェクト型 = token;
+
+instance variables
+static public s現在時間 : 時間 := 0;
+
+end オブジェクト
+\end{vdm_al}

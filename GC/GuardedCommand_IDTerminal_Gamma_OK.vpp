@@ -1,0 +1,66 @@
+\section{ガードコマンド\_ID端末γ\_OK}
+ID端末γで利用者の認証が可だった場合のガードコマンド。
+
+\begin{vdm_al}
+class ガードコマンド_ID端末γ_OK is subclass of ガードコマンド_ID端末
+
+operations
+public ガードコマンド_ID端末γ_OK : ID端末 ==> ガードコマンド_ID端末γ_OK
+ガードコマンド_ID端末γ_OK(anID端末) == (
+	sID端末 := anID端末
+);
+\end{vdm_al}
+
+\subsection{ガードコマンド\_ID端末γ\_OKのcheck}
+ID端末が利用不可能で、かつIDカードが正規の物であるならば、タッチパネルを入力可能にし、
+ID端末γを利用可能にする。
+
+\begin{vdm_al}
+public check : 黒板 ==> ()
+check (a大域黒板) == (
+	def mk_(w黒板属性DB, w更新黒板属性DB) = a大域黒板.得る() in
+	s局所黒板.全属性を設定する(w黒板属性DB, w更新黒板属性DB);
+	def mk_(w黒板属性DB, -) = s局所黒板.得る();
+		w位置 = sID端末.位置を得る();
+		wID端末DB = w黒板属性DB(mk_token("ID端末"));
+		wID端末 = wID端末DB(w位置);
+		wタッチパネルDB = w黒板属性DB(mk_token("タッチパネル"));
+		wタッチパネル : タッチパネル = wタッチパネルDB(wID端末.位置を得る())
+	in
+	if wID端末.利用不可能である() and wID端末.正当な利用者から認証依頼された() then (
+		dcl w更新タッチパネル : タッチパネル := wタッチパネル.コピーする(w位置);
+		dcl w更新ID端末 : ID端末 := wID端末.コピーする(w位置);
+		w更新タッチパネル.入力可能にする();
+		w更新ID端末.利用可能にする();
+		s局所黒板.更新黒板属性を設定する(mk_token("タッチパネル"), {w更新タッチパネル.位置を得る() |-> w更新タッチパネル});
+		s局所黒板.更新黒板属性を設定する(mk_token("ID端末"), {w更新ID端末.位置を得る() |-> w更新ID端末});
+		def - = debug >= 5 => new IO().echo(
+			"\n利用者が、タッチパネルへ入力可能になりました。" ^
+			VDMUtil`val2seq_of_char[利用者 * タッチパネル]
+				(mk_(wID端末.s利用者, wタッチパネル)) ^
+			"\n") 
+		in skip
+	) -- if
+);
+\end{vdm_al}
+
+\subsection{ガードコマンド\_ID端末γ\_OKのupdate}
+局所黒板のタッチパネルDBとID端末DBとを大域黒板に設定する。
+
+\begin{vdm_al}
+public update : 黒板 ==> ()
+update(a大域黒板) == 
+	def w更新黒板属性DB = s局所黒板.更新黒板属性を得る();
+		wタッチパネルDB = w更新黒板属性DB(mk_token("タッチパネル"));
+		wID端末DB = w更新黒板属性DB(mk_token("ID端末"))
+	in (
+	a大域黒板.設定する(mk_token("タッチパネル"), wタッチパネルDB);
+	a大域黒板.設定する(mk_token("ID端末"), wID端末DB);
+);
+
+end ガードコマンド_ID端末γ_OK
+\end{vdm_al}
+
+\begin{rtinfo}
+{vdm.tc}[ガードコマンド_ID端末γ_OK]
+\end{rtinfo}

@@ -1,0 +1,33 @@
+\section{IDカードクラス}
+
+\begin{vdm_al}
+class IDカード is subclass of オブジェクト
+types
+public IDカードID = ID;
+public IDカード状態 = <有効> | <無効>;
+
+instance variables
+public sIDカードID : IDカードID;
+public sIDカード状態 : IDカード状態:= <無効>;
+
+operations
+public IDカード : IDカードID  * IDカード状態 ==> IDカード
+IDカード(aIDカードID, aIDカード状態) == atomic (
+	sIDカードID  := aIDカードID;
+	sIDカード状態 := aIDカード状態
+);
+
+public IDを得る : () ==> IDカードID
+IDを得る() == return sIDカードID;
+
+public 有効にする : () ==> ()
+有効にする() == sIDカード状態 := <有効>;
+
+public 有効である : () ==> bool
+有効である() == return sIDカード状態 = <有効>;
+
+public 無効にする : () ==> ()
+無効にする() == sIDカード状態 := <無効>;
+
+end IDカード
+\end{vdm_al}

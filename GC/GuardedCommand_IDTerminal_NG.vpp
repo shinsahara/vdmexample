@@ -1,0 +1,58 @@
+\section{ガードコマンド\_ID端末\_NG}
+ID端末で利用者の認証が不可だった場合のガードコマンド。
+
+\begin{vdm_al}
+class ガードコマンド_ID端末_NG is subclass of ガードコマンド_ID端末
+
+operations
+public ガードコマンド_ID端末_NG : ID端末 ==> ガードコマンド_ID端末_NG
+ガードコマンド_ID端末_NG(anID端末) == (
+	sID端末 := anID端末
+);
+\end{vdm_al}
+
+\subsection{ガードコマンド\_ID端末\_NGのcheck}
+ID端末が利用不可能で、かつIDカードが正規の物でないならば、ID端末を利用可能にする。
+それ以外、何もしない。
+
+\begin{vdm_al}
+public check : 黒板 ==> ()
+check (a大域黒板) == (
+	def mk_(w黒板属性DB, w更新黒板属性DB) = a大域黒板.得る() in
+	s局所黒板.全属性を設定する(w黒板属性DB, w更新黒板属性DB);
+	def mk_(w黒板属性DB, -) = s局所黒板.得る();
+		w位置 = sID端末.位置を得る();
+		wID端末DB = w黒板属性DB(mk_token("ID端末"));
+		wID端末 = wID端末DB(w位置)
+	in
+	if wID端末.利用不可能である() and not wID端末.正当な利用者から認証依頼された() then (
+		dcl w更新ID端末 : ID端末 := wID端末.コピーする(w位置);
+		w更新ID端末.利用可能にする();
+		s局所黒板.更新黒板属性を設定する(mk_token("ID端末"), {w更新ID端末.位置を得る() |-> w更新ID端末});
+		def - = debug >= 5 => new IO().echo(
+				"\n利用者が、認証できませんでした。" ^
+				VDMUtil`val2seq_of_char[利用者 * ID端末]
+					(mk_(wID端末.s利用者, wID端末)) ^
+				"\n") 
+		in skip -- def in
+	) --if
+);
+\end{vdm_al}
+
+\subsection{ガードコマンド\_ID端末\_NGのupdate}
+局所黒板のID端末DBを大域黒板に設定する。
+
+\begin{vdm_al}
+public update : 黒板 ==> ()
+update(a大域黒板) == 
+	def w更新黒板属性DB = s局所黒板.更新黒板属性を得る();
+		wID端末DB = w更新黒板属性DB(mk_token("ID端末"))
+	in 
+	a大域黒板.設定する(mk_token("ID端末"), wID端末DB);
+
+end ガードコマンド_ID端末_NG
+\end{vdm_al}
+
+\begin{rtinfo}
+{vdm.tc}[ガードコマンド_ID端末_NG]
+\end{rtinfo}

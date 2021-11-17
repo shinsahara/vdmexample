@@ -1,0 +1,23 @@
+\section{案内表示クラス}
+
+\begin{vdm_al}
+class 案内表示  is subclass of オブジェクト
+
+instance variables
+public s案内表示ID : 場所グラフ`場所ID;
+public s案内する利用者 : 利用者;
+public sガイドする場所ID : 場所グラフ`場所ID;
+
+operations
+public 案内表示 : 場所グラフ`場所ID * 利用者 * 場所グラフ`場所ID ==> 案内表示
+案内表示(a案内表示ID, a利用者, a場所ID) == (
+	s案内表示ID := a案内表示ID;
+	s案内する利用者 := a利用者;
+	sガイドする場所ID := a場所ID
+);
+
+public IDを得る : () ==> 利用者`利用者ID
+IDを得る() == return s案内表示ID;
+
+end 案内表示
+\end{vdm_al}

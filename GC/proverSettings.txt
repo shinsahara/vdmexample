@@ -1,0 +1,3 @@
+/Users/UserName/root/opt/vdmpp/bin/vppde
+/Users/UserName/root/opt/mosml
+/Users/UserName/root/opt/hol

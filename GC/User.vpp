@@ -1,0 +1,129 @@
+\section{利用者クラス}
+
+\begin{vdm_al}
+class 利用者  is subclass of オブジェクト
+types
+public 利用者ID = ID;
+\end{vdm_al}
+
+\subsection{インスタンス変数}
+s到着時間は、利用者がある場所に到着した時間を示す。
+
+s躊躇する最大時間は、移動を躊躇する最大時間である。
+
+\begin{vdm_al}
+instance variables
+public s利用者ID : 利用者ID;
+public sIDカード : IDカード;
+public s到着時間 : 時間;
+public s前にいた場所 : [場所グラフ`場所ID] := nil;
+public s躊躇する最大時間 : 時間;
+public s作成者名 : seq of char := "";	--デバッグ用
+\end{vdm_al}
+
+\subsection{操作}
+\begin{vdm_al}
+operations
+public 利用者 : 利用者ID * IDカード * 時間 * 時間 ==> 利用者
+利用者(a利用者ID, aIDカード, a到着時間, a気まぐれ時間) == atomic(
+	s利用者ID  := a利用者ID;
+	sIDカード := aIDカード;
+	s到着時間 := a到着時間;
+	s躊躇する最大時間 := a気まぐれ時間
+);
+
+public 利用者 : 利用者ID * IDカード * 時間 * [場所グラフ`場所ID] * 時間 * seq of char ==> 利用者
+利用者(a利用者ID, aIDカード, a到着時間, a前にいた場所, a気まぐれ時間, a作成者名) == atomic(
+	s利用者ID  := a利用者ID;
+	sIDカード := aIDカード;
+	s到着時間 := a到着時間;
+	s前にいた場所 := a前にいた場所;
+	s躊躇する最大時間 := a気まぐれ時間;
+	s作成者名 := a作成者名
+);
+\end{vdm_al}
+
+\subsubsection{属性を得る}
+利用者の属性が同じかを判定するための属性を得る。
+
+\begin{vdm_al}
+public 属性を得る : () ==> 利用者ID * IDカード * 時間
+属性を得る() == return mk_(s利用者ID, sIDカード, s躊躇する最大時間);
+
+public コピーする : seq of char ==> 利用者
+コピーする(a作成者名) == (
+	return new 利用者(s利用者ID, sIDカード, s到着時間, s前にいた場所, s躊躇する最大時間, a作成者名)
+);
+
+public IDカードを得る : () ==> IDカード
+IDカードを得る() == return sIDカード;
+
+public IDを得る : () ==> 利用者ID
+IDを得る() == return s利用者ID;
+
+public 有効なIDを持っている : () ==> bool
+有効なIDを持っている() == sIDカード.有効である();
+
+public 到着時間を更新する : () ==> 利用者
+到着時間を更新する() == (
+	s到着時間 := s現在時間;
+	return self
+);
+
+public 前にいた場所を設定する : [場所グラフ`場所ID] ==> ()
+前にいた場所を設定する(a場所ID) == s前にいた場所 := a場所ID;
+
+public 前にいた場所を得る : () ==> [場所グラフ`場所ID]
+前にいた場所を得る() == return s前にいた場所;
+
+public 移動していない : () ==> bool
+移動していない() == return s前にいた場所 = nil;
+\end{vdm_al}
+
+\subsection{移動する気になった時間である}
+利用者が移動する気になった時間を、ランダムに決定する。
+
+\begin{vdm_al}
+public 移動する気になった時間である : () ==> bool
+移動する気になった時間である() == 
+	def w乱数 = MATH`rand(s躊躇する最大時間);
+		w時間の乱れ = 
+			if s躊躇する最大時間 = 0 then
+				0
+			else
+				w乱数 / s躊躇する最大時間;
+		w移動する気になった時間 = s躊躇する最大時間 * w時間の乱れ
+	in (
+	def - = 
+		debug >= 9 => new IO().echo(
+			"\n「移動する気になった時間である」で生成された乱数=" ^
+			VDMUtil`val2seq_of_char[int](w乱数)^
+			"\n"
+		)
+	in skip;
+	return s現在時間 >=  w移動する気になった時間 + s到着時間;
+	);
+\end{vdm_al}
+
+\subsection{到着時間が一番早い利用者を選ぶ}
+到着時間が一番早い利用者の集合から一つを選ぶ。
+到着時間が一番早い利用者が複数存在する場合、現在の選び方は処理系依存である。
+
+\begin{vdm_al}
+static public 到着時間が一番早い利用者を選ぶ : set of 利用者 ==> 利用者
+到着時間が一番早い利用者を選ぶ(a利用者集合) == 
+	let w次の利用者 in set a利用者集合 be st
+			forall w利用者 in set a利用者集合 & w次の利用者.s到着時間 <= w利用者.s到着時間
+	in
+	return w次の利用者
+pre
+	a利用者集合 <> {}
+post
+	forall w利用者 in set a利用者集合 & RESULT.s到着時間 <= w利用者.s到着時間;
+
+end 利用者
+\end{vdm_al}
+
+\begin{rtinfo}
+{vdm.tc}[利用者]
+\end{rtinfo}

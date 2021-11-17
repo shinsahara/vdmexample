@@ -1,0 +1,295 @@
+\section{黒板クラス}
+ガードコマンドから参照および更新される属性を持つ。
+
+\begin{vdm_al}
+class  黒板  is  subclass  of  オブジェクト
+\end{vdm_al}
+
+\subsection{型}
+基本的に、属性を写像で持ち、各属性の写像をDBと称する。
+黒板属性DBは、属性とDBの対応を表す。
+
+DBには、案内表示DB、ID端末DB、IDカードDB、センサー DB、タッチパネルDBという場所に関連したDBと、
+実際の利用者居場所DB、仮想世界利用者居場所DB、ドアDBがある。
+
+仮想世界利用者居場所DBは、認証情報とセンサー情報から推定する利用者の居場所を持つDBである。
+
+\begin{vdm_al}
+types
+public 黒板属性DB = map オブジェクト型 to DB;	--黒板の属性を表すキーとDBの対応を持つ
+public 場所関連DB = 
+	map 場所グラフ`場所ID to 案内表示 |	--案内表示DB
+	map 場所グラフ`場所ID to ID端末 |	--ID端末DB
+	map ID to IDカード | --IDカードDB
+	map 場所グラフ`場所ID to センサー |	--センサー DB
+	map 場所グラフ`場所ID to タッチパネル;	--タッチパネルDB
+public DB = 
+	map 利用者 to 場所グラフ`場所ID |	--実際の利用者居場所DB, 仮想世界利用者居場所DB
+	map ドア`ドア位置 to ドア`ドア型 | 	--ドアDB
+	場所関連DB;
+\end{vdm_al}
+
+\subsection{インスタンス変数}
+s場所グラフは、利用者が移動する場所を表す、場所グラフを持つ。
+
+s黒板属性DBは、すべてのガードコマンドの処理が終わるまで更新されない黒板属性DBである。
+各ガードコマンドが、重複して同じ黒板属性DBを更新した場合は、
+後の方で実行されたガードコマンドの結果が残る。
+
+s更新黒板属性DBは、各ガードコマンドが更新する黒板属性DBである。
+
+\begin{vdm_al}
+instance variables
+-- 読み出し専用領域を表す
+public s場所グラフ : 場所グラフ := new 場所グラフ();		--地図情報
+
+-- 読み書き可能領域を表す
+s黒板属性DB : 黒板属性DB;
+s更新黒板属性DB : 黒板属性DB := {|->};
+\end{vdm_al}
+
+\subsection{構成子}
+\begin{vdm_al}
+operations
+public 黒板 : 黒板属性DB ==> 黒板
+黒板(a黒板属性DB) == (
+	s黒板属性DB := a黒板属性DB;
+	def wオブジェクト型集合 = dom s黒板属性DB in
+	for all wオブジェクト型 in set wオブジェクト型集合 do (
+		s更新黒板属性DB := s更新黒板属性DB ++ {wオブジェクト型 |-> {|->}}
+	)
+);
+\end{vdm_al}
+
+\subsection{initialize}
+\begin{vdm_al}
+public initialize : 黒板属性DB ==> ()
+initialize(a黒板属性DB) == (
+	s黒板属性DB := s黒板属性DB ++ a黒板属性DB;
+	def wオブジェクト型集合 = dom s黒板属性DB in
+	for all wオブジェクト型 in set wオブジェクト型集合 do (
+		s更新黒板属性DB := s更新黒板属性DB ++ {wオブジェクト型 |-> {|->}}
+	)
+);
+\end{vdm_al}
+
+\subsection{属性の設定}
+\begin{vdm_al}
+public 全属性を設定する  : 黒板属性DB * 黒板属性DB ==> ()
+全属性を設定する(a黒板属性DB, a更新黒板属性DB) ==  (
+	s黒板属性DB := a黒板属性DB;
+	s更新黒板属性DB := a更新黒板属性DB;
+	skip
+);
+
+public 設定する  : オブジェクト型 * DB ==> ()
+設定する(aオブジェクト型, a追加DB) == (
+	cases aオブジェクト型 :
+	(mk_token("実際の利用者居場所")), (mk_token("仮想世界利用者居場所"))		->
+			s黒板属性DB(aオブジェクト型) := 利用者居場所DBから削除する(s黒板属性DB(aオブジェクト型), a追加DB),
+	(mk_token("ドア"))	-> 
+			s黒板属性DB(aオブジェクト型) := ドアDBから削除する(s黒板属性DB(aオブジェクト型), a追加DB),
+	(mk_token("案内表示")), (mk_token("ID端末")), (mk_token("IDカード ")), (mk_token("タッチパネル")), (mk_token("センサー"))	->
+			s黒板属性DB(aオブジェクト型) := DBから削除する(s黒板属性DB(aオブジェクト型), a追加DB),
+	others	->
+			s黒板属性DB(aオブジェクト型) := (dom a追加DB) <-: s黒板属性DB(aオブジェクト型)
+	end;
+	s黒板属性DB(aオブジェクト型) := s黒板属性DB(aオブジェクト型) ++ a追加DB;
+	skip
+)
+pre
+	let wDB = s黒板属性DB(aオブジェクト型) in
+	aオブジェクト型 in set dom s黒板属性DB and
+	cases aオブジェクト型 :
+	(mk_token("実際の利用者居場所")), (mk_token("仮想世界利用者居場所"))		->
+			利用者IDの重複がない(wDB),
+	others	->
+			IDの重複がない(wDB)
+	end
+post
+	let wDB = s黒板属性DB(aオブジェクト型) in
+	cases aオブジェクト型 :
+	(mk_token("実際の利用者居場所")), (mk_token("仮想世界利用者居場所"))		->
+			利用者IDの重複がない(wDB),
+	others	->
+			IDの重複がない(wDB)
+	end;
+
+public 更新黒板属性を設定する : オブジェクト型 * DB ==> ()
+更新黒板属性を設定する(aオブジェクト型, aDB) == 
+	s更新黒板属性DB(aオブジェクト型) := s更新黒板属性DB(aオブジェクト型) ++ aDB
+pre
+	aオブジェクト型 in set dom s更新黒板属性DB;
+\end{vdm_al}
+
+\subsection{属性の取得}
+\begin{vdm_al}
+public 得る : () ==> 黒板属性DB * 黒板属性DB
+得る() == return mk_(s黒板属性DB, s更新黒板属性DB);
+
+public 黒板属性を得る : () ==> 黒板属性DB
+黒板属性を得る() == return s黒板属性DB;
+
+public 更新黒板属性を得る : () ==> 黒板属性DB
+更新黒板属性を得る() == return s更新黒板属性DB;
+
+public 場所グラフを得る : () ==> 場所グラフ
+場所グラフを得る() == return s場所グラフ;
+\end{vdm_al}
+
+\subsection{実際と仮想の世界を比較表示する}
+実際と仮想の世界を比較表示する。
+
+\begin{vdm_al}
+public 実際と仮想の利用者居場所を比較表示する : (map 利用者 to 場所グラフ`場所ID) * (map 利用者 to 場所グラフ`場所ID)  ==> ()
+実際と仮想の利用者居場所を比較表示する(a利用者のいる場所DB, a仮想利用者のいる場所DB) ==
+	def 
+		mk_(w実際の利用者居場所にしか居ない利用者集合, w仮想世界利用者居場所にしか居ない利用者集合, w両方にいる利用者集合) =
+				利用者居場所DBを比較する(a利用者のいる場所DB, a仮想利用者のいる場所DB);
+		- = new IO().echo("\n 実際の利用者居場所にしか居ない利用者集合 = " ^
+			VDMUtil`val2seq_of_char[set of 利用者](w実際の利用者居場所にしか居ない利用者集合) ^"\n");
+		- = new IO().echo("\n 仮想世界利用者居場所にしか居ない利用者集合 = " ^
+			VDMUtil`val2seq_of_char[set of 利用者](w仮想世界利用者居場所にしか居ない利用者集合) ^"\n");
+		- = new IO().echo("\n 両方にいる利用者集合 = " ^
+			VDMUtil`val2seq_of_char[set of 利用者](w両方にいる利用者集合) ^"\n");
+		- = new IO().echo("\n 実際の利用者のいる場所DB" ^
+			VDMUtil`val2seq_of_char[map 利用者 to 場所グラフ`場所ID](a利用者のいる場所DB) ^"\n");
+		- = new IO().echo("\n 仮想利用者のいる場所DB" ^
+			VDMUtil`val2seq_of_char[map 利用者 to 場所グラフ`場所ID](a仮想利用者のいる場所DB) ^"\n")
+	in skip;
+\end{vdm_al}
+
+\subsection{利用者居場所DBから削除する}
+a削除DB中の利用者と同じ利用者IDを持つ利用者を、a利用者のいる場所DBから削除する。
+
+\begin{vdm_al}
+functions
+public 利用者居場所DBから削除する : (map 利用者 to 場所グラフ`場所ID) * (map 利用者 to 場所グラフ`場所ID) -> map 利用者 to 場所グラフ`場所ID
+利用者居場所DBから削除する(a利用者のいる場所DB, a削除DB) == 
+	let w利用者集合 = dom a利用者のいる場所DB,
+		w利用者ID集合 = {w利用者.IDを得る() | w利用者 in set w利用者集合},
+		w削除利用者集合 = dom a削除DB,
+		w削除利用者ID集合 = {w利用者.IDを得る() | w利用者 in set w削除利用者集合},
+		w削除後利用者ID集合 = w利用者ID集合 \ w削除利用者ID集合,
+		w削除後利用者集合 = {w利用者 | w利用者 in set w利用者集合 & w利用者.IDを得る() in set w削除後利用者ID集合}
+	in
+	w削除後利用者集合 <: a利用者のいる場所DB;
+\end{vdm_al}
+
+\subsection{利用者居場所DBを比較する}
+実際と仮想の利用者居場所DBを比較し、
+実際の利用者居場所にしか居ない利用者集合、仮想世界利用者居場所にしか居ない利用者集合、両方にいる利用者集合の3つ組みを返す。
+
+\begin{vdm_al}
+public 利用者居場所DBを比較する : 
+	(map 利用者 to 場所グラフ`場所ID) * (map 利用者 to 場所グラフ`場所ID) 
+	-> set of 利用者 * set of 利用者 * set of 利用者 
+利用者居場所DBを比較する(a実際の利用者居場所DB, a仮想世界利用者居場所DB) == 
+	let w実際の利用者集合 = dom a実際の利用者居場所DB,
+		w実際の利用者ID集合 = {w利用者.IDを得る() | w利用者 in set w実際の利用者集合},
+		w仮想世界利用者集合 = dom a仮想世界利用者居場所DB,
+		w仮想世界利用者ID集合 = {w利用者.IDを得る() | w利用者 in set w仮想世界利用者集合},
+		w実際の利用者居場所にしか居ない利用者ID集合 = w実際の利用者ID集合 \ w仮想世界利用者ID集合,
+		w実際の利用者居場所にしか居ない利用者集合 = 
+			{w利用者 | w利用者 in set w実際の利用者集合 & w利用者.IDを得る() in set w実際の利用者居場所にしか居ない利用者ID集合},
+		w仮想世界利用者居場所にしか居ない利用者ID集合 = w仮想世界利用者ID集合  \ w実際の利用者ID集合,
+		w仮想世界利用者居場所にしか居ない利用者集合 = 
+			{w利用者 | w利用者 in set w仮想世界利用者集合 & w利用者.IDを得る() in set w仮想世界利用者居場所にしか居ない利用者ID集合},
+		w両方にいる利用者ID集合 = w仮想世界利用者ID集合 inter w実際の利用者ID集合,
+		w両方にいる利用者集合 = 
+			{w利用者 | w利用者 in set w実際の利用者集合 & w利用者.IDを得る() in set w両方にいる利用者ID集合}
+	in
+	mk_(w実際の利用者居場所にしか居ない利用者集合, w仮想世界利用者居場所にしか居ない利用者集合, w両方にいる利用者集合);
+\end{vdm_al}
+
+\subsection{実際と仮想の利用者居場所が等しいかを判定する}
+実際と仮想の利用者居場所が等しいかを判定する。
+
+\begin{vdm_al}
+public 実際と仮想の利用者居場所が等しい : (map 利用者 to 場所グラフ`場所ID) * (map 利用者 to 場所グラフ`場所ID) -> bool
+実際と仮想の利用者居場所が等しい(a実際の利用者居場所DB, a仮想世界利用者居場所DB) == 
+	let w実際の利用者集合 = dom a実際の利用者居場所DB,
+		w実際の利用者ID集合 = {w利用者.IDを得る() | w利用者 in set w実際の利用者集合},
+		w仮想世界利用者集合 = dom a仮想世界利用者居場所DB,
+		w仮想世界利用者ID集合 = {w利用者.IDを得る() | w利用者 in set w仮想世界利用者集合},
+		w実際の利用者居場所にしか居ない利用者ID集合 = w実際の利用者ID集合 \ w仮想世界利用者ID集合,
+		w仮想世界利用者居場所にしか居ない利用者ID集合 = w仮想世界利用者ID集合  \ w実際の利用者ID集合
+	in
+	if w実際の利用者居場所にしか居ない利用者ID集合 = {} and w仮想世界利用者居場所にしか居ない利用者ID集合 = {} then (
+		forall w実際の利用者 in set w実際の利用者集合 &
+			let w実際の利用者ID = w実際の利用者.IDを得る(),
+				{w同じIDを持つ仮想世界利用者} = 
+					{w仮想世界利用者 | w仮想世界利用者 in set w仮想世界利用者集合 & w実際の利用者ID = w仮想世界利用者.IDを得る()}
+			in
+			w実際の利用者.属性を得る() = w同じIDを持つ仮想世界利用者.属性を得る()
+	) else
+		false;
+\end{vdm_al}
+
+\subsection{ドアDBから削除する}
+ドアDBから、a削除DBに含まれるドアのIDを持つドアを削除する。
+
+\begin{vdm_al}
+public ドアDBから削除する : (map ドア`ドア位置 to ドア`ドア型) * (map ドア`ドア位置 to ドア`ドア型) -> map ドア`ドア位置 to ドア`ドア型
+ドアDBから削除する(aドアDB, a削除DB) == 
+	if aドアDB <> {|->} then
+		let wドア集合 = rng aドアDB,
+			wドアID集合 = {wドア.IDを得る() | wドア in set wドア集合},
+			w削除ドア集合 = rng a削除DB,
+			w削除ドアID集合 = {wドア.IDを得る() | wドア in set w削除ドア集合},
+			w削除後ドアID集合 = wドアID集合 \ w削除ドアID集合,
+			w削除後ドア集合 = {wドア | wドア in set wドア集合 & wドア.IDを得る() in set w削除後ドアID集合}
+		in
+		aドアDB :> w削除後ドア集合
+	else
+		aドアDB ;
+\end{vdm_al}
+
+\subsection{DBから削除する}
+DBから、a削除DBに含まれるIDを持つオブジェクトを削除する。
+
+\begin{vdm_al}
+public DBから削除する : 場所関連DB * 場所関連DB -> 場所関連DB
+DBから削除する(aDB, a削除DB) == 
+	if aDB <> {|->} then
+		let w集合 = rng aDB,
+			wID集合 = {w.IDを得る() | w in set w集合},
+			w削除集合 = rng a削除DB,
+			w削除ID集合 = {w.IDを得る() | w in set w削除集合},
+			w削除後ID集合 = wID集合 \ w削除ID集合,
+			w削除後集合 = {w | w in set w集合 & w.IDを得る() in set w削除後ID集合}
+		in
+		aDB :> w削除後集合
+	else
+		aDB;
+\end{vdm_al}
+
+\subsection{利用者IDの重複がない}
+
+\begin{vdm_al}
+public 利用者IDの重複がない : DB -> bool
+利用者IDの重複がない(aDB) == (
+	let w集合 = dom aDB,
+		wID集合 = {e.IDを得る() | e in set w集合}
+	in card w集合 = card wID集合	--デバッグ用
+);
+\end{vdm_al}
+
+\subsection{IDの重複がない}
+
+\begin{vdm_al}
+public IDの重複がない : DB -> bool
+IDの重複がない(aDB) == (
+	let w集合 = rng aDB,
+		wID集合 = {e.IDを得る() | e in set w集合}
+	in card w集合 = card wID集合	--デバッグ用
+);
+\end{vdm_al}
+
+\begin{vdm_al}
+end 黒板
+\end{vdm_al}
+
+\begin{rtinfo}
+{vdm.tc}[黒板]
+\end{rtinfo}

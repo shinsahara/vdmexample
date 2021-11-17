@@ -1,0 +1,66 @@
+\section{ガードコマンド\_ID端末\_OK\_仮想世界}
+ID端末アルファまたはベータで利用者の認証が可だった場合の仮想世界用ガードコマンド。
+
+\begin{vdm_al}
+class ガードコマンド_ID端末_OK_仮想世界 is subclass of ガードコマンド_ID端末
+
+operations
+public ガードコマンド_ID端末_OK_仮想世界 : ID端末 ==> ガードコマンド_ID端末_OK_仮想世界
+ガードコマンド_ID端末_OK_仮想世界(anID端末) == (
+	sID端末 := anID端末
+);
+\end{vdm_al}
+
+\subsection{ガードコマンド\_ID端末\_OK\_仮想世界のcheck}
+ID端末が利用不可能で、かつIDカードが正規の物であるならば、
+仮想世界で利用者がドアを通過し終わり、次の場所へ移動したと仮定する。
+
+\begin{vdm_al}
+public check : 黒板 ==> ()
+check (a大域黒板) == (
+	def mk_(w黒板属性DB, w更新黒板属性DB) = a大域黒板.得る() in
+	s局所黒板.全属性を設定する(w黒板属性DB, w更新黒板属性DB);
+	def mk_(w黒板属性DB, -) = s局所黒板.得る();
+		w仮想利用者のいる場所DB = w黒板属性DB(mk_token("仮想世界利用者居場所"));
+		w位置 = sID端末.位置を得る();
+		wID端末DB = w黒板属性DB(mk_token("ID端末"));
+		wID端末 = wID端末DB(w位置);
+		w仮想移動する利用者 = wID端末.s利用者;
+		wドアDB : map ドア`ドア位置 to ドア`ドア型 = w黒板属性DB(mk_token("ドア"));
+		{mk_(f, t)} = {mk_(f, t) | mk_(f, t) in set dom wドアDB & f = w位置};
+		w仮想利用者の移動元ID = f;
+		w仮想利用者の移動先ID = t;
+		w仮想移動済利用者集合 = dom (w仮想利用者のいる場所DB :> {w仮想利用者の移動先ID});
+		w開くべきドア =  wドアDB(mk_(w仮想利用者の移動元ID, t))
+	in (
+	if	wID端末.利用可能である() and wID端末.正当な利用者から認証依頼された() and 
+		not 利用者集合に含まれている(w仮想移動済利用者集合, w仮想移動する利用者) and
+		w開くべきドア.解錠されている() 
+	then (
+		ある場所の利用者を次の場所へ移動させる(
+			w仮想利用者のいる場所DB, w仮想移動する利用者, w仮想利用者の移動元ID, w仮想利用者の移動先ID,
+			"仮想世界利用者居場所", "ガードコマンド_ID端末_OK_仮想世界",
+			"利用者が認証され、ドアが解錠され利用可能なので、利用者が移動したと仮定します。")
+	) --if
+	) --def in
+);
+\end{vdm_al}
+
+\subsection{ガードコマンド\_ID端末\_OK\_仮想世界のupdate}
+局所黒板の仮想世界利用者居場所DBを大域黒板に設定する。
+
+\begin{vdm_al}
+public update : 黒板 ==> ()
+update(a大域黒板) == 
+	def w更新黒板属性DB = s局所黒板.更新黒板属性を得る();
+		w仮想世界利用者居場所DB = w更新黒板属性DB(mk_token("仮想世界利用者居場所"))
+	in (
+	a大域黒板.設定する(mk_token("仮想世界利用者居場所"), w仮想世界利用者居場所DB);
+);
+
+end ガードコマンド_ID端末_OK_仮想世界
+\end{vdm_al}
+
+\begin{rtinfo}
+{vdm.tc}[ガードコマンド_ID端末_OK_仮想世界]
+\end{rtinfo}

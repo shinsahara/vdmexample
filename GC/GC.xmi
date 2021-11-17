@@ -1,0 +1,1944 @@
+<?xml version="1.0"?>
+  <xmi:XMI xmi:version="2.1" xmlns:uml="http://schema.omg.org/spec/UML/2.0" xmlns:xmi="http://schema.omg.org/spec/XMI/2.1">
+    <xmi:Documentation xmi:Exporter="Enterprise Architect" xmi:ExporterVersion="6.5"/>
+    <uml:Model name="Root" xmi:type="uml:Model" xmi:id="VDM.2">
+      <ownedMember xmi:type="uml:Package" xmi:id="VDM.0" name="VDM Generated model">
+        <ownedMember name="bool" visibility="public" isAbstract="false" isActive="false" isLeaf="false" xmi:id="VDM.3" xmi:type="uml:Class"/>
+        <ownedMember name="int" visibility="public" isAbstract="false" isActive="false" isLeaf="false" xmi:id="VDM.4" xmi:type="uml:Class"/>
+        <ownedMember name="char" visibility="public" isAbstract="false" isActive="false" isLeaf="false" xmi:id="VDM.5" xmi:type="uml:Class"/>
+        <ownedMember name="unlimitedNatural" visibility="public" isAbstract="false" isActive="false" isLeaf="false" xmi:id="VDM.6" xmi:type="uml:Class"/>
+        <ownedMember name="String" visibility="public" isAbstract="false" isActive="false" isLeaf="false" xmi:id="VDM.7" xmi:type="uml:Class"/>
+        <ownedMember name="NotSupportedType" visibility="public" isAbstract="false" isActive="false" isLeaf="false" xmi:id="VDM.8" xmi:type="uml:Class"/>
+        <ownedMember isAbstract="false" isActive="false" isLeaf="false" name="ガードコマンド_ID端末γ_OK" visibility="public" xmi:id="VDM.51" xmi:type="uml:Class">
+          <ownedOperation isAbstract="false" isLeaf="false" isQuery="false" name="update" ownerScope="instance" visibility="public" xmi:id="VDM.88" xmi:type="uml:Operation">
+            <ownedParameter name="a大域黒板" direction="in" xmi:id="VDM.89" type="VDM.46"/>
+          </ownedOperation>
+          <ownedOperation isAbstract="false" isLeaf="false" isQuery="false" name="ガードコマンド_ID端末γ_OK" ownerScope="instance" visibility="public" xmi:id="VDM.90" xmi:type="uml:Operation">
+            <ownedParameter name="anID端末" direction="in" xmi:id="VDM.91" type="VDM.37"/>
+            <ownedParameter name="return" direction="return" xmi:id="VDM.92" type="VDM.51"/>
+          </ownedOperation>
+          <ownedOperation isAbstract="false" isLeaf="false" isQuery="false" name="check" ownerScope="instance" visibility="public" xmi:id="VDM.93" xmi:type="uml:Operation">
+            <ownedParameter name="a大域黒板" direction="in" xmi:id="VDM.94" type="VDM.46"/>
+          </ownedOperation>
+          <generalization xmi:type="uml:Generalization" xmi:id="VDM.95" general="VDM.75"/>
+        </ownedMember>
+        <ownedMember isAbstract="false" isActive="false" isLeaf="false" name="出口ドア" visibility="public" xmi:id="VDM.10" xmi:type="uml:Class">
+          <ownedOperation isAbstract="false" isLeaf="false" isQuery="false" name="コピーする" ownerScope="instance" visibility="public" xmi:id="VDM.96" xmi:type="uml:Operation">
+            <ownedParameter name="aドア位置" direction="in" xmi:id="VDM.97" type="VDM.8"/>
+            <ownedParameter name="return" direction="return" xmi:id="VDM.98" type="VDM.10"/>
+          </ownedOperation>
+          <ownedOperation isAbstract="false" isLeaf="false" isQuery="false" name="閉める" ownerScope="instance" visibility="public" xmi:id="VDM.99" xmi:type="uml:Operation"/>
+          <ownedOperation isAbstract="false" isLeaf="false" isQuery="false" name="施錠する" ownerScope="instance" visibility="public" xmi:id="VDM.100" xmi:type="uml:Operation"/>
+          <ownedOperation isAbstract="false" isLeaf="false" isQuery="false" name="出口ドア" ownerScope="instance" visibility="public" xmi:id="VDM.101" xmi:type="uml:Operation">
+            <ownedParameter name="aドア位置" direction="in" xmi:id="VDM.102" type="VDM.8"/>
+            <ownedParameter name="aドア錠状態" direction="in" xmi:id="VDM.103" type="VDM.24"/>
+            <ownedParameter name="aドア開閉状態" direction="in" xmi:id="VDM.104" type="VDM.16"/>
+            <ownedParameter name="aドアが開いた時間" direction="in" xmi:id="VDM.105" type="VDM.59"/>
+            <ownedParameter name="return" direction="return" xmi:id="VDM.106" type="VDM.10"/>
+          </ownedOperation>
+          <ownedOperation isAbstract="false" isLeaf="false" isQuery="false" name="出口ドア" ownerScope="instance" visibility="public" xmi:id="VDM.107" xmi:type="uml:Operation">
+            <ownedParameter name="aドア位置" direction="in" xmi:id="VDM.108" type="VDM.8"/>
+            <ownedParameter name="aドア錠状態" direction="in" xmi:id="VDM.109" type="VDM.24"/>
+            <ownedParameter name="aドア開閉状態" direction="in" xmi:id="VDM.110" type="VDM.16"/>
+            <ownedParameter name="return" direction="return" xmi:id="VDM.111" type="VDM.10"/>
+          </ownedOperation>
+          <ownedOperation isAbstract="false" isLeaf="false" isQuery="false" name="通過可能である" ownerScope="instance" visibility="public" xmi:id="VDM.112" xmi:type="uml:Operation">
+            <ownedParameter name="return" direction="return" xmi:id="VDM.113" type="VDM.3"/>
+          </ownedOperation>
+          <ownedOperation isAbstract="false" isLeaf="false" isQuery="false" name="タイムアウトである" ownerScope="instance" visibility="public" xmi:id="VDM.114" xmi:type="uml:Operation">
+            <ownedParameter name="return" direction="return" xmi:id="VDM.115" type="VDM.3"/>
+          </ownedOperation>
+          <generalization xmi:type="uml:Generalization" xmi:id="VDM.116" general="VDM.53"/>
+        </ownedMember>
+        <ownedMember isAbstract="false" isActive="false" isLeaf="false" name="場所関連DB" visibility="public" xmi:id="VDM.9" xmi:type="uml:Class"/>
+        <ownedMember isAbstract="false" isActive="false" isLeaf="false" name="タッチパネル" visibility="public" xmi:id="VDM.52" xmi:type="uml:Class">
+          <ownedOperation isAbstract="false" isLeaf="false" isQuery="false" name="入力可能にする" ownerScope="instance" visibility="public" xmi:id="VDM.117" xmi:type="uml:Operation"/>
+          <ownedOperation isAbstract="false" isLeaf="false" isQuery="false" name="入力不可能にする" ownerScope="instance" visibility="public" xmi:id="VDM.118" xmi:type="uml:Operation"/>
+          <ownedOperation isAbstract="false" isLeaf="false" isQuery="false" name="タッチパネル" ownerScope="instance" visibility="public" xmi:id="VDM.119" xmi:type="uml:Operation">
+            <ownedParameter name="aタッチパネル位置" direction="in" xmi:id="VDM.120" type="VDM.13"/>
+            <ownedParameter name="aタッチパネル状態" direction="in" xmi:id="VDM.121" type="VDM.77"/>
+            <ownedParameter name="return" direction="return" xmi:id="VDM.122" type="VDM.52"/>
+          </ownedOperation>
+          <ownedOperation isAbstract="false" isLeaf="false" isQuery="false" name="位置を得る" ownerScope="instance" visibility="public" xmi:id="VDM.123" xmi:type="uml:Operation">
+            <ownedParameter name="return" direction="return" xmi:id="VDM.124" type="VDM.13"/>
+          </ownedOperation>
+          <ownedOperation isAbstract="false" isLeaf="false" isQuery="false" name="コピーする" ownerScope="instance" visibility="public" xmi:id="VDM.125" xmi:type="uml:Operation">
+            <ownedParameter name="aタッチパネル位置" direction="in" xmi:id="VDM.126" type="VDM.13"/>
+            <ownedParameter name="return" direction="return" xmi:id="VDM.127" type="VDM.52"/>
+          </ownedOperation>
+          <ownedOperation isAbstract="false" isLeaf="false" isQuery="false" name="入力可能である" ownerScope="instance" visibility="public" xmi:id="VDM.128" xmi:type="uml:Operation">
+            <ownedParameter name="return" direction="return" xmi:id="VDM.129" type="VDM.3"/>
+          </ownedOperation>
+          <ownedOperation isAbstract="false" isLeaf="false" isQuery="false" name="IDを得る" ownerScope="instance" visibility="public" xmi:id="VDM.130" xmi:type="uml:Operation">
+            <ownedParameter name="return" direction="return" xmi:id="VDM.131" type="VDM.13"/>
+          </ownedOperation>
+          <ownedOperation isAbstract="false" isLeaf="false" isQuery="false" name="入力不可能である" ownerScope="instance" visibility="public" xmi:id="VDM.132" xmi:type="uml:Operation">
+            <ownedParameter name="return" direction="return" xmi:id="VDM.133" type="VDM.3"/>
+          </ownedOperation>
+          <generalization xmi:type="uml:Generalization" xmi:id="VDM.134" general="VDM.86"/>
+        </ownedMember>
+        <ownedMember isAbstract="false" isActive="false" isLeaf="false" name="ガードコマンド_ID端末_NG" visibility="public" xmi:id="VDM.11" xmi:type="uml:Class">
+          <ownedOperation isAbstract="false" isLeaf="false" isQuery="false" name="update" ownerScope="instance" visibility="public" xmi:id="VDM.135" xmi:type="uml:Operation">
+            <ownedParameter name="a大域黒板" direction="in" xmi:id="VDM.136" type="VDM.46"/>
+          </ownedOperation>
+          <ownedOperation isAbstract="false" isLeaf="false" isQuery="false" name="ガードコマンド_ID端末_NG" ownerScope="instance" visibility="public" xmi:id="VDM.137" xmi:type="uml:Operation">
+            <ownedParameter name="anID端末" direction="in" xmi:id="VDM.138" type="VDM.37"/>
+            <ownedParameter name="return" direction="return" xmi:id="VDM.139" type="VDM.11"/>
+          </ownedOperation>
+          <ownedOperation isAbstract="false" isLeaf="false" isQuery="false" name="check" ownerScope="instance" visibility="public" xmi:id="VDM.140" xmi:type="uml:Operation">
+            <ownedParameter name="a大域黒板" direction="in" xmi:id="VDM.141" type="VDM.46"/>
+          </ownedOperation>
+          <generalization xmi:type="uml:Generalization" xmi:id="VDM.142" general="VDM.75"/>
+        </ownedMember>
+        <ownedMember isAbstract="false" isActive="false" isLeaf="false" name="ガードコマンド_利用者_認証_仮想世界" visibility="public" xmi:id="VDM.12" xmi:type="uml:Class">
+          <ownedOperation isAbstract="false" isLeaf="false" isQuery="false" name="ガードコマンド_利用者_認証_仮想世界" ownerScope="instance" visibility="public" xmi:id="VDM.143" xmi:type="uml:Operation">
+            <ownedParameter name="a場所ID" direction="in" xmi:id="VDM.144" type="VDM.71"/>
+            <ownedParameter name="return" direction="return" xmi:id="VDM.145" type="VDM.12"/>
+          </ownedOperation>
+          <ownedOperation isAbstract="false" isLeaf="false" isQuery="false" name="update" ownerScope="instance" visibility="public" xmi:id="VDM.146" xmi:type="uml:Operation">
+            <ownedParameter name="a大域黒板" direction="in" xmi:id="VDM.147" type="VDM.46"/>
+          </ownedOperation>
+          <ownedOperation isAbstract="false" isLeaf="false" isQuery="false" name="check" ownerScope="instance" visibility="public" xmi:id="VDM.148" xmi:type="uml:Operation">
+            <ownedParameter name="a大域黒板" direction="in" xmi:id="VDM.149" type="VDM.46"/>
+          </ownedOperation>
+          <generalization xmi:type="uml:Generalization" xmi:id="VDM.150" general="VDM.55"/>
+        </ownedMember>
+        <ownedMember isAbstract="false" isActive="false" isLeaf="false" name="タッチパネル位置" visibility="public" xmi:id="VDM.13" xmi:type="uml:Class"/>
+        <ownedMember isAbstract="false" isActive="false" isLeaf="false" name="人が居る位置" visibility="public" xmi:id="VDM.14" xmi:type="uml:Class"/>
+        <ownedMember isAbstract="true" isActive="false" isLeaf="false" name="ドア" visibility="public" xmi:id="VDM.53" xmi:type="uml:Class">
+          <ownedOperation isAbstract="false" isLeaf="false" isQuery="false" name="位置を得る" ownerScope="instance" visibility="public" xmi:id="VDM.151" xmi:type="uml:Operation">
+            <ownedParameter name="return" direction="return" xmi:id="VDM.152" type="VDM.8"/>
+          </ownedOperation>
+          <ownedOperation isAbstract="false" isLeaf="false" isQuery="false" name="解錠されている" ownerScope="instance" visibility="public" xmi:id="VDM.153" xmi:type="uml:Operation">
+            <ownedParameter name="return" direction="return" xmi:id="VDM.154" type="VDM.3"/>
+          </ownedOperation>
+          <ownedOperation isAbstract="false" isLeaf="false" isQuery="false" name="施錠する" ownerScope="instance" visibility="public" xmi:id="VDM.155" xmi:type="uml:Operation"/>
+          <ownedOperation isAbstract="false" isLeaf="false" isQuery="false" name="通過可能である" ownerScope="instance" visibility="public" xmi:id="VDM.156" xmi:type="uml:Operation">
+            <ownedParameter name="return" direction="return" xmi:id="VDM.157" type="VDM.3"/>
+          </ownedOperation>
+          <ownedOperation isAbstract="false" isLeaf="false" isQuery="false" name="解錠する" ownerScope="instance" visibility="public" xmi:id="VDM.158" xmi:type="uml:Operation"/>
+          <ownedOperation isAbstract="false" isLeaf="false" isQuery="false" name="閉まっている" ownerScope="instance" visibility="public" xmi:id="VDM.159" xmi:type="uml:Operation">
+            <ownedParameter name="return" direction="return" xmi:id="VDM.160" type="VDM.3"/>
+          </ownedOperation>
+          <ownedOperation isAbstract="false" isLeaf="false" isQuery="false" name="IDを得る" ownerScope="instance" visibility="public" xmi:id="VDM.161" xmi:type="uml:Operation">
+            <ownedParameter name="return" direction="return" xmi:id="VDM.162" type="VDM.8"/>
+          </ownedOperation>
+          <ownedOperation isAbstract="false" isLeaf="false" isQuery="false" name="開ける" ownerScope="instance" visibility="public" xmi:id="VDM.163" xmi:type="uml:Operation"/>
+          <ownedOperation isAbstract="false" isLeaf="false" isQuery="false" name="タイムアウトである" ownerScope="instance" visibility="public" xmi:id="VDM.164" xmi:type="uml:Operation">
+            <ownedParameter name="return" direction="return" xmi:id="VDM.165" type="VDM.3"/>
+          </ownedOperation>
+          <ownedOperation isAbstract="false" isLeaf="false" isQuery="false" name="開いている" ownerScope="instance" visibility="public" xmi:id="VDM.166" xmi:type="uml:Operation">
+            <ownedParameter name="return" direction="return" xmi:id="VDM.167" type="VDM.3"/>
+          </ownedOperation>
+          <ownedOperation isAbstract="false" isLeaf="false" isQuery="false" name="閉める" ownerScope="instance" visibility="public" xmi:id="VDM.168" xmi:type="uml:Operation"/>
+          <ownedOperation isAbstract="false" isLeaf="false" isQuery="false" name="施錠されている" ownerScope="instance" visibility="public" xmi:id="VDM.169" xmi:type="uml:Operation">
+            <ownedParameter name="return" direction="return" xmi:id="VDM.170" type="VDM.3"/>
+          </ownedOperation>
+          <generalization xmi:type="uml:Generalization" xmi:id="VDM.171" general="VDM.86"/>
+        </ownedMember>
+        <ownedMember isAbstract="false" isActive="false" isLeaf="false" name="場所DB" visibility="public" xmi:id="VDM.54" xmi:type="uml:Class"/>
+        <ownedMember isAbstract="false" isActive="false" isLeaf="false" name="ガードコマンド_利用者" visibility="public" xmi:id="VDM.55" xmi:type="uml:Class">
+          <ownedOperation isAbstract="false" isLeaf="false" isQuery="false" name="ガードコマンド_利用者" ownerScope="instance" visibility="public" xmi:id="VDM.172" xmi:type="uml:Operation">
+            <ownedParameter name="a場所ID" direction="in" xmi:id="VDM.173" type="VDM.71"/>
+            <ownedParameter name="return" direction="return" xmi:id="VDM.174" type="VDM.55"/>
+          </ownedOperation>
+          <ownedOperation isAbstract="false" isLeaf="false" isQuery="false" name="update" ownerScope="instance" visibility="public" xmi:id="VDM.175" xmi:type="uml:Operation">
+            <ownedParameter name="a大域黒板" direction="in" xmi:id="VDM.176" type="VDM.46"/>
+          </ownedOperation>
+          <ownedOperation isAbstract="false" isLeaf="false" isQuery="false" name="案内すべき利用者である" ownerScope="instance" visibility="protected" xmi:id="VDM.177" xmi:type="uml:Operation">
+            <ownedParameter name="a案内する利用者" direction="in" xmi:id="VDM.178" type="VDM.36"/>
+            <ownedParameter name="a利用者集合" direction="in" xmi:id="VDM.179" type="VDM.36"/>
+            <ownedParameter name="return" direction="return" xmi:id="VDM.180" type="VDM.3"/>
+          </ownedOperation>
+          <generalization xmi:type="uml:Generalization" xmi:id="VDM.181" general="VDM.26"/>
+        </ownedMember>
+        <ownedMember isAbstract="false" isActive="false" isLeaf="false" name="TestCaseST0009" visibility="public" xmi:id="VDM.56" xmi:type="uml:Class">
+          <ownedOperation isAbstract="false" isLeaf="false" isQuery="false" name="RunTest" ownerScope="instance" visibility="protected" xmi:id="VDM.182" xmi:type="uml:Operation"/>
+          <ownedOperation isAbstract="false" isLeaf="false" isQuery="false" name="TestCaseST0009" ownerScope="instance" visibility="public" xmi:id="VDM.183" xmi:type="uml:Operation">
+            <ownedParameter name="nm" direction="in" xmi:id="VDM.184" type="VDM.5"/>
+            <ownedParameter name="return" direction="return" xmi:id="VDM.185" type="VDM.56"/>
+          </ownedOperation>
+          <generalization xmi:type="uml:Generalization" xmi:id="VDM.186" general="VDM.29"/>
+        </ownedMember>
+        <ownedMember isAbstract="false" isActive="false" isLeaf="false" name="ドア型" visibility="public" xmi:id="VDM.57" xmi:type="uml:Class"/>
+        <ownedMember isAbstract="false" isActive="false" isLeaf="false" name="入口ドア" visibility="public" xmi:id="VDM.58" xmi:type="uml:Class">
+          <ownedOperation isAbstract="false" isLeaf="false" isQuery="false" name="入口ドア" ownerScope="instance" visibility="public" xmi:id="VDM.187" xmi:type="uml:Operation">
+            <ownedParameter name="aドア位置" direction="in" xmi:id="VDM.188" type="VDM.8"/>
+            <ownedParameter name="aドア錠状態" direction="in" xmi:id="VDM.189" type="VDM.24"/>
+            <ownedParameter name="aドア開閉状態" direction="in" xmi:id="VDM.190" type="VDM.16"/>
+            <ownedParameter name="aドアが開いた時間" direction="in" xmi:id="VDM.191" type="VDM.59"/>
+            <ownedParameter name="return" direction="return" xmi:id="VDM.192" type="VDM.58"/>
+          </ownedOperation>
+          <ownedOperation isAbstract="false" isLeaf="false" isQuery="false" name="閉める" ownerScope="instance" visibility="public" xmi:id="VDM.193" xmi:type="uml:Operation"/>
+          <ownedOperation isAbstract="false" isLeaf="false" isQuery="false" name="施錠する" ownerScope="instance" visibility="public" xmi:id="VDM.194" xmi:type="uml:Operation"/>
+          <ownedOperation isAbstract="false" isLeaf="false" isQuery="false" name="コピーする" ownerScope="instance" visibility="public" xmi:id="VDM.195" xmi:type="uml:Operation">
+            <ownedParameter name="aドア位置" direction="in" xmi:id="VDM.196" type="VDM.8"/>
+            <ownedParameter name="return" direction="return" xmi:id="VDM.197" type="VDM.58"/>
+          </ownedOperation>
+          <ownedOperation isAbstract="false" isLeaf="false" isQuery="false" name="タイムアウトである" ownerScope="instance" visibility="public" xmi:id="VDM.198" xmi:type="uml:Operation">
+            <ownedParameter name="return" direction="return" xmi:id="VDM.199" type="VDM.3"/>
+          </ownedOperation>
+          <ownedOperation isAbstract="false" isLeaf="false" isQuery="false" name="入口ドア" ownerScope="instance" visibility="public" xmi:id="VDM.200" xmi:type="uml:Operation">
+            <ownedParameter name="aドア位置" direction="in" xmi:id="VDM.201" type="VDM.8"/>
+            <ownedParameter name="aドア錠状態" direction="in" xmi:id="VDM.202" type="VDM.24"/>
+            <ownedParameter name="aドア開閉状態" direction="in" xmi:id="VDM.203" type="VDM.16"/>
+            <ownedParameter name="return" direction="return" xmi:id="VDM.204" type="VDM.58"/>
+          </ownedOperation>
+          <ownedOperation isAbstract="false" isLeaf="false" isQuery="false" name="通過可能である" ownerScope="instance" visibility="public" xmi:id="VDM.205" xmi:type="uml:Operation">
+            <ownedParameter name="return" direction="return" xmi:id="VDM.206" type="VDM.3"/>
+          </ownedOperation>
+          <generalization xmi:type="uml:Generalization" xmi:id="VDM.207" general="VDM.53"/>
+        </ownedMember>
+        <ownedMember isAbstract="false" isActive="false" isLeaf="false" name="時間" visibility="public" xmi:id="VDM.59" xmi:type="uml:Class"/>
+        <ownedMember isAbstract="false" isActive="false" isLeaf="false" name="仮想ドア" visibility="public" xmi:id="VDM.15" xmi:type="uml:Class">
+          <ownedOperation isAbstract="false" isLeaf="false" isQuery="false" name="閉める" ownerScope="instance" visibility="public" xmi:id="VDM.208" xmi:type="uml:Operation"/>
+          <ownedOperation isAbstract="false" isLeaf="false" isQuery="false" name="コピーする" ownerScope="instance" visibility="public" xmi:id="VDM.209" xmi:type="uml:Operation">
+            <ownedParameter name="aドア位置" direction="in" xmi:id="VDM.210" type="VDM.8"/>
+            <ownedParameter name="return" direction="return" xmi:id="VDM.211" type="VDM.15"/>
+          </ownedOperation>
+          <ownedOperation isAbstract="false" isLeaf="false" isQuery="false" name="タイムアウトである" ownerScope="instance" visibility="public" xmi:id="VDM.212" xmi:type="uml:Operation">
+            <ownedParameter name="return" direction="return" xmi:id="VDM.213" type="VDM.3"/>
+          </ownedOperation>
+          <ownedOperation isAbstract="false" isLeaf="false" isQuery="false" name="通過可能である" ownerScope="instance" visibility="public" xmi:id="VDM.214" xmi:type="uml:Operation">
+            <ownedParameter name="return" direction="return" xmi:id="VDM.215" type="VDM.3"/>
+          </ownedOperation>
+          <ownedOperation isAbstract="false" isLeaf="false" isQuery="false" name="仮想ドア" ownerScope="instance" visibility="public" xmi:id="VDM.216" xmi:type="uml:Operation">
+            <ownedParameter name="aドア位置" direction="in" xmi:id="VDM.217" type="VDM.8"/>
+            <ownedParameter name="aドア錠状態" direction="in" xmi:id="VDM.218" type="VDM.24"/>
+            <ownedParameter name="aドア開閉状態" direction="in" xmi:id="VDM.219" type="VDM.16"/>
+            <ownedParameter name="aドアが開いた時間" direction="in" xmi:id="VDM.220" type="VDM.59"/>
+            <ownedParameter name="return" direction="return" xmi:id="VDM.221" type="VDM.15"/>
+          </ownedOperation>
+          <ownedOperation isAbstract="false" isLeaf="false" isQuery="false" name="施錠する" ownerScope="instance" visibility="public" xmi:id="VDM.222" xmi:type="uml:Operation"/>
+          <ownedOperation isAbstract="false" isLeaf="false" isQuery="false" name="仮想ドア" ownerScope="instance" visibility="public" xmi:id="VDM.223" xmi:type="uml:Operation">
+            <ownedParameter name="aドア位置" direction="in" xmi:id="VDM.224" type="VDM.8"/>
+            <ownedParameter name="return" direction="return" xmi:id="VDM.225" type="VDM.15"/>
+          </ownedOperation>
+          <generalization xmi:type="uml:Generalization" xmi:id="VDM.226" general="VDM.53"/>
+        </ownedMember>
+        <ownedMember isAbstract="false" isActive="false" isLeaf="false" name="MATH" visibility="public" xmi:id="VDM.60" xmi:type="uml:Class">
+          <ownedOperation isAbstract="false" isLeaf="false" isQuery="false" name="rand" ownerScope="instance" visibility="public" xmi:id="VDM.227" xmi:type="uml:Operation">
+            <ownedParameter name="a" direction="in" xmi:id="VDM.228" type="VDM.4"/>
+            <ownedParameter name="return" direction="return" xmi:id="VDM.229" type="VDM.4"/>
+          </ownedOperation>
+          <ownedOperation isAbstract="false" isLeaf="false" isQuery="false" name="srand" ownerScope="instance" visibility="public" xmi:id="VDM.230" xmi:type="uml:Operation">
+            <ownedParameter name="a" direction="in" xmi:id="VDM.231" type="VDM.4"/>
+          </ownedOperation>
+          <ownedOperation isAbstract="false" isLeaf="false" isQuery="true" name="cot" ownerScope="instance" visibility="public" xmi:id="VDM.232" xmi:type="uml:Operation">
+            <ownedParameter name="a" direction="in" xmi:id="VDM.233" type="VDM.6"/>
+            <ownedParameter name="return" direction="return" xmi:id="VDM.234" type="VDM.6"/>
+          </ownedOperation>
+          <ownedOperation isAbstract="false" isLeaf="false" isQuery="true" name="atan" ownerScope="instance" visibility="public" xmi:id="VDM.235" xmi:type="uml:Operation">
+            <ownedParameter name="v" direction="in" xmi:id="VDM.236" type="VDM.6"/>
+            <ownedParameter name="return" direction="return" xmi:id="VDM.237" type="VDM.6"/>
+          </ownedOperation>
+          <ownedOperation isAbstract="false" isLeaf="false" isQuery="true" name="ln" ownerScope="instance" visibility="public" xmi:id="VDM.238" xmi:type="uml:Operation">
+            <ownedParameter name="a" direction="in" xmi:id="VDM.239" type="VDM.6"/>
+            <ownedParameter name="return" direction="return" xmi:id="VDM.240" type="VDM.6"/>
+          </ownedOperation>
+          <ownedOperation isAbstract="false" isLeaf="false" isQuery="true" name="log" ownerScope="instance" visibility="public" xmi:id="VDM.241" xmi:type="uml:Operation">
+            <ownedParameter name="a" direction="in" xmi:id="VDM.242" type="VDM.6"/>
+            <ownedParameter name="return" direction="return" xmi:id="VDM.243" type="VDM.6"/>
+          </ownedOperation>
+          <ownedOperation isAbstract="false" isLeaf="false" isQuery="true" name="exp" ownerScope="instance" visibility="public" xmi:id="VDM.244" xmi:type="uml:Operation">
+            <ownedParameter name="a" direction="in" xmi:id="VDM.245" type="VDM.6"/>
+            <ownedParameter name="return" direction="return" xmi:id="VDM.246" type="VDM.6"/>
+          </ownedOperation>
+          <ownedOperation isAbstract="false" isLeaf="false" isQuery="true" name="tan" ownerScope="instance" visibility="public" xmi:id="VDM.247" xmi:type="uml:Operation">
+            <ownedParameter name="a" direction="in" xmi:id="VDM.248" type="VDM.6"/>
+            <ownedParameter name="return" direction="return" xmi:id="VDM.249" type="VDM.6"/>
+          </ownedOperation>
+          <ownedOperation isAbstract="false" isLeaf="false" isQuery="true" name="sin" ownerScope="instance" visibility="public" xmi:id="VDM.250" xmi:type="uml:Operation">
+            <ownedParameter name="v" direction="in" xmi:id="VDM.251" type="VDM.6"/>
+            <ownedParameter name="return" direction="return" xmi:id="VDM.252" type="VDM.6"/>
+          </ownedOperation>
+          <ownedOperation isAbstract="false" isLeaf="false" isQuery="true" name="asin" ownerScope="instance" visibility="public" xmi:id="VDM.253" xmi:type="uml:Operation">
+            <ownedParameter name="a" direction="in" xmi:id="VDM.254" type="VDM.6"/>
+            <ownedParameter name="return" direction="return" xmi:id="VDM.255" type="VDM.6"/>
+          </ownedOperation>
+          <ownedOperation isAbstract="false" isLeaf="false" isQuery="true" name="acos" ownerScope="instance" visibility="public" xmi:id="VDM.256" xmi:type="uml:Operation">
+            <ownedParameter name="a" direction="in" xmi:id="VDM.257" type="VDM.6"/>
+            <ownedParameter name="return" direction="return" xmi:id="VDM.258" type="VDM.6"/>
+          </ownedOperation>
+          <ownedOperation isAbstract="false" isLeaf="false" isQuery="true" name="pi_f" ownerScope="instance" visibility="public" xmi:id="VDM.259" xmi:type="uml:Operation">
+            <ownedParameter name="return" direction="return" xmi:id="VDM.260" type="VDM.6"/>
+          </ownedOperation>
+          <ownedOperation isAbstract="false" isLeaf="false" isQuery="true" name="cos" ownerScope="instance" visibility="public" xmi:id="VDM.261" xmi:type="uml:Operation">
+            <ownedParameter name="v" direction="in" xmi:id="VDM.262" type="VDM.6"/>
+            <ownedParameter name="return" direction="return" xmi:id="VDM.263" type="VDM.6"/>
+          </ownedOperation>
+          <ownedOperation isAbstract="false" isLeaf="false" isQuery="true" name="acot" ownerScope="instance" visibility="public" xmi:id="VDM.264" xmi:type="uml:Operation">
+            <ownedParameter name="a" direction="in" xmi:id="VDM.265" type="VDM.6"/>
+            <ownedParameter name="return" direction="return" xmi:id="VDM.266" type="VDM.6"/>
+          </ownedOperation>
+          <ownedOperation isAbstract="false" isLeaf="false" isQuery="true" name="sqrt" ownerScope="instance" visibility="public" xmi:id="VDM.267" xmi:type="uml:Operation">
+            <ownedParameter name="a" direction="in" xmi:id="VDM.268" type="VDM.6"/>
+            <ownedParameter name="return" direction="return" xmi:id="VDM.269" type="VDM.6"/>
+          </ownedOperation>
+          <ownedOperation isAbstract="false" isLeaf="false" isQuery="false" name="srand2" ownerScope="instance" visibility="public" xmi:id="VDM.270" xmi:type="uml:Operation">
+            <ownedParameter name="a" direction="in" xmi:id="VDM.271" type="VDM.4"/>
+            <ownedParameter name="return" direction="return" xmi:id="VDM.272" type="VDM.4"/>
+          </ownedOperation>
+        </ownedMember>
+        <ownedMember isAbstract="false" isActive="false" isLeaf="false" name="ドア開閉状態" visibility="public" xmi:id="VDM.16" xmi:type="uml:Class">
+          <ownedAttribute name="開" ownerScope="instance" isReadOnly="true" isStatic="true" visibility="public" xmi:id="VDM.273" xmi:type="uml:Property" isOrdered="true">
+            <lowerValue value="0" xmi:id="VDM.274" xmi:type="uml:LiteralInteger"/>
+            <upperValue value="*" xmi:id="VDM.275" xmi:type="uml:LiteralString"/>
+            <type xmi:idref="VDM.4"/>
+          </ownedAttribute>
+          <ownedAttribute name="閉" ownerScope="instance" isReadOnly="true" isStatic="true" visibility="public" xmi:id="VDM.276" xmi:type="uml:Property" isOrdered="true">
+            <lowerValue value="0" xmi:id="VDM.277" xmi:type="uml:LiteralInteger"/>
+            <upperValue value="*" xmi:id="VDM.278" xmi:type="uml:LiteralString"/>
+            <type xmi:idref="VDM.4"/>
+          </ownedAttribute>
+        </ownedMember>
+        <ownedMember isAbstract="false" isActive="false" isLeaf="false" name="TestCaseST0003" visibility="public" xmi:id="VDM.61" xmi:type="uml:Class">
+          <ownedOperation isAbstract="false" isLeaf="false" isQuery="false" name="RunTest" ownerScope="instance" visibility="protected" xmi:id="VDM.279" xmi:type="uml:Operation"/>
+          <ownedOperation isAbstract="false" isLeaf="false" isQuery="false" name="TestCaseST0003" ownerScope="instance" visibility="public" xmi:id="VDM.280" xmi:type="uml:Operation">
+            <ownedParameter name="nm" direction="in" xmi:id="VDM.281" type="VDM.5"/>
+            <ownedParameter name="return" direction="return" xmi:id="VDM.282" type="VDM.61"/>
+          </ownedOperation>
+          <generalization xmi:type="uml:Generalization" xmi:id="VDM.283" general="VDM.29"/>
+        </ownedMember>
+        <ownedMember isAbstract="false" isActive="false" isLeaf="false" name="TestApp" visibility="public" xmi:id="VDM.17" xmi:type="uml:Class">
+          <ownedOperation isAbstract="false" isLeaf="false" isQuery="false" name="Execute" ownerScope="instance" visibility="public" xmi:id="VDM.284" xmi:type="uml:Operation"/>
+        </ownedMember>
+        <ownedMember isAbstract="false" isActive="false" isLeaf="false" name="場所情報" visibility="public" xmi:id="VDM.62" xmi:type="uml:Class"/>
+        <ownedMember isAbstract="false" isActive="false" isLeaf="false" name="IDカード" visibility="public" xmi:id="VDM.18" xmi:type="uml:Class">
+          <ownedOperation isAbstract="false" isLeaf="false" isQuery="false" name="有効にする" ownerScope="instance" visibility="public" xmi:id="VDM.285" xmi:type="uml:Operation"/>
+          <ownedOperation isAbstract="false" isLeaf="false" isQuery="false" name="無効にする" ownerScope="instance" visibility="public" xmi:id="VDM.286" xmi:type="uml:Operation"/>
+          <ownedOperation isAbstract="false" isLeaf="false" isQuery="false" name="IDカード" ownerScope="instance" visibility="public" xmi:id="VDM.287" xmi:type="uml:Operation">
+            <ownedParameter name="aIDカードID" direction="in" xmi:id="VDM.288" type="VDM.83"/>
+            <ownedParameter name="aIDカード状態" direction="in" xmi:id="VDM.289" type="VDM.50"/>
+            <ownedParameter name="return" direction="return" xmi:id="VDM.290" type="VDM.18"/>
+          </ownedOperation>
+          <ownedOperation isAbstract="false" isLeaf="false" isQuery="false" name="有効である" ownerScope="instance" visibility="public" xmi:id="VDM.291" xmi:type="uml:Operation">
+            <ownedParameter name="return" direction="return" xmi:id="VDM.292" type="VDM.3"/>
+          </ownedOperation>
+          <ownedOperation isAbstract="false" isLeaf="false" isQuery="false" name="IDを得る" ownerScope="instance" visibility="public" xmi:id="VDM.293" xmi:type="uml:Operation">
+            <ownedParameter name="return" direction="return" xmi:id="VDM.294" type="VDM.83"/>
+          </ownedOperation>
+          <generalization xmi:type="uml:Generalization" xmi:id="VDM.295" general="VDM.86"/>
+        </ownedMember>
+        <ownedMember isAbstract="false" isActive="false" isLeaf="false" name="ID端末状態" visibility="public" xmi:id="VDM.63" xmi:type="uml:Class">
+          <ownedAttribute name="利用不可能" ownerScope="instance" isReadOnly="true" isStatic="true" visibility="public" xmi:id="VDM.296" xmi:type="uml:Property" isOrdered="true">
+            <lowerValue value="0" xmi:id="VDM.297" xmi:type="uml:LiteralInteger"/>
+            <upperValue value="*" xmi:id="VDM.298" xmi:type="uml:LiteralString"/>
+            <type xmi:idref="VDM.4"/>
+          </ownedAttribute>
+          <ownedAttribute name="利用可能" ownerScope="instance" isReadOnly="true" isStatic="true" visibility="public" xmi:id="VDM.299" xmi:type="uml:Property" isOrdered="true">
+            <lowerValue value="0" xmi:id="VDM.300" xmi:type="uml:LiteralInteger"/>
+            <upperValue value="*" xmi:id="VDM.301" xmi:type="uml:LiteralString"/>
+            <type xmi:idref="VDM.4"/>
+          </ownedAttribute>
+        </ownedMember>
+        <ownedMember isAbstract="false" isActive="false" isLeaf="false" name="オブジェクト型" visibility="public" xmi:id="VDM.19" xmi:type="uml:Class"/>
+        <ownedMember isAbstract="false" isActive="false" isLeaf="false" name="利用者のいる場所DB" visibility="public" xmi:id="VDM.64" xmi:type="uml:Class"/>
+        <ownedMember isAbstract="false" isActive="false" isLeaf="false" name="IO" visibility="public" xmi:id="VDM.65" xmi:type="uml:Class">
+          <ownedOperation isAbstract="false" isLeaf="false" isQuery="false" name="ferror" ownerScope="instance" visibility="public" xmi:id="VDM.302" xmi:type="uml:Operation">
+            <ownedParameter name="return" direction="return" xmi:id="VDM.303" type="VDM.5"/>
+          </ownedOperation>
+          <ownedOperation isAbstract="false" isLeaf="false" isQuery="true" name="freadval" ownerScope="instance" visibility="public" xmi:id="VDM.304" xmi:type="uml:Operation">
+            <ownedParameter name="f" direction="in" xmi:id="VDM.305" type="VDM.5"/>
+            <ownedParameter name="return" direction="return" xmi:id="VDM.306" type="VDM.8"/>
+          </ownedOperation>
+          <ownedOperation isAbstract="false" isLeaf="false" isQuery="true" name="fwriteval" ownerScope="instance" visibility="public" xmi:id="VDM.307" xmi:type="uml:Operation">
+            <ownedParameter name="filename" direction="in" xmi:id="VDM.308" type="VDM.5"/>
+            <ownedParameter name="val" direction="in" xmi:id="VDM.309" type="VDM.8"/>
+            <ownedParameter name="fdir" direction="in" xmi:id="VDM.310" type="VDM.82"/>
+            <ownedParameter name="return" direction="return" xmi:id="VDM.311" type="VDM.3"/>
+          </ownedOperation>
+          <ownedOperation isAbstract="false" isLeaf="false" isQuery="true" name="writeval" ownerScope="instance" visibility="public" xmi:id="VDM.312" xmi:type="uml:Operation">
+            <ownedParameter name="val" direction="in" xmi:id="VDM.313" type="VDM.8"/>
+            <ownedParameter name="return" direction="return" xmi:id="VDM.314" type="VDM.3"/>
+          </ownedOperation>
+          <ownedOperation isAbstract="false" isLeaf="false" isQuery="false" name="echo" ownerScope="instance" visibility="public" xmi:id="VDM.315" xmi:type="uml:Operation">
+            <ownedParameter name="text" direction="in" xmi:id="VDM.316" type="VDM.5"/>
+            <ownedParameter name="return" direction="return" xmi:id="VDM.317" type="VDM.3"/>
+          </ownedOperation>
+          <ownedOperation isAbstract="false" isLeaf="false" isQuery="false" name="fecho" ownerScope="instance" visibility="public" xmi:id="VDM.318" xmi:type="uml:Operation">
+            <ownedParameter name="filename" direction="in" xmi:id="VDM.319" type="VDM.5"/>
+            <ownedParameter name="text" direction="in" xmi:id="VDM.320" type="VDM.5"/>
+            <ownedParameter name="fdir" direction="in" xmi:id="VDM.321" type="VDM.82"/>
+            <ownedParameter name="return" direction="return" xmi:id="VDM.322" type="VDM.3"/>
+          </ownedOperation>
+        </ownedMember>
+        <ownedMember isAbstract="false" isActive="false" isLeaf="false" name="利用者ID" visibility="public" xmi:id="VDM.20" xmi:type="uml:Class"/>
+        <ownedMember isAbstract="false" isActive="false" isLeaf="false" name="ガードコマンド_ID端末γ_NG" visibility="public" xmi:id="VDM.66" xmi:type="uml:Class">
+          <ownedOperation isAbstract="false" isLeaf="false" isQuery="false" name="check" ownerScope="instance" visibility="public" xmi:id="VDM.323" xmi:type="uml:Operation">
+            <ownedParameter name="a大域黒板" direction="in" xmi:id="VDM.324" type="VDM.46"/>
+          </ownedOperation>
+          <ownedOperation isAbstract="false" isLeaf="false" isQuery="false" name="ガードコマンド_ID端末γ_NG" ownerScope="instance" visibility="public" xmi:id="VDM.325" xmi:type="uml:Operation">
+            <ownedParameter name="anID端末" direction="in" xmi:id="VDM.326" type="VDM.37"/>
+            <ownedParameter name="return" direction="return" xmi:id="VDM.327" type="VDM.66"/>
+          </ownedOperation>
+          <ownedOperation isAbstract="false" isLeaf="false" isQuery="false" name="update" ownerScope="instance" visibility="public" xmi:id="VDM.328" xmi:type="uml:Operation">
+            <ownedParameter name="a大域黒板" direction="in" xmi:id="VDM.329" type="VDM.46"/>
+          </ownedOperation>
+          <generalization xmi:type="uml:Generalization" xmi:id="VDM.330" general="VDM.75"/>
+        </ownedMember>
+        <ownedMember isAbstract="false" isActive="false" isLeaf="false" name="T" visibility="public" xmi:id="VDM.21" xmi:type="uml:Class">
+          <generalization xmi:type="uml:Generalization" xmi:id="VDM.331" general="VDM.17"/>
+        </ownedMember>
+        <ownedMember isAbstract="false" isActive="false" isLeaf="false" name="ガードコマンド_利用者_認証" visibility="public" xmi:id="VDM.23" xmi:type="uml:Class">
+          <ownedOperation isAbstract="false" isLeaf="false" isQuery="false" name="update" ownerScope="instance" visibility="public" xmi:id="VDM.332" xmi:type="uml:Operation">
+            <ownedParameter name="a大域黒板" direction="in" xmi:id="VDM.333" type="VDM.46"/>
+          </ownedOperation>
+          <ownedOperation isAbstract="false" isLeaf="false" isQuery="false" name="ガードコマンド_利用者_認証" ownerScope="instance" visibility="public" xmi:id="VDM.334" xmi:type="uml:Operation">
+            <ownedParameter name="a場所ID" direction="in" xmi:id="VDM.335" type="VDM.71"/>
+            <ownedParameter name="return" direction="return" xmi:id="VDM.336" type="VDM.23"/>
+          </ownedOperation>
+          <ownedOperation isAbstract="false" isLeaf="false" isQuery="false" name="check" ownerScope="instance" visibility="public" xmi:id="VDM.337" xmi:type="uml:Operation">
+            <ownedParameter name="a大域黒板" direction="in" xmi:id="VDM.338" type="VDM.46"/>
+          </ownedOperation>
+          <generalization xmi:type="uml:Generalization" xmi:id="VDM.339" general="VDM.55"/>
+        </ownedMember>
+        <ownedMember isAbstract="false" isActive="false" isLeaf="false" name="TestCaseST0008" visibility="public" xmi:id="VDM.22" xmi:type="uml:Class">
+          <ownedOperation isAbstract="false" isLeaf="false" isQuery="false" name="TestCaseST0008" ownerScope="instance" visibility="public" xmi:id="VDM.340" xmi:type="uml:Operation">
+            <ownedParameter name="nm" direction="in" xmi:id="VDM.341" type="VDM.5"/>
+            <ownedParameter name="return" direction="return" xmi:id="VDM.342" type="VDM.22"/>
+          </ownedOperation>
+          <ownedOperation isAbstract="false" isLeaf="false" isQuery="false" name="RunTest" ownerScope="instance" visibility="protected" xmi:id="VDM.343" xmi:type="uml:Operation"/>
+          <generalization xmi:type="uml:Generalization" xmi:id="VDM.344" general="VDM.29"/>
+        </ownedMember>
+        <ownedMember isAbstract="false" isActive="false" isLeaf="false" name="ドア錠状態" visibility="public" xmi:id="VDM.24" xmi:type="uml:Class">
+          <ownedAttribute name="アンロック" ownerScope="instance" isReadOnly="true" isStatic="true" visibility="public" xmi:id="VDM.345" xmi:type="uml:Property" isOrdered="true">
+            <lowerValue value="0" xmi:id="VDM.346" xmi:type="uml:LiteralInteger"/>
+            <upperValue value="*" xmi:id="VDM.347" xmi:type="uml:LiteralString"/>
+            <type xmi:idref="VDM.4"/>
+          </ownedAttribute>
+          <ownedAttribute name="ロック" ownerScope="instance" isReadOnly="true" isStatic="true" visibility="public" xmi:id="VDM.348" xmi:type="uml:Property" isOrdered="true">
+            <lowerValue value="0" xmi:id="VDM.349" xmi:type="uml:LiteralInteger"/>
+            <upperValue value="*" xmi:id="VDM.350" xmi:type="uml:LiteralString"/>
+            <type xmi:idref="VDM.4"/>
+          </ownedAttribute>
+        </ownedMember>
+        <ownedMember isAbstract="false" isActive="false" isLeaf="false" name="ガードコマンド_センサー_仮想世界" visibility="public" xmi:id="VDM.25" xmi:type="uml:Class">
+          <ownedOperation isAbstract="false" isLeaf="false" isQuery="false" name="update" ownerScope="instance" visibility="public" xmi:id="VDM.351" xmi:type="uml:Operation">
+            <ownedParameter name="a大域黒板" direction="in" xmi:id="VDM.352" type="VDM.46"/>
+          </ownedOperation>
+          <ownedOperation isAbstract="false" isLeaf="false" isQuery="false" name="check" ownerScope="instance" visibility="public" xmi:id="VDM.353" xmi:type="uml:Operation">
+            <ownedParameter name="a大域黒板" direction="in" xmi:id="VDM.354" type="VDM.46"/>
+          </ownedOperation>
+          <ownedOperation isAbstract="false" isLeaf="false" isQuery="false" name="ガードコマンド_センサー_仮想世界" ownerScope="instance" visibility="public" xmi:id="VDM.355" xmi:type="uml:Operation">
+            <ownedParameter name="a場所ID" direction="in" xmi:id="VDM.356" type="VDM.71"/>
+            <ownedParameter name="return" direction="return" xmi:id="VDM.357" type="VDM.25"/>
+          </ownedOperation>
+          <generalization xmi:type="uml:Generalization" xmi:id="VDM.358" general="VDM.26"/>
+        </ownedMember>
+        <ownedMember isAbstract="false" isActive="false" isLeaf="false" name="VDMUtil" visibility="public" xmi:id="VDM.67" xmi:type="uml:Class">
+          <ownedOperation isAbstract="false" isLeaf="false" isQuery="true" name="seq_of_char2val" ownerScope="instance" visibility="public" xmi:id="VDM.359" xmi:type="uml:Operation">
+            <ownedParameter name="s" direction="in" xmi:id="VDM.360" type="VDM.5"/>
+            <ownedParameter name="return" direction="return" xmi:id="VDM.361" type="VDM.8"/>
+          </ownedOperation>
+          <ownedOperation isAbstract="false" isLeaf="false" isQuery="true" name="val2seq_of_char" ownerScope="instance" visibility="public" xmi:id="VDM.362" xmi:type="uml:Operation">
+            <ownedParameter name="x" direction="in" xmi:id="VDM.363" type="VDM.8"/>
+            <ownedParameter name="return" direction="return" xmi:id="VDM.364" type="VDM.5"/>
+          </ownedOperation>
+          <ownedOperation isAbstract="false" isLeaf="false" isQuery="true" name="get_file_pos" ownerScope="instance" visibility="public" xmi:id="VDM.365" xmi:type="uml:Operation">
+            <ownedParameter name="return" direction="return" xmi:id="VDM.366" type="VDM.8"/>
+          </ownedOperation>
+          <ownedOperation isAbstract="false" isLeaf="false" isQuery="true" name="cast" ownerScope="instance" visibility="public" xmi:id="VDM.367" xmi:type="uml:Operation">
+            <ownedParameter name="s" direction="in" xmi:id="VDM.368" type="VDM.8"/>
+            <ownedParameter name="return" direction="return" xmi:id="VDM.369" type="VDM.8"/>
+          </ownedOperation>
+          <ownedOperation isAbstract="false" isLeaf="false" isQuery="true" name="set2seq" ownerScope="instance" visibility="public" xmi:id="VDM.370" xmi:type="uml:Operation">
+            <ownedParameter name="x" direction="in" xmi:id="VDM.371" type="VDM.8"/>
+            <ownedParameter name="return" direction="return" xmi:id="VDM.372" type="VDM.8"/>
+          </ownedOperation>
+        </ownedMember>
+        <ownedMember isAbstract="true" isActive="false" isLeaf="false" name="ガードコマンド" visibility="public" xmi:id="VDM.26" xmi:type="uml:Class">
+          <ownedOperation isAbstract="false" isLeaf="false" isQuery="false" name="update" ownerScope="instance" visibility="public" xmi:id="VDM.373" xmi:type="uml:Operation"/>
+          <ownedOperation isAbstract="false" isLeaf="false" isQuery="true" name="利用者集合に含まれている" ownerScope="instance" visibility="public" xmi:id="VDM.374" xmi:type="uml:Operation">
+            <ownedParameter name="a利用者集合" direction="in" xmi:id="VDM.375" type="VDM.36"/>
+            <ownedParameter name="a利用者" direction="in" xmi:id="VDM.376" type="VDM.36"/>
+            <ownedParameter name="return" direction="return" xmi:id="VDM.377" type="VDM.3"/>
+          </ownedOperation>
+          <ownedOperation isAbstract="false" isLeaf="false" isQuery="false" name="check" ownerScope="instance" visibility="public" xmi:id="VDM.378" xmi:type="uml:Operation"/>
+          <ownedOperation isAbstract="false" isLeaf="false" isQuery="false" name="ある場所の利用者を次の場所へ移動させる" ownerScope="instance" visibility="public" xmi:id="VDM.379" xmi:type="uml:Operation">
+            <ownedParameter name="a利用者のいる場所DB" direction="in" xmi:id="VDM.380" type="VDM.64"/>
+            <ownedParameter name="a利用者" direction="in" xmi:id="VDM.381" type="VDM.36"/>
+            <ownedParameter name="a居場所ID" direction="in" xmi:id="VDM.382" type="VDM.71"/>
+            <ownedParameter name="a次の場所ID" direction="in" xmi:id="VDM.383" type="VDM.71"/>
+            <ownedParameter name="aオブジェクト型" direction="in" xmi:id="VDM.384" type="VDM.5"/>
+            <ownedParameter name="aクラス名" direction="in" xmi:id="VDM.385" type="VDM.5"/>
+            <ownedParameter name="aメッセージ" direction="in" xmi:id="VDM.386" type="VDM.5"/>
+          </ownedOperation>
+          <generalization xmi:type="uml:Generalization" xmi:id="VDM.387" general="VDM.86"/>
+        </ownedMember>
+        <ownedMember isAbstract="true" isActive="false" isLeaf="false" name="TestCase" visibility="public" xmi:id="VDM.27" xmi:type="uml:Class">
+          <ownedAttribute name="name" ownerScope="instance" isReadOnly="false" isStatic="false" visibility="protected" xmi:id="VDM.388" xmi:type="uml:Property" isOrdered="true">
+            <lowerValue value="0" xmi:id="VDM.389" xmi:type="uml:LiteralInteger"/>
+            <upperValue value="*" xmi:id="VDM.390" xmi:type="uml:LiteralString"/>
+            <type xmi:idref="VDM.5"/>
+          </ownedAttribute>
+          <ownedOperation isAbstract="false" isLeaf="false" isQuery="false" name="AssertTrue" ownerScope="instance" visibility="protected" xmi:id="VDM.391" xmi:type="uml:Operation">
+            <ownedParameter name="b" direction="in" xmi:id="VDM.392" type="VDM.3"/>
+          </ownedOperation>
+          <ownedOperation isAbstract="false" isLeaf="false" isQuery="false" name="GetName" ownerScope="instance" visibility="public" xmi:id="VDM.393" xmi:type="uml:Operation">
+            <ownedParameter name="return" direction="return" xmi:id="VDM.394" type="VDM.5"/>
+          </ownedOperation>
+          <ownedOperation isAbstract="false" isLeaf="false" isQuery="false" name="AssertFalse" ownerScope="instance" visibility="protected" xmi:id="VDM.395" xmi:type="uml:Operation">
+            <ownedParameter name="b" direction="in" xmi:id="VDM.396" type="VDM.3"/>
+          </ownedOperation>
+          <ownedOperation isAbstract="false" isLeaf="false" isQuery="false" name="SetUp" ownerScope="instance" visibility="protected" xmi:id="VDM.397" xmi:type="uml:Operation"/>
+          <ownedOperation isAbstract="false" isLeaf="false" isQuery="false" name="Run" ownerScope="instance" visibility="public" xmi:id="VDM.398" xmi:type="uml:Operation">
+            <ownedParameter name="tr" direction="in" xmi:id="VDM.399" type="VDM.40"/>
+          </ownedOperation>
+          <ownedOperation isAbstract="false" isLeaf="false" isQuery="false" name="TestCase" ownerScope="instance" visibility="public" xmi:id="VDM.400" xmi:type="uml:Operation">
+            <ownedParameter name="nm" direction="in" xmi:id="VDM.401" type="VDM.5"/>
+            <ownedParameter name="return" direction="return" xmi:id="VDM.402" type="VDM.27"/>
+          </ownedOperation>
+          <ownedOperation isAbstract="false" isLeaf="false" isQuery="false" name="RunTest" ownerScope="instance" visibility="protected" xmi:id="VDM.403" xmi:type="uml:Operation"/>
+          <ownedOperation isAbstract="false" isLeaf="false" isQuery="false" name="TearDown" ownerScope="instance" visibility="protected" xmi:id="VDM.404" xmi:type="uml:Operation"/>
+          <generalization xmi:type="uml:Generalization" xmi:id="VDM.405" general="VDM.32"/>
+        </ownedMember>
+        <ownedMember isAbstract="false" isActive="false" isLeaf="false" name="共通定義" visibility="public" xmi:id="VDM.28" xmi:type="uml:Class">
+          <ownedAttribute name="debug" ownerScope="instance" isReadOnly="false" isStatic="true" visibility="public" xmi:id="VDM.406" xmi:type="uml:Property" isOrdered="false">
+            <lowerValue value="1" xmi:id="VDM.407" xmi:type="uml:LiteralInteger"/>
+            <upperValue value="1" xmi:id="VDM.408" xmi:type="uml:LiteralInteger"/>
+            <defaultValue xmi:type="uml:LiteralInteger" value="5" xmi:id="VDM.409"/>
+            <type xmi:idref="VDM.4"/>
+          </ownedAttribute>
+        </ownedMember>
+        <ownedMember isAbstract="false" isActive="false" isLeaf="false" name="TestCaseST0010" visibility="public" xmi:id="VDM.68" xmi:type="uml:Class">
+          <ownedOperation isAbstract="false" isLeaf="false" isQuery="false" name="RunTest" ownerScope="instance" visibility="protected" xmi:id="VDM.410" xmi:type="uml:Operation"/>
+          <ownedOperation isAbstract="false" isLeaf="false" isQuery="false" name="TestCaseST0010" ownerScope="instance" visibility="public" xmi:id="VDM.411" xmi:type="uml:Operation">
+            <ownedParameter name="nm" direction="in" xmi:id="VDM.412" type="VDM.5"/>
+            <ownedParameter name="return" direction="return" xmi:id="VDM.413" type="VDM.68"/>
+          </ownedOperation>
+          <generalization xmi:type="uml:Generalization" xmi:id="VDM.414" general="VDM.29"/>
+        </ownedMember>
+        <ownedMember isAbstract="false" isActive="false" isLeaf="false" name="TestCaseS" visibility="public" xmi:id="VDM.29" xmi:type="uml:Class">
+          <ownedOperation isAbstract="false" isLeaf="false" isQuery="false" name="SetUp" ownerScope="instance" visibility="protected" xmi:id="VDM.415" xmi:type="uml:Operation"/>
+          <ownedOperation isAbstract="false" isLeaf="false" isQuery="false" name="TearDown" ownerScope="instance" visibility="protected" xmi:id="VDM.416" xmi:type="uml:Operation"/>
+          <generalization xmi:type="uml:Generalization" xmi:id="VDM.417" general="VDM.27"/>
+          <generalization xmi:type="uml:Generalization" xmi:id="VDM.418" general="VDM.86"/>
+        </ownedMember>
+        <ownedMember isAbstract="false" isActive="false" isLeaf="false" name="ガードコマンド_ID端末γ_OK_仮想世界" visibility="public" xmi:id="VDM.69" xmi:type="uml:Class">
+          <ownedOperation isAbstract="false" isLeaf="false" isQuery="false" name="ガードコマンド_ID端末γ_OK_仮想世界" ownerScope="instance" visibility="public" xmi:id="VDM.419" xmi:type="uml:Operation">
+            <ownedParameter name="anID端末" direction="in" xmi:id="VDM.420" type="VDM.37"/>
+            <ownedParameter name="return" direction="return" xmi:id="VDM.421" type="VDM.69"/>
+          </ownedOperation>
+          <ownedOperation isAbstract="false" isLeaf="false" isQuery="false" name="update" ownerScope="instance" visibility="public" xmi:id="VDM.422" xmi:type="uml:Operation">
+            <ownedParameter name="a大域黒板" direction="in" xmi:id="VDM.423" type="VDM.46"/>
+          </ownedOperation>
+          <ownedOperation isAbstract="false" isLeaf="false" isQuery="false" name="check" ownerScope="instance" visibility="public" xmi:id="VDM.424" xmi:type="uml:Operation">
+            <ownedParameter name="a大域黒板" direction="in" xmi:id="VDM.425" type="VDM.46"/>
+          </ownedOperation>
+          <generalization xmi:type="uml:Generalization" xmi:id="VDM.426" general="VDM.75"/>
+        </ownedMember>
+        <ownedMember isAbstract="false" isActive="false" isLeaf="false" name="DB" visibility="public" xmi:id="VDM.30" xmi:type="uml:Class"/>
+        <ownedMember isAbstract="false" isActive="false" isLeaf="false" name="ガードコマンド_利用者_ドアを閉める" visibility="public" xmi:id="VDM.70" xmi:type="uml:Class">
+          <ownedOperation isAbstract="false" isLeaf="false" isQuery="false" name="ガードコマンド_利用者_ドアを閉める" ownerScope="instance" visibility="public" xmi:id="VDM.427" xmi:type="uml:Operation">
+            <ownedParameter name="a場所ID" direction="in" xmi:id="VDM.428" type="VDM.71"/>
+            <ownedParameter name="return" direction="return" xmi:id="VDM.429" type="VDM.70"/>
+          </ownedOperation>
+          <ownedOperation isAbstract="false" isLeaf="false" isQuery="false" name="check" ownerScope="instance" visibility="public" xmi:id="VDM.430" xmi:type="uml:Operation">
+            <ownedParameter name="a大域黒板" direction="in" xmi:id="VDM.431" type="VDM.46"/>
+          </ownedOperation>
+          <ownedOperation isAbstract="false" isLeaf="false" isQuery="false" name="update" ownerScope="instance" visibility="public" xmi:id="VDM.432" xmi:type="uml:Operation">
+            <ownedParameter name="a大域黒板" direction="in" xmi:id="VDM.433" type="VDM.46"/>
+          </ownedOperation>
+          <generalization xmi:type="uml:Generalization" xmi:id="VDM.434" general="VDM.55"/>
+        </ownedMember>
+        <ownedMember isAbstract="false" isActive="false" isLeaf="false" name="スケジューラ" visibility="public" xmi:id="VDM.31" xmi:type="uml:Class">
+          <ownedOperation isAbstract="false" isLeaf="false" isQuery="false" name="doOneCycle" ownerScope="instance" visibility="public" xmi:id="VDM.435" xmi:type="uml:Operation">
+            <ownedParameter name="a大域黒板" direction="in" xmi:id="VDM.436" type="VDM.46"/>
+            <ownedParameter name="aガードコマンド集合" direction="in" xmi:id="VDM.437" type="VDM.26"/>
+          </ownedOperation>
+          <generalization xmi:type="uml:Generalization" xmi:id="VDM.438" general="VDM.86"/>
+        </ownedMember>
+        <ownedMember isAbstract="true" isActive="false" isLeaf="false" name="Test" visibility="public" xmi:id="VDM.32" xmi:type="uml:Class">
+          <ownedOperation isAbstract="false" isLeaf="false" isQuery="false" name="Run" ownerScope="instance" visibility="public" xmi:id="VDM.439" xmi:type="uml:Operation"/>
+          <ownedOperation isAbstract="false" isLeaf="false" isQuery="false" name="Print" ownerScope="instance" visibility="public" xmi:id="VDM.440" xmi:type="uml:Operation">
+            <ownedParameter name="s" direction="in" xmi:id="VDM.441" type="VDM.5"/>
+          </ownedOperation>
+        </ownedMember>
+        <ownedMember isAbstract="false" isActive="false" isLeaf="false" name="場所ID" visibility="public" xmi:id="VDM.71" xmi:type="uml:Class"/>
+        <ownedMember isAbstract="false" isActive="false" isLeaf="false" name="TestCaseST0007" visibility="public" xmi:id="VDM.72" xmi:type="uml:Class">
+          <ownedOperation isAbstract="false" isLeaf="false" isQuery="false" name="TestCaseST0007" ownerScope="instance" visibility="public" xmi:id="VDM.442" xmi:type="uml:Operation">
+            <ownedParameter name="nm" direction="in" xmi:id="VDM.443" type="VDM.5"/>
+            <ownedParameter name="return" direction="return" xmi:id="VDM.444" type="VDM.72"/>
+          </ownedOperation>
+          <ownedOperation isAbstract="false" isLeaf="false" isQuery="false" name="RunTest" ownerScope="instance" visibility="protected" xmi:id="VDM.445" xmi:type="uml:Operation"/>
+          <generalization xmi:type="uml:Generalization" xmi:id="VDM.446" general="VDM.29"/>
+        </ownedMember>
+        <ownedMember isAbstract="false" isActive="false" isLeaf="false" name="ガードコマンド_利用者_ドアを開ける" visibility="public" xmi:id="VDM.73" xmi:type="uml:Class">
+          <ownedOperation isAbstract="false" isLeaf="false" isQuery="false" name="ガードコマンド_利用者_ドアを開ける" ownerScope="instance" visibility="public" xmi:id="VDM.447" xmi:type="uml:Operation">
+            <ownedParameter name="a場所ID" direction="in" xmi:id="VDM.448" type="VDM.71"/>
+            <ownedParameter name="return" direction="return" xmi:id="VDM.449" type="VDM.73"/>
+          </ownedOperation>
+          <ownedOperation isAbstract="false" isLeaf="false" isQuery="false" name="update" ownerScope="instance" visibility="public" xmi:id="VDM.450" xmi:type="uml:Operation">
+            <ownedParameter name="a大域黒板" direction="in" xmi:id="VDM.451" type="VDM.46"/>
+          </ownedOperation>
+          <ownedOperation isAbstract="false" isLeaf="false" isQuery="false" name="check" ownerScope="instance" visibility="public" xmi:id="VDM.452" xmi:type="uml:Operation">
+            <ownedParameter name="a大域黒板" direction="in" xmi:id="VDM.453" type="VDM.46"/>
+          </ownedOperation>
+          <generalization xmi:type="uml:Generalization" xmi:id="VDM.454" general="VDM.55"/>
+        </ownedMember>
+        <ownedMember isAbstract="false" isActive="false" isLeaf="false" name="ドア位置" visibility="public" xmi:id="VDM.33" xmi:type="uml:Class"/>
+        <ownedMember isAbstract="false" isActive="false" isLeaf="false" name="センサー" visibility="public" xmi:id="VDM.74" xmi:type="uml:Class">
+          <ownedOperation isAbstract="false" isLeaf="false" isQuery="false" name="コピーする" ownerScope="instance" visibility="public" xmi:id="VDM.455" xmi:type="uml:Operation">
+            <ownedParameter name="anID" direction="in" xmi:id="VDM.456" type="VDM.78"/>
+            <ownedParameter name="return" direction="return" xmi:id="VDM.457" type="VDM.74"/>
+          </ownedOperation>
+          <ownedOperation isAbstract="false" isLeaf="false" isQuery="false" name="人が居る位置を得る" ownerScope="instance" visibility="public" xmi:id="VDM.458" xmi:type="uml:Operation">
+            <ownedParameter name="return" direction="return" xmi:id="VDM.459" type="VDM.14"/>
+          </ownedOperation>
+          <ownedOperation isAbstract="false" isLeaf="false" isQuery="false" name="センサー検知状態を設定する" ownerScope="instance" visibility="public" xmi:id="VDM.460" xmi:type="uml:Operation">
+            <ownedParameter name="aセンサー検知状態" direction="in" xmi:id="VDM.461" type="VDM.45"/>
+          </ownedOperation>
+          <ownedOperation isAbstract="false" isLeaf="false" isQuery="false" name="センサー" ownerScope="instance" visibility="public" xmi:id="VDM.462" xmi:type="uml:Operation">
+            <ownedParameter name="anID" direction="in" xmi:id="VDM.463" type="VDM.78"/>
+            <ownedParameter name="a人が居る位置" direction="in" xmi:id="VDM.464" type="VDM.14"/>
+            <ownedParameter name="aセンサー検知状態" direction="in" xmi:id="VDM.465" type="VDM.45"/>
+            <ownedParameter name="return" direction="return" xmi:id="VDM.466" type="VDM.74"/>
+          </ownedOperation>
+          <ownedOperation isAbstract="false" isLeaf="false" isQuery="false" name="人は居ない" ownerScope="instance" visibility="public" xmi:id="VDM.467" xmi:type="uml:Operation">
+            <ownedParameter name="return" direction="return" xmi:id="VDM.468" type="VDM.3"/>
+          </ownedOperation>
+          <ownedOperation isAbstract="false" isLeaf="false" isQuery="false" name="IDを得る" ownerScope="instance" visibility="public" xmi:id="VDM.469" xmi:type="uml:Operation">
+            <ownedParameter name="return" direction="return" xmi:id="VDM.470" type="VDM.78"/>
+          </ownedOperation>
+          <generalization xmi:type="uml:Generalization" xmi:id="VDM.471" general="VDM.86"/>
+        </ownedMember>
+        <ownedMember isAbstract="false" isActive="false" isLeaf="false" name="ガードコマンド_利用者案内無し移動" visibility="public" xmi:id="VDM.34" xmi:type="uml:Class">
+          <ownedOperation isAbstract="false" isLeaf="false" isQuery="false" name="check" ownerScope="instance" visibility="public" xmi:id="VDM.472" xmi:type="uml:Operation">
+            <ownedParameter name="a大域黒板" direction="in" xmi:id="VDM.473" type="VDM.46"/>
+          </ownedOperation>
+          <ownedOperation isAbstract="false" isLeaf="false" isQuery="false" name="ガードコマンド_利用者案内無し移動" ownerScope="instance" visibility="public" xmi:id="VDM.474" xmi:type="uml:Operation">
+            <ownedParameter name="a場所ID" direction="in" xmi:id="VDM.475" type="VDM.71"/>
+            <ownedParameter name="return" direction="return" xmi:id="VDM.476" type="VDM.34"/>
+          </ownedOperation>
+          <generalization xmi:type="uml:Generalization" xmi:id="VDM.477" general="VDM.55"/>
+        </ownedMember>
+        <ownedMember isAbstract="false" isActive="false" isLeaf="false" name="TestCaseST0006" visibility="public" xmi:id="VDM.35" xmi:type="uml:Class">
+          <ownedOperation isAbstract="false" isLeaf="false" isQuery="false" name="RunTest" ownerScope="instance" visibility="protected" xmi:id="VDM.478" xmi:type="uml:Operation"/>
+          <ownedOperation isAbstract="false" isLeaf="false" isQuery="false" name="TestCaseST0006" ownerScope="instance" visibility="public" xmi:id="VDM.479" xmi:type="uml:Operation">
+            <ownedParameter name="nm" direction="in" xmi:id="VDM.480" type="VDM.5"/>
+            <ownedParameter name="return" direction="return" xmi:id="VDM.481" type="VDM.35"/>
+          </ownedOperation>
+          <generalization xmi:type="uml:Generalization" xmi:id="VDM.482" general="VDM.29"/>
+        </ownedMember>
+        <ownedMember isAbstract="false" isActive="false" isLeaf="false" name="利用者" visibility="public" xmi:id="VDM.36" xmi:type="uml:Class">
+          <ownedAttribute name="s作成者名" ownerScope="instance" isReadOnly="false" isStatic="false" visibility="public" xmi:id="VDM.483" xmi:type="uml:Property" isOrdered="true">
+            <lowerValue value="0" xmi:id="VDM.484" xmi:type="uml:LiteralInteger"/>
+            <upperValue value="*" xmi:id="VDM.485" xmi:type="uml:LiteralString"/>
+            <defaultValue xmi:type="uml:LiteralString" value="" xmi:id="VDM.486"/>
+            <type xmi:idref="VDM.5"/>
+          </ownedAttribute>
+          <ownedOperation isAbstract="false" isLeaf="false" isQuery="false" name="前にいた場所を得る" ownerScope="instance" visibility="public" xmi:id="VDM.487" xmi:type="uml:Operation">
+            <ownedParameter name="return" direction="return" xmi:id="VDM.488" type="VDM.71"/>
+          </ownedOperation>
+          <ownedOperation isAbstract="false" isLeaf="false" isQuery="false" name="IDカードを得る" ownerScope="instance" visibility="public" xmi:id="VDM.489" xmi:type="uml:Operation">
+            <ownedParameter name="return" direction="return" xmi:id="VDM.490" type="VDM.18"/>
+          </ownedOperation>
+          <ownedOperation isAbstract="false" isLeaf="false" isQuery="false" name="コピーする" ownerScope="instance" visibility="public" xmi:id="VDM.491" xmi:type="uml:Operation">
+            <ownedParameter name="a作成者名" direction="in" xmi:id="VDM.492" type="VDM.5"/>
+            <ownedParameter name="return" direction="return" xmi:id="VDM.493" type="VDM.36"/>
+          </ownedOperation>
+          <ownedOperation isAbstract="false" isLeaf="false" isQuery="false" name="利用者" ownerScope="instance" visibility="public" xmi:id="VDM.494" xmi:type="uml:Operation">
+            <ownedParameter name="a利用者ID" direction="in" xmi:id="VDM.495" type="VDM.20"/>
+            <ownedParameter name="aIDカード" direction="in" xmi:id="VDM.496" type="VDM.18"/>
+            <ownedParameter name="a到着時間" direction="in" xmi:id="VDM.497" type="VDM.59"/>
+            <ownedParameter name="a気まぐれ時間" direction="in" xmi:id="VDM.498" type="VDM.59"/>
+            <ownedParameter name="return" direction="return" xmi:id="VDM.499" type="VDM.36"/>
+          </ownedOperation>
+          <ownedOperation isAbstract="false" isLeaf="false" isQuery="false" name="到着時間を更新する" ownerScope="instance" visibility="public" xmi:id="VDM.500" xmi:type="uml:Operation">
+            <ownedParameter name="return" direction="return" xmi:id="VDM.501" type="VDM.36"/>
+          </ownedOperation>
+          <ownedOperation isAbstract="false" isLeaf="false" isQuery="false" name="移動する気になった時間である" ownerScope="instance" visibility="public" xmi:id="VDM.502" xmi:type="uml:Operation">
+            <ownedParameter name="return" direction="return" xmi:id="VDM.503" type="VDM.3"/>
+          </ownedOperation>
+          <ownedOperation isAbstract="false" isLeaf="false" isQuery="false" name="前にいた場所を設定する" ownerScope="instance" visibility="public" xmi:id="VDM.504" xmi:type="uml:Operation">
+            <ownedParameter name="a場所ID" direction="in" xmi:id="VDM.505" type="VDM.71"/>
+          </ownedOperation>
+          <ownedOperation isAbstract="false" isLeaf="false" isQuery="false" name="属性を得る" ownerScope="instance" visibility="public" xmi:id="VDM.506" xmi:type="uml:Operation">
+            <ownedParameter name="return" direction="return" xmi:id="VDM.507" type="VDM.8"/>
+          </ownedOperation>
+          <ownedOperation isAbstract="false" isLeaf="false" isQuery="false" name="移動していない" ownerScope="instance" visibility="public" xmi:id="VDM.508" xmi:type="uml:Operation">
+            <ownedParameter name="return" direction="return" xmi:id="VDM.509" type="VDM.3"/>
+          </ownedOperation>
+          <ownedOperation isAbstract="false" isLeaf="false" isQuery="true" name="到着時間が一番早い利用者を選ぶ" ownerScope="instance" visibility="public" xmi:id="VDM.510" xmi:type="uml:Operation">
+            <ownedParameter name="a利用者集合" direction="in" xmi:id="VDM.511" type="VDM.36"/>
+            <ownedParameter name="return" direction="return" xmi:id="VDM.512" type="VDM.36"/>
+          </ownedOperation>
+          <ownedOperation isAbstract="false" isLeaf="false" isQuery="false" name="利用者" ownerScope="instance" visibility="public" xmi:id="VDM.513" xmi:type="uml:Operation">
+            <ownedParameter name="a利用者ID" direction="in" xmi:id="VDM.514" type="VDM.20"/>
+            <ownedParameter name="aIDカード" direction="in" xmi:id="VDM.515" type="VDM.18"/>
+            <ownedParameter name="a到着時間" direction="in" xmi:id="VDM.516" type="VDM.59"/>
+            <ownedParameter name="a前にいた場所" direction="in" xmi:id="VDM.517" type="VDM.71"/>
+            <ownedParameter name="a気まぐれ時間" direction="in" xmi:id="VDM.518" type="VDM.59"/>
+            <ownedParameter name="a作成者名" direction="in" xmi:id="VDM.519" type="VDM.5"/>
+            <ownedParameter name="return" direction="return" xmi:id="VDM.520" type="VDM.36"/>
+          </ownedOperation>
+          <ownedOperation isAbstract="false" isLeaf="false" isQuery="false" name="IDを得る" ownerScope="instance" visibility="public" xmi:id="VDM.521" xmi:type="uml:Operation">
+            <ownedParameter name="return" direction="return" xmi:id="VDM.522" type="VDM.20"/>
+          </ownedOperation>
+          <ownedOperation isAbstract="false" isLeaf="false" isQuery="false" name="有効なIDを持っている" ownerScope="instance" visibility="public" xmi:id="VDM.523" xmi:type="uml:Operation">
+            <ownedParameter name="return" direction="return" xmi:id="VDM.524" type="VDM.3"/>
+          </ownedOperation>
+          <generalization xmi:type="uml:Generalization" xmi:id="VDM.525" general="VDM.86"/>
+        </ownedMember>
+        <ownedMember isAbstract="false" isActive="false" isLeaf="false" name="ガードコマンド_ID端末" visibility="public" xmi:id="VDM.75" xmi:type="uml:Class">
+          <generalization xmi:type="uml:Generalization" xmi:id="VDM.526" general="VDM.26"/>
+        </ownedMember>
+        <ownedMember isAbstract="false" isActive="false" isLeaf="false" name="ID端末" visibility="public" xmi:id="VDM.37" xmi:type="uml:Class">
+          <ownedOperation isAbstract="false" isLeaf="false" isQuery="false" name="利用不可能にする" ownerScope="instance" visibility="public" xmi:id="VDM.527" xmi:type="uml:Operation"/>
+          <ownedOperation isAbstract="false" isLeaf="false" isQuery="false" name="位置を得る" ownerScope="instance" visibility="public" xmi:id="VDM.528" xmi:type="uml:Operation">
+            <ownedParameter name="return" direction="return" xmi:id="VDM.529" type="VDM.87"/>
+          </ownedOperation>
+          <ownedOperation isAbstract="false" isLeaf="false" isQuery="false" name="利用可能である" ownerScope="instance" visibility="public" xmi:id="VDM.530" xmi:type="uml:Operation">
+            <ownedParameter name="return" direction="return" xmi:id="VDM.531" type="VDM.3"/>
+          </ownedOperation>
+          <ownedOperation isAbstract="false" isLeaf="false" isQuery="false" name="利用可能にする" ownerScope="instance" visibility="public" xmi:id="VDM.532" xmi:type="uml:Operation"/>
+          <ownedOperation isAbstract="false" isLeaf="false" isQuery="false" name="IDを得る" ownerScope="instance" visibility="public" xmi:id="VDM.533" xmi:type="uml:Operation">
+            <ownedParameter name="return" direction="return" xmi:id="VDM.534" type="VDM.87"/>
+          </ownedOperation>
+          <ownedOperation isAbstract="false" isLeaf="false" isQuery="false" name="既に認証依頼している" ownerScope="instance" visibility="public" xmi:id="VDM.535" xmi:type="uml:Operation">
+            <ownedParameter name="a利用者" direction="in" xmi:id="VDM.536" type="VDM.36"/>
+            <ownedParameter name="return" direction="return" xmi:id="VDM.537" type="VDM.3"/>
+          </ownedOperation>
+          <ownedOperation isAbstract="false" isLeaf="false" isQuery="false" name="認証依頼する" ownerScope="instance" visibility="public" xmi:id="VDM.538" xmi:type="uml:Operation">
+            <ownedParameter name="a利用者" direction="in" xmi:id="VDM.539" type="VDM.36"/>
+          </ownedOperation>
+          <ownedOperation isAbstract="false" isLeaf="false" isQuery="false" name="ID端末" ownerScope="instance" visibility="public" xmi:id="VDM.540" xmi:type="uml:Operation">
+            <ownedParameter name="aID端末位置" direction="in" xmi:id="VDM.541" type="VDM.87"/>
+            <ownedParameter name="a端末型" direction="in" xmi:id="VDM.542" type="VDM.47"/>
+            <ownedParameter name="aID端末状態" direction="in" xmi:id="VDM.543" type="VDM.63"/>
+            <ownedParameter name="a利用者" direction="in" xmi:id="VDM.544" type="VDM.36"/>
+            <ownedParameter name="return" direction="return" xmi:id="VDM.545" type="VDM.37"/>
+          </ownedOperation>
+          <ownedOperation isAbstract="false" isLeaf="false" isQuery="false" name="認証依頼された" ownerScope="instance" visibility="public" xmi:id="VDM.546" xmi:type="uml:Operation">
+            <ownedParameter name="return" direction="return" xmi:id="VDM.547" type="VDM.3"/>
+          </ownedOperation>
+          <ownedOperation isAbstract="false" isLeaf="false" isQuery="false" name="利用不可能である" ownerScope="instance" visibility="public" xmi:id="VDM.548" xmi:type="uml:Operation">
+            <ownedParameter name="return" direction="return" xmi:id="VDM.549" type="VDM.3"/>
+          </ownedOperation>
+          <ownedOperation isAbstract="false" isLeaf="false" isQuery="false" name="コピーする" ownerScope="instance" visibility="public" xmi:id="VDM.550" xmi:type="uml:Operation">
+            <ownedParameter name="aID端末位置" direction="in" xmi:id="VDM.551" type="VDM.87"/>
+            <ownedParameter name="return" direction="return" xmi:id="VDM.552" type="VDM.37"/>
+          </ownedOperation>
+          <ownedOperation isAbstract="false" isLeaf="false" isQuery="false" name="ID端末" ownerScope="instance" visibility="public" xmi:id="VDM.553" xmi:type="uml:Operation">
+            <ownedParameter name="aID端末位置" direction="in" xmi:id="VDM.554" type="VDM.87"/>
+            <ownedParameter name="a端末型" direction="in" xmi:id="VDM.555" type="VDM.47"/>
+            <ownedParameter name="return" direction="return" xmi:id="VDM.556" type="VDM.37"/>
+          </ownedOperation>
+          <ownedOperation isAbstract="false" isLeaf="false" isQuery="false" name="正当な利用者から認証依頼された" ownerScope="instance" visibility="public" xmi:id="VDM.557" xmi:type="uml:Operation">
+            <ownedParameter name="return" direction="return" xmi:id="VDM.558" type="VDM.3"/>
+          </ownedOperation>
+          <generalization xmi:type="uml:Generalization" xmi:id="VDM.559" general="VDM.86"/>
+        </ownedMember>
+        <ownedMember isAbstract="false" isActive="false" isLeaf="false" name="TestSuite" visibility="public" xmi:id="VDM.76" xmi:type="uml:Class">
+          <ownedOperation isAbstract="false" isLeaf="false" isQuery="false" name="AddTest" ownerScope="instance" visibility="public" xmi:id="VDM.560" xmi:type="uml:Operation">
+            <ownedParameter name="test" direction="in" xmi:id="VDM.561" type="VDM.32"/>
+          </ownedOperation>
+          <ownedOperation isAbstract="false" isLeaf="false" isQuery="false" name="Run" ownerScope="instance" visibility="public" xmi:id="VDM.562" xmi:type="uml:Operation"/>
+          <ownedOperation isAbstract="false" isLeaf="false" isQuery="false" name="Run" ownerScope="instance" visibility="public" xmi:id="VDM.563" xmi:type="uml:Operation">
+            <ownedParameter name="result" direction="in" xmi:id="VDM.564" type="VDM.40"/>
+          </ownedOperation>
+          <generalization xmi:type="uml:Generalization" xmi:id="VDM.565" general="VDM.32"/>
+        </ownedMember>
+        <ownedMember isAbstract="false" isActive="false" isLeaf="false" name="ID" visibility="public" xmi:id="VDM.78" xmi:type="uml:Class"/>
+        <ownedMember isAbstract="false" isActive="false" isLeaf="false" name="タッチパネル状態" visibility="public" xmi:id="VDM.77" xmi:type="uml:Class">
+          <ownedAttribute name="入力不可能" ownerScope="instance" isReadOnly="true" isStatic="true" visibility="public" xmi:id="VDM.566" xmi:type="uml:Property" isOrdered="true">
+            <lowerValue value="0" xmi:id="VDM.567" xmi:type="uml:LiteralInteger"/>
+            <upperValue value="*" xmi:id="VDM.568" xmi:type="uml:LiteralString"/>
+            <type xmi:idref="VDM.4"/>
+          </ownedAttribute>
+          <ownedAttribute name="入力可能" ownerScope="instance" isReadOnly="true" isStatic="true" visibility="public" xmi:id="VDM.569" xmi:type="uml:Property" isOrdered="true">
+            <lowerValue value="0" xmi:id="VDM.570" xmi:type="uml:LiteralInteger"/>
+            <upperValue value="*" xmi:id="VDM.571" xmi:type="uml:LiteralString"/>
+            <type xmi:idref="VDM.4"/>
+          </ownedAttribute>
+        </ownedMember>
+        <ownedMember isAbstract="false" isActive="false" isLeaf="false" name="TestCaseST0005" visibility="public" xmi:id="VDM.38" xmi:type="uml:Class">
+          <ownedOperation isAbstract="false" isLeaf="false" isQuery="false" name="RunTest" ownerScope="instance" visibility="protected" xmi:id="VDM.572" xmi:type="uml:Operation"/>
+          <ownedOperation isAbstract="false" isLeaf="false" isQuery="false" name="TestCaseST0005" ownerScope="instance" visibility="public" xmi:id="VDM.573" xmi:type="uml:Operation">
+            <ownedParameter name="nm" direction="in" xmi:id="VDM.574" type="VDM.5"/>
+            <ownedParameter name="return" direction="return" xmi:id="VDM.575" type="VDM.38"/>
+          </ownedOperation>
+          <generalization xmi:type="uml:Generalization" xmi:id="VDM.576" general="VDM.29"/>
+        </ownedMember>
+        <ownedMember isAbstract="false" isActive="false" isLeaf="false" name="黒板属性DB" visibility="public" xmi:id="VDM.79" xmi:type="uml:Class"/>
+        <ownedMember isAbstract="false" isActive="false" isLeaf="false" name="TestCaseST0001" visibility="public" xmi:id="VDM.80" xmi:type="uml:Class">
+          <ownedOperation isAbstract="false" isLeaf="false" isQuery="false" name="RunTest" ownerScope="instance" visibility="protected" xmi:id="VDM.577" xmi:type="uml:Operation"/>
+          <ownedOperation isAbstract="false" isLeaf="false" isQuery="false" name="TestCaseST0001" ownerScope="instance" visibility="public" xmi:id="VDM.578" xmi:type="uml:Operation">
+            <ownedParameter name="nm" direction="in" xmi:id="VDM.579" type="VDM.5"/>
+            <ownedParameter name="return" direction="return" xmi:id="VDM.580" type="VDM.80"/>
+          </ownedOperation>
+          <generalization xmi:type="uml:Generalization" xmi:id="VDM.581" general="VDM.29"/>
+        </ownedMember>
+        <ownedMember isAbstract="false" isActive="false" isLeaf="false" name="ガードコマンド_ID端末_OK_仮想世界" visibility="public" xmi:id="VDM.81" xmi:type="uml:Class">
+          <ownedOperation isAbstract="false" isLeaf="false" isQuery="false" name="ガードコマンド_ID端末_OK_仮想世界" ownerScope="instance" visibility="public" xmi:id="VDM.582" xmi:type="uml:Operation">
+            <ownedParameter name="anID端末" direction="in" xmi:id="VDM.583" type="VDM.37"/>
+            <ownedParameter name="return" direction="return" xmi:id="VDM.584" type="VDM.81"/>
+          </ownedOperation>
+          <ownedOperation isAbstract="false" isLeaf="false" isQuery="false" name="update" ownerScope="instance" visibility="public" xmi:id="VDM.585" xmi:type="uml:Operation">
+            <ownedParameter name="a大域黒板" direction="in" xmi:id="VDM.586" type="VDM.46"/>
+          </ownedOperation>
+          <ownedOperation isAbstract="false" isLeaf="false" isQuery="false" name="check" ownerScope="instance" visibility="public" xmi:id="VDM.587" xmi:type="uml:Operation">
+            <ownedParameter name="a大域黒板" direction="in" xmi:id="VDM.588" type="VDM.46"/>
+          </ownedOperation>
+          <generalization xmi:type="uml:Generalization" xmi:id="VDM.589" general="VDM.75"/>
+        </ownedMember>
+        <ownedMember isAbstract="false" isActive="false" isLeaf="false" name="TestCaseST0002" visibility="public" xmi:id="VDM.39" xmi:type="uml:Class">
+          <ownedOperation isAbstract="false" isLeaf="false" isQuery="false" name="TestCaseST0002" ownerScope="instance" visibility="public" xmi:id="VDM.590" xmi:type="uml:Operation">
+            <ownedParameter name="nm" direction="in" xmi:id="VDM.591" type="VDM.5"/>
+            <ownedParameter name="return" direction="return" xmi:id="VDM.592" type="VDM.39"/>
+          </ownedOperation>
+          <ownedOperation isAbstract="false" isLeaf="false" isQuery="false" name="RunTest" ownerScope="instance" visibility="protected" xmi:id="VDM.593" xmi:type="uml:Operation"/>
+          <generalization xmi:type="uml:Generalization" xmi:id="VDM.594" general="VDM.29"/>
+        </ownedMember>
+        <ownedMember isAbstract="false" isActive="false" isLeaf="false" name="TestResult" visibility="public" xmi:id="VDM.40" xmi:type="uml:Class">
+          <ownedOperation isAbstract="false" isLeaf="false" isQuery="false" name="Print" ownerScope="instance" visibility="public" xmi:id="VDM.595" xmi:type="uml:Operation">
+            <ownedParameter name="s" direction="in" xmi:id="VDM.596" type="VDM.5"/>
+          </ownedOperation>
+          <ownedOperation isAbstract="false" isLeaf="false" isQuery="false" name="Show" ownerScope="instance" visibility="public" xmi:id="VDM.597" xmi:type="uml:Operation"/>
+          <ownedOperation isAbstract="false" isLeaf="false" isQuery="false" name="AddFailure" ownerScope="instance" visibility="public" xmi:id="VDM.598" xmi:type="uml:Operation">
+            <ownedParameter name="test" direction="in" xmi:id="VDM.599" type="VDM.27"/>
+          </ownedOperation>
+        </ownedMember>
+        <ownedMember isAbstract="false" isActive="false" isLeaf="false" name="filedirective" visibility="public" xmi:id="VDM.82" xmi:type="uml:Class">
+          <ownedAttribute name="append" ownerScope="instance" isReadOnly="true" isStatic="true" visibility="public" xmi:id="VDM.600" xmi:type="uml:Property" isOrdered="true">
+            <lowerValue value="0" xmi:id="VDM.601" xmi:type="uml:LiteralInteger"/>
+            <upperValue value="*" xmi:id="VDM.602" xmi:type="uml:LiteralString"/>
+            <type xmi:idref="VDM.4"/>
+          </ownedAttribute>
+          <ownedAttribute name="start" ownerScope="instance" isReadOnly="true" isStatic="true" visibility="public" xmi:id="VDM.603" xmi:type="uml:Property" isOrdered="true">
+            <lowerValue value="0" xmi:id="VDM.604" xmi:type="uml:LiteralInteger"/>
+            <upperValue value="*" xmi:id="VDM.605" xmi:type="uml:LiteralString"/>
+            <type xmi:idref="VDM.4"/>
+          </ownedAttribute>
+        </ownedMember>
+        <ownedMember isAbstract="false" isActive="false" isLeaf="false" name="場所" visibility="public" xmi:id="VDM.41" xmi:type="uml:Class">
+          <ownedAttribute name="外部" ownerScope="instance" isReadOnly="true" isStatic="true" visibility="public" xmi:id="VDM.606" xmi:type="uml:Property" isOrdered="true">
+            <lowerValue value="0" xmi:id="VDM.607" xmi:type="uml:LiteralInteger"/>
+            <upperValue value="*" xmi:id="VDM.608" xmi:type="uml:LiteralString"/>
+            <type xmi:idref="VDM.4"/>
+          </ownedAttribute>
+          <ownedAttribute name="閲覧室A" ownerScope="instance" isReadOnly="true" isStatic="true" visibility="public" xmi:id="VDM.609" xmi:type="uml:Property" isOrdered="true">
+            <lowerValue value="0" xmi:id="VDM.610" xmi:type="uml:LiteralInteger"/>
+            <upperValue value="*" xmi:id="VDM.611" xmi:type="uml:LiteralString"/>
+            <type xmi:idref="VDM.4"/>
+          </ownedAttribute>
+          <ownedAttribute name="前室" ownerScope="instance" isReadOnly="true" isStatic="true" visibility="public" xmi:id="VDM.612" xmi:type="uml:Property" isOrdered="true">
+            <lowerValue value="0" xmi:id="VDM.613" xmi:type="uml:LiteralInteger"/>
+            <upperValue value="*" xmi:id="VDM.614" xmi:type="uml:LiteralString"/>
+            <type xmi:idref="VDM.4"/>
+          </ownedAttribute>
+          <ownedAttribute name="閲覧室B" ownerScope="instance" isReadOnly="true" isStatic="true" visibility="public" xmi:id="VDM.615" xmi:type="uml:Property" isOrdered="true">
+            <lowerValue value="0" xmi:id="VDM.616" xmi:type="uml:LiteralInteger"/>
+            <upperValue value="*" xmi:id="VDM.617" xmi:type="uml:LiteralString"/>
+            <type xmi:idref="VDM.4"/>
+          </ownedAttribute>
+        </ownedMember>
+        <ownedMember isAbstract="false" isActive="false" isLeaf="false" name="ガードコマンド_センサー" visibility="public" xmi:id="VDM.43" xmi:type="uml:Class">
+          <ownedOperation isAbstract="false" isLeaf="false" isQuery="false" name="update" ownerScope="instance" visibility="public" xmi:id="VDM.618" xmi:type="uml:Operation">
+            <ownedParameter name="a大域黒板" direction="in" xmi:id="VDM.619" type="VDM.46"/>
+          </ownedOperation>
+          <ownedOperation isAbstract="false" isLeaf="false" isQuery="false" name="check" ownerScope="instance" visibility="public" xmi:id="VDM.620" xmi:type="uml:Operation">
+            <ownedParameter name="a大域黒板" direction="in" xmi:id="VDM.621" type="VDM.46"/>
+          </ownedOperation>
+          <ownedOperation isAbstract="false" isLeaf="false" isQuery="false" name="ガードコマンド_センサー" ownerScope="instance" visibility="public" xmi:id="VDM.622" xmi:type="uml:Operation">
+            <ownedParameter name="a場所ID" direction="in" xmi:id="VDM.623" type="VDM.71"/>
+            <ownedParameter name="return" direction="return" xmi:id="VDM.624" type="VDM.43"/>
+          </ownedOperation>
+          <generalization xmi:type="uml:Generalization" xmi:id="VDM.625" general="VDM.26"/>
+        </ownedMember>
+        <ownedMember isAbstract="false" isActive="false" isLeaf="false" name="ガードコマンド_ID端末_OK" visibility="public" xmi:id="VDM.42" xmi:type="uml:Class">
+          <ownedOperation isAbstract="false" isLeaf="false" isQuery="false" name="update" ownerScope="instance" visibility="public" xmi:id="VDM.626" xmi:type="uml:Operation">
+            <ownedParameter name="a大域黒板" direction="in" xmi:id="VDM.627" type="VDM.46"/>
+          </ownedOperation>
+          <ownedOperation isAbstract="false" isLeaf="false" isQuery="false" name="ガードコマンド_ID端末_OK" ownerScope="instance" visibility="public" xmi:id="VDM.628" xmi:type="uml:Operation">
+            <ownedParameter name="anID端末" direction="in" xmi:id="VDM.629" type="VDM.37"/>
+            <ownedParameter name="return" direction="return" xmi:id="VDM.630" type="VDM.42"/>
+          </ownedOperation>
+          <ownedOperation isAbstract="false" isLeaf="false" isQuery="false" name="check" ownerScope="instance" visibility="public" xmi:id="VDM.631" xmi:type="uml:Operation">
+            <ownedParameter name="a大域黒板" direction="in" xmi:id="VDM.632" type="VDM.46"/>
+          </ownedOperation>
+          <generalization xmi:type="uml:Generalization" xmi:id="VDM.633" general="VDM.75"/>
+        </ownedMember>
+        <ownedMember isAbstract="false" isActive="false" isLeaf="false" name="IDカードID" visibility="public" xmi:id="VDM.83" xmi:type="uml:Class"/>
+        <ownedMember isAbstract="false" isActive="false" isLeaf="false" name="ガードコマンド_利用者案内有移動" visibility="public" xmi:id="VDM.44" xmi:type="uml:Class">
+          <ownedOperation isAbstract="false" isLeaf="false" isQuery="false" name="ガードコマンド_利用者案内有移動" ownerScope="instance" visibility="public" xmi:id="VDM.634" xmi:type="uml:Operation">
+            <ownedParameter name="a場所ID" direction="in" xmi:id="VDM.635" type="VDM.71"/>
+            <ownedParameter name="return" direction="return" xmi:id="VDM.636" type="VDM.44"/>
+          </ownedOperation>
+          <ownedOperation isAbstract="false" isLeaf="false" isQuery="false" name="check" ownerScope="instance" visibility="public" xmi:id="VDM.637" xmi:type="uml:Operation">
+            <ownedParameter name="a大域黒板" direction="in" xmi:id="VDM.638" type="VDM.46"/>
+          </ownedOperation>
+          <generalization xmi:type="uml:Generalization" xmi:id="VDM.639" general="VDM.55"/>
+        </ownedMember>
+        <ownedMember isAbstract="false" isActive="false" isLeaf="false" name="TestCaseST0004" visibility="public" xmi:id="VDM.84" xmi:type="uml:Class">
+          <ownedOperation isAbstract="false" isLeaf="false" isQuery="false" name="RunTest" ownerScope="instance" visibility="protected" xmi:id="VDM.640" xmi:type="uml:Operation"/>
+          <ownedOperation isAbstract="false" isLeaf="false" isQuery="false" name="TestCaseST0004" ownerScope="instance" visibility="public" xmi:id="VDM.641" xmi:type="uml:Operation">
+            <ownedParameter name="nm" direction="in" xmi:id="VDM.642" type="VDM.5"/>
+            <ownedParameter name="return" direction="return" xmi:id="VDM.643" type="VDM.84"/>
+          </ownedOperation>
+          <generalization xmi:type="uml:Generalization" xmi:id="VDM.644" general="VDM.29"/>
+        </ownedMember>
+        <ownedMember isAbstract="false" isActive="false" isLeaf="false" name="センサー検知状態" visibility="public" xmi:id="VDM.45" xmi:type="uml:Class">
+          <ownedAttribute name="人は居ない" ownerScope="instance" isReadOnly="true" isStatic="true" visibility="public" xmi:id="VDM.645" xmi:type="uml:Property" isOrdered="true">
+            <lowerValue value="0" xmi:id="VDM.646" xmi:type="uml:LiteralInteger"/>
+            <upperValue value="*" xmi:id="VDM.647" xmi:type="uml:LiteralString"/>
+            <type xmi:idref="VDM.4"/>
+          </ownedAttribute>
+          <ownedAttribute name="人が居る" ownerScope="instance" isReadOnly="true" isStatic="true" visibility="public" xmi:id="VDM.648" xmi:type="uml:Property" isOrdered="true">
+            <lowerValue value="0" xmi:id="VDM.649" xmi:type="uml:LiteralInteger"/>
+            <upperValue value="*" xmi:id="VDM.650" xmi:type="uml:LiteralString"/>
+            <type xmi:idref="VDM.4"/>
+          </ownedAttribute>
+        </ownedMember>
+        <ownedMember isAbstract="false" isActive="false" isLeaf="false" name="ガードコマンド_案内" visibility="public" xmi:id="VDM.85" xmi:type="uml:Class">
+          <ownedOperation isAbstract="false" isLeaf="false" isQuery="false" name="check" ownerScope="instance" visibility="public" xmi:id="VDM.651" xmi:type="uml:Operation">
+            <ownedParameter name="a大域黒板" direction="in" xmi:id="VDM.652" type="VDM.46"/>
+          </ownedOperation>
+          <ownedOperation isAbstract="false" isLeaf="false" isQuery="false" name="update" ownerScope="instance" visibility="public" xmi:id="VDM.653" xmi:type="uml:Operation">
+            <ownedParameter name="a大域黒板" direction="in" xmi:id="VDM.654" type="VDM.46"/>
+          </ownedOperation>
+          <ownedOperation isAbstract="false" isLeaf="false" isQuery="false" name="ガードコマンド_案内" ownerScope="instance" visibility="public" xmi:id="VDM.655" xmi:type="uml:Operation">
+            <ownedParameter name="a場所ID" direction="in" xmi:id="VDM.656" type="VDM.71"/>
+            <ownedParameter name="return" direction="return" xmi:id="VDM.657" type="VDM.85"/>
+          </ownedOperation>
+          <generalization xmi:type="uml:Generalization" xmi:id="VDM.658" general="VDM.26"/>
+        </ownedMember>
+        <ownedMember isAbstract="false" isActive="false" isLeaf="false" name="黒板" visibility="public" xmi:id="VDM.46" xmi:type="uml:Class">
+          <ownedOperation isAbstract="false" isLeaf="false" isQuery="true" name="利用者IDの重複がない" ownerScope="instance" visibility="public" xmi:id="VDM.659" xmi:type="uml:Operation">
+            <ownedParameter name="aDB" direction="in" xmi:id="VDM.660" type="VDM.30"/>
+            <ownedParameter name="return" direction="return" xmi:id="VDM.661" type="VDM.3"/>
+          </ownedOperation>
+          <ownedOperation isAbstract="false" isLeaf="false" isQuery="false" name="更新黒板属性を得る" ownerScope="instance" visibility="public" xmi:id="VDM.662" xmi:type="uml:Operation">
+            <ownedParameter name="return" direction="return" xmi:id="VDM.663" type="VDM.79"/>
+          </ownedOperation>
+          <ownedOperation isAbstract="false" isLeaf="false" isQuery="true" name="IDの重複がない" ownerScope="instance" visibility="public" xmi:id="VDM.664" xmi:type="uml:Operation">
+            <ownedParameter name="aDB" direction="in" xmi:id="VDM.665" type="VDM.30"/>
+            <ownedParameter name="return" direction="return" xmi:id="VDM.666" type="VDM.3"/>
+          </ownedOperation>
+          <ownedOperation isAbstract="false" isLeaf="false" isQuery="true" name="ドアDBから削除する" ownerScope="instance" visibility="public" xmi:id="VDM.667" xmi:type="uml:Operation">
+            <ownedParameter name="aドアDB" direction="in" xmi:id="VDM.668" type="VDM.8"/>
+            <ownedParameter name="a削除DB" direction="in" xmi:id="VDM.669" type="VDM.8"/>
+            <ownedParameter name="return" direction="return" xmi:id="VDM.670" type="VDM.57"/>
+          </ownedOperation>
+          <ownedOperation isAbstract="false" isLeaf="false" isQuery="false" name="場所グラフを得る" ownerScope="instance" visibility="public" xmi:id="VDM.671" xmi:type="uml:Operation">
+            <ownedParameter name="return" direction="return" xmi:id="VDM.672" type="VDM.48"/>
+          </ownedOperation>
+          <ownedOperation isAbstract="false" isLeaf="false" isQuery="true" name="実際と仮想の利用者居場所が等しい" ownerScope="instance" visibility="public" xmi:id="VDM.673" xmi:type="uml:Operation">
+            <ownedParameter name="a実際の利用者居場所DB" direction="in" xmi:id="VDM.674" type="VDM.8"/>
+            <ownedParameter name="a仮想世界利用者居場所DB" direction="in" xmi:id="VDM.675" type="VDM.8"/>
+            <ownedParameter name="return" direction="return" xmi:id="VDM.676" type="VDM.3"/>
+          </ownedOperation>
+          <ownedOperation isAbstract="false" isLeaf="false" isQuery="true" name="利用者居場所DBから削除する" ownerScope="instance" visibility="public" xmi:id="VDM.677" xmi:type="uml:Operation">
+            <ownedParameter name="a利用者のいる場所DB" direction="in" xmi:id="VDM.678" type="VDM.8"/>
+            <ownedParameter name="a削除DB" direction="in" xmi:id="VDM.679" type="VDM.8"/>
+            <ownedParameter name="return" direction="return" xmi:id="VDM.680" type="VDM.71"/>
+          </ownedOperation>
+          <ownedOperation isAbstract="false" isLeaf="false" isQuery="false" name="更新黒板属性を設定する" ownerScope="instance" visibility="public" xmi:id="VDM.681" xmi:type="uml:Operation">
+            <ownedParameter name="aオブジェクト型" direction="in" xmi:id="VDM.682" type="VDM.19"/>
+            <ownedParameter name="aDB" direction="in" xmi:id="VDM.683" type="VDM.30"/>
+          </ownedOperation>
+          <ownedOperation isAbstract="false" isLeaf="false" isQuery="false" name="得る" ownerScope="instance" visibility="public" xmi:id="VDM.684" xmi:type="uml:Operation">
+            <ownedParameter name="return" direction="return" xmi:id="VDM.685" type="VDM.8"/>
+          </ownedOperation>
+          <ownedOperation isAbstract="false" isLeaf="false" isQuery="false" name="全属性を設定する" ownerScope="instance" visibility="public" xmi:id="VDM.686" xmi:type="uml:Operation">
+            <ownedParameter name="a黒板属性DB" direction="in" xmi:id="VDM.687" type="VDM.79"/>
+            <ownedParameter name="a更新黒板属性DB" direction="in" xmi:id="VDM.688" type="VDM.79"/>
+          </ownedOperation>
+          <ownedOperation isAbstract="false" isLeaf="false" isQuery="false" name="設定する" ownerScope="instance" visibility="public" xmi:id="VDM.689" xmi:type="uml:Operation">
+            <ownedParameter name="aオブジェクト型" direction="in" xmi:id="VDM.690" type="VDM.19"/>
+            <ownedParameter name="a追加DB" direction="in" xmi:id="VDM.691" type="VDM.30"/>
+          </ownedOperation>
+          <ownedOperation isAbstract="false" isLeaf="false" isQuery="false" name="黒板" ownerScope="instance" visibility="public" xmi:id="VDM.692" xmi:type="uml:Operation">
+            <ownedParameter name="a黒板属性DB" direction="in" xmi:id="VDM.693" type="VDM.79"/>
+            <ownedParameter name="return" direction="return" xmi:id="VDM.694" type="VDM.46"/>
+          </ownedOperation>
+          <ownedOperation isAbstract="false" isLeaf="false" isQuery="false" name="実際と仮想の利用者居場所を比較表示する" ownerScope="instance" visibility="public" xmi:id="VDM.695" xmi:type="uml:Operation">
+            <ownedParameter name="a利用者のいる場所DB" direction="in" xmi:id="VDM.696" type="VDM.8"/>
+            <ownedParameter name="a仮想利用者のいる場所DB" direction="in" xmi:id="VDM.697" type="VDM.8"/>
+          </ownedOperation>
+          <ownedOperation isAbstract="false" isLeaf="false" isQuery="true" name="DBから削除する" ownerScope="instance" visibility="public" xmi:id="VDM.698" xmi:type="uml:Operation">
+            <ownedParameter name="aDB" direction="in" xmi:id="VDM.699" type="VDM.9"/>
+            <ownedParameter name="a削除DB" direction="in" xmi:id="VDM.700" type="VDM.9"/>
+            <ownedParameter name="return" direction="return" xmi:id="VDM.701" type="VDM.9"/>
+          </ownedOperation>
+          <ownedOperation isAbstract="false" isLeaf="false" isQuery="false" name="黒板属性を得る" ownerScope="instance" visibility="public" xmi:id="VDM.702" xmi:type="uml:Operation">
+            <ownedParameter name="return" direction="return" xmi:id="VDM.703" type="VDM.79"/>
+          </ownedOperation>
+          <ownedOperation isAbstract="false" isLeaf="false" isQuery="false" name="initialize" ownerScope="instance" visibility="public" xmi:id="VDM.704" xmi:type="uml:Operation">
+            <ownedParameter name="a黒板属性DB" direction="in" xmi:id="VDM.705" type="VDM.79"/>
+          </ownedOperation>
+          <ownedOperation isAbstract="false" isLeaf="false" isQuery="true" name="利用者居場所DBを比較する" ownerScope="instance" visibility="public" xmi:id="VDM.706" xmi:type="uml:Operation">
+            <ownedParameter name="a実際の利用者居場所DB" direction="in" xmi:id="VDM.707" type="VDM.8"/>
+            <ownedParameter name="a仮想世界利用者居場所DB" direction="in" xmi:id="VDM.708" type="VDM.8"/>
+            <ownedParameter name="return" direction="return" xmi:id="VDM.709" type="VDM.8"/>
+          </ownedOperation>
+          <generalization xmi:type="uml:Generalization" xmi:id="VDM.710" general="VDM.86"/>
+        </ownedMember>
+        <ownedMember isAbstract="false" isActive="false" isLeaf="false" name="オブジェクト" visibility="public" xmi:id="VDM.86" xmi:type="uml:Class">
+          <generalization xmi:type="uml:Generalization" xmi:id="VDM.711" general="VDM.28"/>
+        </ownedMember>
+        <ownedMember isAbstract="false" isActive="false" isLeaf="false" name="端末型" visibility="public" xmi:id="VDM.47" xmi:type="uml:Class">
+          <ownedAttribute name="β" ownerScope="instance" isReadOnly="true" isStatic="true" visibility="public" xmi:id="VDM.712" xmi:type="uml:Property" isOrdered="true">
+            <lowerValue value="0" xmi:id="VDM.713" xmi:type="uml:LiteralInteger"/>
+            <upperValue value="*" xmi:id="VDM.714" xmi:type="uml:LiteralString"/>
+            <type xmi:idref="VDM.4"/>
+          </ownedAttribute>
+          <ownedAttribute name="α" ownerScope="instance" isReadOnly="true" isStatic="true" visibility="public" xmi:id="VDM.715" xmi:type="uml:Property" isOrdered="true">
+            <lowerValue value="0" xmi:id="VDM.716" xmi:type="uml:LiteralInteger"/>
+            <upperValue value="*" xmi:id="VDM.717" xmi:type="uml:LiteralString"/>
+            <type xmi:idref="VDM.4"/>
+          </ownedAttribute>
+          <ownedAttribute name="γ" ownerScope="instance" isReadOnly="true" isStatic="true" visibility="public" xmi:id="VDM.718" xmi:type="uml:Property" isOrdered="true">
+            <lowerValue value="0" xmi:id="VDM.719" xmi:type="uml:LiteralInteger"/>
+            <upperValue value="*" xmi:id="VDM.720" xmi:type="uml:LiteralString"/>
+            <type xmi:idref="VDM.4"/>
+          </ownedAttribute>
+        </ownedMember>
+        <ownedMember isAbstract="false" isActive="false" isLeaf="false" name="ID端末位置" visibility="public" xmi:id="VDM.87" xmi:type="uml:Class"/>
+        <ownedMember isAbstract="false" isActive="false" isLeaf="false" name="場所グラフ" visibility="public" xmi:id="VDM.48" xmi:type="uml:Class">
+          <ownedOperation isAbstract="false" isLeaf="false" isQuery="false" name="ある場所の許容人数を得る" ownerScope="instance" visibility="public" xmi:id="VDM.721" xmi:type="uml:Operation">
+            <ownedParameter name="a場所ID" direction="in" xmi:id="VDM.722" type="VDM.71"/>
+            <ownedParameter name="return" direction="return" xmi:id="VDM.723" type="VDM.4"/>
+          </ownedOperation>
+          <ownedOperation isAbstract="false" isLeaf="false" isQuery="false" name="気まぐれに次の移動場所を得る" ownerScope="instance" visibility="public" xmi:id="VDM.724" xmi:type="uml:Operation">
+            <ownedParameter name="a場所ID集合" direction="in" xmi:id="VDM.725" type="VDM.71"/>
+            <ownedParameter name="return" direction="return" xmi:id="VDM.726" type="VDM.71"/>
+          </ownedOperation>
+          <ownedOperation isAbstract="false" isLeaf="false" isQuery="false" name="ある場所の利用者集合を得る" ownerScope="instance" visibility="public" xmi:id="VDM.727" xmi:type="uml:Operation">
+            <ownedParameter name="a利用者のいる場所DB" direction="in" xmi:id="VDM.728" type="VDM.64"/>
+            <ownedParameter name="a場所ID" direction="in" xmi:id="VDM.729" type="VDM.71"/>
+            <ownedParameter name="return" direction="return" xmi:id="VDM.730" type="VDM.36"/>
+          </ownedOperation>
+          <ownedOperation isAbstract="false" isLeaf="false" isQuery="false" name="利用者のいる場所IDを得る" ownerScope="instance" visibility="public" xmi:id="VDM.731" xmi:type="uml:Operation">
+            <ownedParameter name="a利用者のいる場所DB" direction="in" xmi:id="VDM.732" type="VDM.64"/>
+            <ownedParameter name="a利用者" direction="in" xmi:id="VDM.733" type="VDM.36"/>
+            <ownedParameter name="return" direction="return" xmi:id="VDM.734" type="VDM.71"/>
+          </ownedOperation>
+          <ownedOperation isAbstract="false" isLeaf="false" isQuery="false" name="案内表示装置がある" ownerScope="instance" visibility="public" xmi:id="VDM.735" xmi:type="uml:Operation">
+            <ownedParameter name="a場所ID" direction="in" xmi:id="VDM.736" type="VDM.71"/>
+            <ownedParameter name="return" direction="return" xmi:id="VDM.737" type="VDM.3"/>
+          </ownedOperation>
+          <ownedOperation isAbstract="false" isLeaf="false" isQuery="false" name="案内可能な次の場所IDを得る" ownerScope="instance" visibility="public" xmi:id="VDM.738" xmi:type="uml:Operation">
+            <ownedParameter name="a利用者のいる場所DB" direction="in" xmi:id="VDM.739" type="VDM.64"/>
+            <ownedParameter name="return" direction="return" xmi:id="VDM.740" type="VDM.71"/>
+          </ownedOperation>
+          <ownedOperation isAbstract="false" isLeaf="false" isQuery="false" name="次の場所IDを得る" ownerScope="instance" visibility="public" xmi:id="VDM.741" xmi:type="uml:Operation">
+            <ownedParameter name="a場所ID" direction="in" xmi:id="VDM.742" type="VDM.71"/>
+            <ownedParameter name="return" direction="return" xmi:id="VDM.743" type="VDM.71"/>
+          </ownedOperation>
+          <ownedOperation isAbstract="false" isLeaf="false" isQuery="false" name="移動可能場所を得る" ownerScope="instance" visibility="public" xmi:id="VDM.744" xmi:type="uml:Operation">
+            <ownedParameter name="a場所ID" direction="in" xmi:id="VDM.745" type="VDM.71"/>
+            <ownedParameter name="return" direction="return" xmi:id="VDM.746" type="VDM.71"/>
+          </ownedOperation>
+          <ownedOperation isAbstract="false" isLeaf="false" isQuery="false" name="ある場所の人数を得る" ownerScope="instance" visibility="public" xmi:id="VDM.747" xmi:type="uml:Operation">
+            <ownedParameter name="a利用者のいる場所DB" direction="in" xmi:id="VDM.748" type="VDM.64"/>
+            <ownedParameter name="a場所ID" direction="in" xmi:id="VDM.749" type="VDM.71"/>
+            <ownedParameter name="return" direction="return" xmi:id="VDM.750" type="VDM.4"/>
+          </ownedOperation>
+          <ownedOperation isAbstract="false" isLeaf="false" isQuery="false" name="案内可能な次の場所IDを得る補助" ownerScope="instance" visibility="public" xmi:id="VDM.751" xmi:type="uml:Operation">
+            <ownedParameter name="a利用者のいる場所DB" direction="in" xmi:id="VDM.752" type="VDM.64"/>
+            <ownedParameter name="a場所ID集合" direction="in" xmi:id="VDM.753" type="VDM.71"/>
+            <ownedParameter name="return" direction="return" xmi:id="VDM.754" type="VDM.71"/>
+          </ownedOperation>
+          <ownedOperation isAbstract="false" isLeaf="false" isQuery="false" name="移動可能な次の場所IDを得る" ownerScope="instance" visibility="public" xmi:id="VDM.755" xmi:type="uml:Operation">
+            <ownedParameter name="a利用者のいる場所DB" direction="in" xmi:id="VDM.756" type="VDM.64"/>
+            <ownedParameter name="a居場所ID" direction="in" xmi:id="VDM.757" type="VDM.71"/>
+            <ownedParameter name="return" direction="return" xmi:id="VDM.758" type="VDM.71"/>
+          </ownedOperation>
+          <ownedOperation isAbstract="false" isLeaf="false" isQuery="false" name="ID端末がある" ownerScope="instance" visibility="public" xmi:id="VDM.759" xmi:type="uml:Operation">
+            <ownedParameter name="a場所ID" direction="in" xmi:id="VDM.760" type="VDM.71"/>
+            <ownedParameter name="return" direction="return" xmi:id="VDM.761" type="VDM.3"/>
+          </ownedOperation>
+          <ownedOperation isAbstract="false" isLeaf="false" isQuery="true" name="利用者が移動可能である" ownerScope="instance" visibility="public" xmi:id="VDM.762" xmi:type="uml:Operation">
+            <ownedParameter name="a利用者のいる場所DB" direction="in" xmi:id="VDM.763" type="VDM.64"/>
+            <ownedParameter name="a次の場所ID" direction="in" xmi:id="VDM.764" type="VDM.71"/>
+            <ownedParameter name="return" direction="return" xmi:id="VDM.765" type="VDM.3"/>
+          </ownedOperation>
+          <ownedOperation isAbstract="false" isLeaf="false" isQuery="false" name="場所グラフ" ownerScope="instance" visibility="public" xmi:id="VDM.766" xmi:type="uml:Operation">
+            <ownedParameter name="a場所DB" direction="in" xmi:id="VDM.767" type="VDM.54"/>
+            <ownedParameter name="a移動可能場所集合" direction="in" xmi:id="VDM.768" type="VDM.71"/>
+            <ownedParameter name="return" direction="return" xmi:id="VDM.769" type="VDM.48"/>
+          </ownedOperation>
+          <generalization xmi:type="uml:Generalization" xmi:id="VDM.770" general="VDM.86"/>
+        </ownedMember>
+        <ownedMember isAbstract="false" isActive="false" isLeaf="false" name="IDカード状態" visibility="public" xmi:id="VDM.50" xmi:type="uml:Class">
+          <ownedAttribute name="有効" ownerScope="instance" isReadOnly="true" isStatic="true" visibility="public" xmi:id="VDM.771" xmi:type="uml:Property" isOrdered="true">
+            <lowerValue value="0" xmi:id="VDM.772" xmi:type="uml:LiteralInteger"/>
+            <upperValue value="*" xmi:id="VDM.773" xmi:type="uml:LiteralString"/>
+            <type xmi:idref="VDM.4"/>
+          </ownedAttribute>
+          <ownedAttribute name="無効" ownerScope="instance" isReadOnly="true" isStatic="true" visibility="public" xmi:id="VDM.774" xmi:type="uml:Property" isOrdered="true">
+            <lowerValue value="0" xmi:id="VDM.775" xmi:type="uml:LiteralInteger"/>
+            <upperValue value="*" xmi:id="VDM.776" xmi:type="uml:LiteralString"/>
+            <type xmi:idref="VDM.4"/>
+          </ownedAttribute>
+        </ownedMember>
+        <ownedMember isAbstract="false" isActive="false" isLeaf="false" name="案内表示" visibility="public" xmi:id="VDM.49" xmi:type="uml:Class">
+          <ownedOperation isAbstract="false" isLeaf="false" isQuery="false" name="案内表示" ownerScope="instance" visibility="public" xmi:id="VDM.777" xmi:type="uml:Operation">
+            <ownedParameter name="a案内表示ID" direction="in" xmi:id="VDM.778" type="VDM.71"/>
+            <ownedParameter name="a利用者" direction="in" xmi:id="VDM.779" type="VDM.36"/>
+            <ownedParameter name="a場所ID" direction="in" xmi:id="VDM.780" type="VDM.71"/>
+            <ownedParameter name="return" direction="return" xmi:id="VDM.781" type="VDM.49"/>
+          </ownedOperation>
+          <ownedOperation isAbstract="false" isLeaf="false" isQuery="false" name="IDを得る" ownerScope="instance" visibility="public" xmi:id="VDM.782" xmi:type="uml:Operation">
+            <ownedParameter name="return" direction="return" xmi:id="VDM.783" type="VDM.20"/>
+          </ownedOperation>
+          <generalization xmi:type="uml:Generalization" xmi:id="VDM.784" general="VDM.86"/>
+        </ownedMember>
+        <ownedMember isAbstract="false" isDerived="false" isLeaf="false" name="" xmi:id="VDM.785" xmi:type="uml:Association">
+          <ownedEnd aggregation="none" association="VDM.785" isNavigable="false" name="" visibility="private" xmi:id="VDM.786" xmi:type="uml:Property">
+            <type xmi:idref="VDM.48"/>
+          </ownedEnd>
+          <memberEnd xmi:idref="VDM.786"/>
+          <ownedEnd aggregation="none" association="VDM.785" isNavigable="true" name="s場所DB" visibility="private" xmi:id="VDM.787" xmi:type="uml:Property" isOrdered="false" isStatic="false">
+            <lowerValue value="1" xmi:id="VDM.788" xmi:type="uml:LiteralInteger"/>
+            <upperValue value="1" xmi:id="VDM.789" xmi:type="uml:LiteralInteger"/>
+            <type xmi:idref="VDM.54"/>
+          </ownedEnd>
+          <memberEnd xmi:idref="VDM.787"/>
+        </ownedMember>
+        <ownedMember isAbstract="false" isDerived="false" isLeaf="false" name="" xmi:id="VDM.790" xmi:type="uml:Association">
+          <ownedEnd aggregation="none" association="VDM.790" isNavigable="false" name="" visibility="private" xmi:id="VDM.791" xmi:type="uml:Property">
+            <type xmi:idref="VDM.53"/>
+          </ownedEnd>
+          <memberEnd xmi:idref="VDM.791"/>
+          <ownedEnd aggregation="none" association="VDM.790" isNavigable="true" name="sドアが開いた時間" visibility="public" xmi:id="VDM.792" xmi:type="uml:Property" isOrdered="false" isStatic="false">
+            <lowerValue value="0" xmi:id="VDM.793" xmi:type="uml:LiteralInteger"/>
+            <upperValue value="1" xmi:id="VDM.794" xmi:type="uml:LiteralInteger"/>
+            <type xmi:idref="VDM.59"/>
+          </ownedEnd>
+          <memberEnd xmi:idref="VDM.792"/>
+        </ownedMember>
+        <ownedMember isAbstract="false" isDerived="false" isLeaf="false" name="" xmi:id="VDM.795" xmi:type="uml:Association">
+          <ownedEnd aggregation="none" association="VDM.795" isNavigable="false" name="" visibility="private" xmi:id="VDM.796" xmi:type="uml:Property">
+            <type xmi:idref="VDM.85"/>
+          </ownedEnd>
+          <memberEnd xmi:idref="VDM.796"/>
+          <ownedEnd aggregation="none" association="VDM.795" isNavigable="true" name="s場所ID" visibility="public" xmi:id="VDM.797" xmi:type="uml:Property" isOrdered="false" isStatic="false">
+            <lowerValue value="1" xmi:id="VDM.798" xmi:type="uml:LiteralInteger"/>
+            <upperValue value="1" xmi:id="VDM.799" xmi:type="uml:LiteralInteger"/>
+            <type xmi:idref="VDM.71"/>
+          </ownedEnd>
+          <memberEnd xmi:idref="VDM.797"/>
+        </ownedMember>
+        <ownedMember isAbstract="false" isDerived="false" isLeaf="false" name="" xmi:id="VDM.800" xmi:type="uml:Association">
+          <ownedEnd aggregation="none" association="VDM.800" isNavigable="false" name="" visibility="private" xmi:id="VDM.801" xmi:type="uml:Property">
+            <type xmi:idref="VDM.29"/>
+          </ownedEnd>
+          <memberEnd xmi:idref="VDM.801"/>
+          <ownedEnd aggregation="none" association="VDM.800" isNavigable="true" name="sスケジューラ" visibility="protected" xmi:id="VDM.802" xmi:type="uml:Property" isOrdered="false" isStatic="false">
+            <lowerValue value="1" xmi:id="VDM.803" xmi:type="uml:LiteralInteger"/>
+            <upperValue value="1" xmi:id="VDM.804" xmi:type="uml:LiteralInteger"/>
+            <type xmi:idref="VDM.31"/>
+          </ownedEnd>
+          <memberEnd xmi:idref="VDM.802"/>
+        </ownedMember>
+        <ownedMember isAbstract="false" isDerived="false" isLeaf="false" name="" xmi:id="VDM.805" xmi:type="uml:Association">
+          <ownedEnd aggregation="none" association="VDM.805" isNavigable="false" name="" visibility="private" xmi:id="VDM.806" xmi:type="uml:Property">
+            <type xmi:idref="VDM.49"/>
+          </ownedEnd>
+          <memberEnd xmi:idref="VDM.806"/>
+          <ownedEnd aggregation="none" association="VDM.805" isNavigable="true" name="s案内表示ID" visibility="public" xmi:id="VDM.807" xmi:type="uml:Property" isOrdered="false" isStatic="false">
+            <lowerValue value="1" xmi:id="VDM.808" xmi:type="uml:LiteralInteger"/>
+            <upperValue value="1" xmi:id="VDM.809" xmi:type="uml:LiteralInteger"/>
+            <type xmi:idref="VDM.71"/>
+          </ownedEnd>
+          <memberEnd xmi:idref="VDM.807"/>
+        </ownedMember>
+        <ownedMember isAbstract="false" isDerived="false" isLeaf="false" name="" xmi:id="VDM.810" xmi:type="uml:Association">
+          <ownedEnd aggregation="none" association="VDM.810" isNavigable="true" name="" visibility="public" xmi:id="VDM.811" xmi:type="uml:Property" isOrdered="false" isStatic="false">
+            <lowerValue value="1" xmi:id="VDM.812" xmi:type="uml:LiteralInteger"/>
+            <upperValue value="1" xmi:id="VDM.813" xmi:type="uml:LiteralInteger"/>
+            <type xmi:idref="VDM.53"/>
+          </ownedEnd>
+          <memberEnd xmi:idref="VDM.811"/>
+          <ownedEnd aggregation="none" association="VDM.810" isNavigable="false" name="sドア位置" visibility="private" xmi:id="VDM.814" xmi:type="uml:Property" isOrdered="false">
+            <lowerValue value="1" xmi:id="VDM.815" xmi:type="uml:LiteralInteger"/>
+            <upperValue value="1" xmi:id="VDM.816" xmi:type="uml:LiteralInteger"/>
+            <type xmi:idref="VDM.71"/>
+          </ownedEnd>
+          <memberEnd xmi:idref="VDM.814"/>
+          <ownedEnd aggregation="none" association="VDM.810" isNavigable="false" name="sドア位置" visibility="private" xmi:id="VDM.817" xmi:type="uml:Property" isOrdered="false">
+            <lowerValue value="1" xmi:id="VDM.818" xmi:type="uml:LiteralInteger"/>
+            <upperValue value="1" xmi:id="VDM.819" xmi:type="uml:LiteralInteger"/>
+            <type xmi:idref="VDM.71"/>
+          </ownedEnd>
+          <memberEnd xmi:idref="VDM.817"/>
+        </ownedMember>
+        <ownedMember isAbstract="false" isDerived="false" isLeaf="false" name="" xmi:id="VDM.820" xmi:type="uml:Association">
+          <ownedEnd aggregation="none" association="VDM.820" isNavigable="false" name="" visibility="private" xmi:id="VDM.821" xmi:type="uml:Property">
+            <type xmi:idref="VDM.80"/>
+          </ownedEnd>
+          <memberEnd xmi:idref="VDM.821"/>
+          <ownedEnd aggregation="none" association="VDM.820" isNavigable="true" name="ガードコマンド集合" visibility="protected" xmi:id="VDM.822" xmi:type="uml:Property" isOrdered="false" isStatic="false">
+            <lowerValue value="0" xmi:id="VDM.823" xmi:type="uml:LiteralInteger"/>
+            <upperValue value="*" xmi:id="VDM.824" xmi:type="uml:LiteralString"/>
+            <type xmi:idref="VDM.26"/>
+          </ownedEnd>
+          <memberEnd xmi:idref="VDM.822"/>
+        </ownedMember>
+        <ownedMember isAbstract="false" isDerived="false" isLeaf="false" name="" xmi:id="VDM.825" xmi:type="uml:Association">
+          <ownedEnd aggregation="none" association="VDM.825" isNavigable="false" name="" visibility="private" xmi:id="VDM.826" xmi:type="uml:Property">
+            <type xmi:idref="VDM.29"/>
+          </ownedEnd>
+          <memberEnd xmi:idref="VDM.826"/>
+          <ownedEnd aggregation="none" association="VDM.825" isNavigable="true" name="s大域黒板" visibility="protected" xmi:id="VDM.827" xmi:type="uml:Property" isOrdered="false" isStatic="false">
+            <lowerValue value="1" xmi:id="VDM.828" xmi:type="uml:LiteralInteger"/>
+            <upperValue value="1" xmi:id="VDM.829" xmi:type="uml:LiteralInteger"/>
+            <type xmi:idref="VDM.46"/>
+          </ownedEnd>
+          <memberEnd xmi:idref="VDM.827"/>
+        </ownedMember>
+        <ownedMember isAbstract="false" isDerived="false" isLeaf="false" name="" xmi:id="VDM.830" xmi:type="uml:Association">
+          <ownedEnd aggregation="none" association="VDM.830" isNavigable="false" name="" visibility="private" xmi:id="VDM.831" xmi:type="uml:Property">
+            <type xmi:idref="VDM.46"/>
+          </ownedEnd>
+          <memberEnd xmi:idref="VDM.831"/>
+          <ownedEnd aggregation="none" association="VDM.830" isNavigable="true" name="s黒板属性DB" visibility="private" xmi:id="VDM.832" xmi:type="uml:Property" isOrdered="false" isStatic="false">
+            <lowerValue value="1" xmi:id="VDM.833" xmi:type="uml:LiteralInteger"/>
+            <upperValue value="1" xmi:id="VDM.834" xmi:type="uml:LiteralInteger"/>
+            <type xmi:idref="VDM.79"/>
+          </ownedEnd>
+          <memberEnd xmi:idref="VDM.832"/>
+        </ownedMember>
+        <ownedMember isAbstract="false" isDerived="false" isLeaf="false" name="" xmi:id="VDM.835" xmi:type="uml:Association">
+          <ownedEnd aggregation="none" association="VDM.835" isNavigable="false" name="" visibility="private" xmi:id="VDM.836" xmi:type="uml:Property">
+            <type xmi:idref="VDM.74"/>
+          </ownedEnd>
+          <memberEnd xmi:idref="VDM.836"/>
+          <ownedEnd aggregation="none" association="VDM.835" isNavigable="true" name="sセンサー検知状態" visibility="public" xmi:id="VDM.837" xmi:type="uml:Property" isOrdered="false" isStatic="false">
+            <lowerValue value="1" xmi:id="VDM.838" xmi:type="uml:LiteralInteger"/>
+            <upperValue value="1" xmi:id="VDM.839" xmi:type="uml:LiteralInteger"/>
+            <type xmi:idref="VDM.45"/>
+          </ownedEnd>
+          <memberEnd xmi:idref="VDM.837"/>
+        </ownedMember>
+        <ownedMember isAbstract="false" isDerived="false" isLeaf="false" name="" xmi:id="VDM.840" xmi:type="uml:Association">
+          <ownedEnd aggregation="none" association="VDM.840" isNavigable="false" name="" visibility="private" xmi:id="VDM.841" xmi:type="uml:Property">
+            <type xmi:idref="VDM.75"/>
+          </ownedEnd>
+          <memberEnd xmi:idref="VDM.841"/>
+          <ownedEnd aggregation="none" association="VDM.840" isNavigable="true" name="sID端末" visibility="public" xmi:id="VDM.842" xmi:type="uml:Property" isOrdered="false" isStatic="false">
+            <lowerValue value="1" xmi:id="VDM.843" xmi:type="uml:LiteralInteger"/>
+            <upperValue value="1" xmi:id="VDM.844" xmi:type="uml:LiteralInteger"/>
+            <type xmi:idref="VDM.37"/>
+          </ownedEnd>
+          <memberEnd xmi:idref="VDM.842"/>
+        </ownedMember>
+        <ownedMember isAbstract="false" isDerived="false" isLeaf="false" name="" xmi:id="VDM.845" xmi:type="uml:Association">
+          <ownedEnd aggregation="none" association="VDM.845" isNavigable="false" name="" visibility="private" xmi:id="VDM.846" xmi:type="uml:Property">
+            <type xmi:idref="VDM.52"/>
+          </ownedEnd>
+          <memberEnd xmi:idref="VDM.846"/>
+          <ownedEnd aggregation="none" association="VDM.845" isNavigable="true" name="sタッチパネル位置" visibility="public" xmi:id="VDM.847" xmi:type="uml:Property" isOrdered="false" isStatic="false">
+            <lowerValue value="1" xmi:id="VDM.848" xmi:type="uml:LiteralInteger"/>
+            <upperValue value="1" xmi:id="VDM.849" xmi:type="uml:LiteralInteger"/>
+            <type xmi:idref="VDM.13"/>
+          </ownedEnd>
+          <memberEnd xmi:idref="VDM.847"/>
+        </ownedMember>
+        <ownedMember isAbstract="false" isDerived="false" isLeaf="false" name="" xmi:id="VDM.850" xmi:type="uml:Association">
+          <ownedEnd aggregation="none" association="VDM.850" isNavigable="false" name="" visibility="private" xmi:id="VDM.851" xmi:type="uml:Property">
+            <type xmi:idref="VDM.52"/>
+          </ownedEnd>
+          <memberEnd xmi:idref="VDM.851"/>
+          <ownedEnd aggregation="none" association="VDM.850" isNavigable="true" name="sタッチパネル状態" visibility="public" xmi:id="VDM.852" xmi:type="uml:Property" isOrdered="false" isStatic="false">
+            <lowerValue value="1" xmi:id="VDM.853" xmi:type="uml:LiteralInteger"/>
+            <upperValue value="1" xmi:id="VDM.854" xmi:type="uml:LiteralInteger"/>
+            <type xmi:idref="VDM.77"/>
+          </ownedEnd>
+          <memberEnd xmi:idref="VDM.852"/>
+        </ownedMember>
+        <ownedMember isAbstract="false" isDerived="false" isLeaf="false" name="" xmi:id="VDM.855" xmi:type="uml:Association">
+          <ownedEnd aggregation="none" association="VDM.855" isNavigable="false" name="" visibility="private" xmi:id="VDM.856" xmi:type="uml:Property">
+            <type xmi:idref="VDM.53"/>
+          </ownedEnd>
+          <memberEnd xmi:idref="VDM.856"/>
+          <ownedEnd aggregation="none" association="VDM.855" isNavigable="true" name="sドア錠状態" visibility="public" xmi:id="VDM.857" xmi:type="uml:Property" isOrdered="false" isStatic="false">
+            <lowerValue value="1" xmi:id="VDM.858" xmi:type="uml:LiteralInteger"/>
+            <upperValue value="1" xmi:id="VDM.859" xmi:type="uml:LiteralInteger"/>
+            <type xmi:idref="VDM.24"/>
+          </ownedEnd>
+          <memberEnd xmi:idref="VDM.857"/>
+        </ownedMember>
+        <ownedMember isAbstract="false" isDerived="false" isLeaf="false" name="" xmi:id="VDM.860" xmi:type="uml:Association">
+          <ownedEnd aggregation="none" association="VDM.860" isNavigable="false" name="" visibility="private" xmi:id="VDM.861" xmi:type="uml:Property">
+            <type xmi:idref="VDM.46"/>
+          </ownedEnd>
+          <memberEnd xmi:idref="VDM.861"/>
+          <ownedEnd aggregation="none" association="VDM.860" isNavigable="true" name="s更新黒板属性DB" visibility="private" xmi:id="VDM.862" xmi:type="uml:Property" isOrdered="false" isStatic="false">
+            <lowerValue value="1" xmi:id="VDM.863" xmi:type="uml:LiteralInteger"/>
+            <upperValue value="1" xmi:id="VDM.864" xmi:type="uml:LiteralInteger"/>
+            <type xmi:idref="VDM.79"/>
+          </ownedEnd>
+          <memberEnd xmi:idref="VDM.862"/>
+        </ownedMember>
+        <ownedMember isAbstract="false" isDerived="false" isLeaf="false" name="" xmi:id="VDM.865" xmi:type="uml:Association">
+          <ownedEnd aggregation="none" association="VDM.865" isNavigable="false" name="" visibility="private" xmi:id="VDM.866" xmi:type="uml:Property">
+            <type xmi:idref="VDM.48"/>
+          </ownedEnd>
+          <memberEnd xmi:idref="VDM.866"/>
+          <ownedEnd aggregation="none" association="VDM.865" isNavigable="true" name="s移動可能場所集合" visibility="public" xmi:id="VDM.867" xmi:type="uml:Property" isOrdered="true" isStatic="false">
+            <lowerValue value="0" xmi:id="VDM.868" xmi:type="uml:LiteralInteger"/>
+            <upperValue value="*" xmi:id="VDM.869" xmi:type="uml:LiteralString"/>
+            <type xmi:idref="VDM.71"/>
+          </ownedEnd>
+          <memberEnd xmi:idref="VDM.867"/>
+        </ownedMember>
+        <ownedMember isAbstract="false" isDerived="false" isLeaf="false" name="" xmi:id="VDM.870" xmi:type="uml:Association">
+          <ownedEnd aggregation="none" association="VDM.870" isNavigable="false" name="" visibility="private" xmi:id="VDM.871" xmi:type="uml:Property">
+            <type xmi:idref="VDM.53"/>
+          </ownedEnd>
+          <memberEnd xmi:idref="VDM.871"/>
+          <ownedEnd aggregation="none" association="VDM.870" isNavigable="true" name="sドア開閉状態" visibility="public" xmi:id="VDM.872" xmi:type="uml:Property" isOrdered="false" isStatic="false">
+            <lowerValue value="1" xmi:id="VDM.873" xmi:type="uml:LiteralInteger"/>
+            <upperValue value="1" xmi:id="VDM.874" xmi:type="uml:LiteralInteger"/>
+            <type xmi:idref="VDM.16"/>
+          </ownedEnd>
+          <memberEnd xmi:idref="VDM.872"/>
+        </ownedMember>
+        <ownedMember isAbstract="false" isDerived="false" isLeaf="false" name="" xmi:id="VDM.875" xmi:type="uml:Association">
+          <ownedEnd aggregation="none" association="VDM.875" isNavigable="false" name="" visibility="private" xmi:id="VDM.876" xmi:type="uml:Property">
+            <type xmi:idref="VDM.39"/>
+          </ownedEnd>
+          <memberEnd xmi:idref="VDM.876"/>
+          <ownedEnd aggregation="none" association="VDM.875" isNavigable="true" name="ガードコマンド集合" visibility="protected" xmi:id="VDM.877" xmi:type="uml:Property" isOrdered="false" isStatic="false">
+            <lowerValue value="0" xmi:id="VDM.878" xmi:type="uml:LiteralInteger"/>
+            <upperValue value="*" xmi:id="VDM.879" xmi:type="uml:LiteralString"/>
+            <type xmi:idref="VDM.26"/>
+          </ownedEnd>
+          <memberEnd xmi:idref="VDM.877"/>
+        </ownedMember>
+        <ownedMember isAbstract="false" isDerived="false" isLeaf="false" name="" xmi:id="VDM.880" xmi:type="uml:Association">
+          <ownedEnd aggregation="none" association="VDM.880" isNavigable="false" name="" visibility="private" xmi:id="VDM.881" xmi:type="uml:Property">
+            <type xmi:idref="VDM.18"/>
+          </ownedEnd>
+          <memberEnd xmi:idref="VDM.881"/>
+          <ownedEnd aggregation="none" association="VDM.880" isNavigable="true" name="sIDカードID" visibility="public" xmi:id="VDM.882" xmi:type="uml:Property" isOrdered="false" isStatic="false">
+            <lowerValue value="1" xmi:id="VDM.883" xmi:type="uml:LiteralInteger"/>
+            <upperValue value="1" xmi:id="VDM.884" xmi:type="uml:LiteralInteger"/>
+            <type xmi:idref="VDM.83"/>
+          </ownedEnd>
+          <memberEnd xmi:idref="VDM.882"/>
+        </ownedMember>
+        <ownedMember isAbstract="false" isDerived="false" isLeaf="false" name="" xmi:id="VDM.885" xmi:type="uml:Association">
+          <ownedEnd aggregation="none" association="VDM.885" isNavigable="false" name="" visibility="private" xmi:id="VDM.886" xmi:type="uml:Property">
+            <type xmi:idref="VDM.49"/>
+          </ownedEnd>
+          <memberEnd xmi:idref="VDM.886"/>
+          <ownedEnd aggregation="none" association="VDM.885" isNavigable="true" name="sガイドする場所ID" visibility="public" xmi:id="VDM.887" xmi:type="uml:Property" isOrdered="false" isStatic="false">
+            <lowerValue value="1" xmi:id="VDM.888" xmi:type="uml:LiteralInteger"/>
+            <upperValue value="1" xmi:id="VDM.889" xmi:type="uml:LiteralInteger"/>
+            <type xmi:idref="VDM.71"/>
+          </ownedEnd>
+          <memberEnd xmi:idref="VDM.887"/>
+        </ownedMember>
+        <ownedMember isAbstract="false" isDerived="false" isLeaf="false" name="" xmi:id="VDM.890" xmi:type="uml:Association">
+          <ownedEnd aggregation="none" association="VDM.890" isNavigable="false" name="" visibility="private" xmi:id="VDM.891" xmi:type="uml:Property">
+            <type xmi:idref="VDM.25"/>
+          </ownedEnd>
+          <memberEnd xmi:idref="VDM.891"/>
+          <ownedEnd aggregation="none" association="VDM.890" isNavigable="true" name="s場所ID" visibility="public" xmi:id="VDM.892" xmi:type="uml:Property" isOrdered="false" isStatic="false">
+            <lowerValue value="1" xmi:id="VDM.893" xmi:type="uml:LiteralInteger"/>
+            <upperValue value="1" xmi:id="VDM.894" xmi:type="uml:LiteralInteger"/>
+            <type xmi:idref="VDM.71"/>
+          </ownedEnd>
+          <memberEnd xmi:idref="VDM.892"/>
+        </ownedMember>
+        <ownedMember isAbstract="false" isDerived="false" isLeaf="false" name="" xmi:id="VDM.895" xmi:type="uml:Association">
+          <ownedEnd aggregation="none" association="VDM.895" isNavigable="false" name="" visibility="private" xmi:id="VDM.896" xmi:type="uml:Property">
+            <type xmi:idref="VDM.29"/>
+          </ownedEnd>
+          <memberEnd xmi:idref="VDM.896"/>
+          <ownedEnd aggregation="none" association="VDM.895" isNavigable="true" name="ガードコマンド集合" visibility="protected" xmi:id="VDM.897" xmi:type="uml:Property" isOrdered="false" isStatic="false">
+            <lowerValue value="0" xmi:id="VDM.898" xmi:type="uml:LiteralInteger"/>
+            <upperValue value="*" xmi:id="VDM.899" xmi:type="uml:LiteralString"/>
+            <type xmi:idref="VDM.26"/>
+          </ownedEnd>
+          <memberEnd xmi:idref="VDM.897"/>
+        </ownedMember>
+        <ownedMember isAbstract="false" isDerived="false" isLeaf="false" name="" xmi:id="VDM.900" xmi:type="uml:Association">
+          <ownedEnd aggregation="none" association="VDM.900" isNavigable="false" name="" visibility="private" xmi:id="VDM.901" xmi:type="uml:Property">
+            <type xmi:idref="VDM.49"/>
+          </ownedEnd>
+          <memberEnd xmi:idref="VDM.901"/>
+          <ownedEnd aggregation="none" association="VDM.900" isNavigable="true" name="s案内する利用者" visibility="public" xmi:id="VDM.902" xmi:type="uml:Property" isOrdered="false" isStatic="false">
+            <lowerValue value="1" xmi:id="VDM.903" xmi:type="uml:LiteralInteger"/>
+            <upperValue value="1" xmi:id="VDM.904" xmi:type="uml:LiteralInteger"/>
+            <type xmi:idref="VDM.36"/>
+          </ownedEnd>
+          <memberEnd xmi:idref="VDM.902"/>
+        </ownedMember>
+        <ownedMember isAbstract="false" isDerived="false" isLeaf="false" name="" xmi:id="VDM.905" xmi:type="uml:Association">
+          <ownedEnd aggregation="none" association="VDM.905" isNavigable="false" name="" visibility="private" xmi:id="VDM.906" xmi:type="uml:Property">
+            <type xmi:idref="VDM.46"/>
+          </ownedEnd>
+          <memberEnd xmi:idref="VDM.906"/>
+          <ownedEnd aggregation="none" association="VDM.905" isNavigable="true" name="s場所グラフ" visibility="public" xmi:id="VDM.907" xmi:type="uml:Property" isOrdered="false" isStatic="false">
+            <lowerValue value="1" xmi:id="VDM.908" xmi:type="uml:LiteralInteger"/>
+            <upperValue value="1" xmi:id="VDM.909" xmi:type="uml:LiteralInteger"/>
+            <type xmi:idref="VDM.48"/>
+          </ownedEnd>
+          <memberEnd xmi:idref="VDM.907"/>
+        </ownedMember>
+        <ownedMember isAbstract="false" isDerived="false" isLeaf="false" name="" xmi:id="VDM.910" xmi:type="uml:Association">
+          <ownedEnd aggregation="none" association="VDM.910" isNavigable="false" name="" visibility="private" xmi:id="VDM.911" xmi:type="uml:Property">
+            <type xmi:idref="VDM.43"/>
+          </ownedEnd>
+          <memberEnd xmi:idref="VDM.911"/>
+          <ownedEnd aggregation="none" association="VDM.910" isNavigable="true" name="s場所ID" visibility="public" xmi:id="VDM.912" xmi:type="uml:Property" isOrdered="false" isStatic="false">
+            <lowerValue value="1" xmi:id="VDM.913" xmi:type="uml:LiteralInteger"/>
+            <upperValue value="1" xmi:id="VDM.914" xmi:type="uml:LiteralInteger"/>
+            <type xmi:idref="VDM.71"/>
+          </ownedEnd>
+          <memberEnd xmi:idref="VDM.912"/>
+        </ownedMember>
+        <ownedMember isAbstract="false" isDerived="false" isLeaf="false" name="" xmi:id="VDM.915" xmi:type="uml:Association">
+          <ownedEnd aggregation="none" association="VDM.915" isNavigable="false" name="" visibility="private" xmi:id="VDM.916" xmi:type="uml:Property">
+            <type xmi:idref="VDM.37"/>
+          </ownedEnd>
+          <memberEnd xmi:idref="VDM.916"/>
+          <ownedEnd aggregation="none" association="VDM.915" isNavigable="true" name="s利用者" visibility="public" xmi:id="VDM.917" xmi:type="uml:Property" isOrdered="false" isStatic="false">
+            <lowerValue value="0" xmi:id="VDM.918" xmi:type="uml:LiteralInteger"/>
+            <upperValue value="1" xmi:id="VDM.919" xmi:type="uml:LiteralInteger"/>
+            <type xmi:idref="VDM.36"/>
+          </ownedEnd>
+          <memberEnd xmi:idref="VDM.917"/>
+        </ownedMember>
+        <ownedMember isAbstract="false" isDerived="false" isLeaf="false" name="" xmi:id="VDM.920" xmi:type="uml:Association">
+          <ownedEnd aggregation="none" association="VDM.920" isNavigable="false" name="" visibility="private" xmi:id="VDM.921" xmi:type="uml:Property">
+            <type xmi:idref="VDM.74"/>
+          </ownedEnd>
+          <memberEnd xmi:idref="VDM.921"/>
+          <ownedEnd aggregation="none" association="VDM.920" isNavigable="true" name="sセンサーID" visibility="public" xmi:id="VDM.922" xmi:type="uml:Property" isOrdered="false" isStatic="false">
+            <lowerValue value="1" xmi:id="VDM.923" xmi:type="uml:LiteralInteger"/>
+            <upperValue value="1" xmi:id="VDM.924" xmi:type="uml:LiteralInteger"/>
+            <type xmi:idref="VDM.78"/>
+          </ownedEnd>
+          <memberEnd xmi:idref="VDM.922"/>
+        </ownedMember>
+        <ownedMember isAbstract="false" isDerived="false" isLeaf="false" name="" xmi:id="VDM.925" xmi:type="uml:Association">
+          <ownedEnd aggregation="none" association="VDM.925" isNavigable="false" name="" visibility="private" xmi:id="VDM.926" xmi:type="uml:Property">
+            <type xmi:idref="VDM.26"/>
+          </ownedEnd>
+          <memberEnd xmi:idref="VDM.926"/>
+          <ownedEnd aggregation="none" association="VDM.925" isNavigable="true" name="s局所黒板" visibility="protected" xmi:id="VDM.927" xmi:type="uml:Property" isOrdered="false" isStatic="false">
+            <lowerValue value="1" xmi:id="VDM.928" xmi:type="uml:LiteralInteger"/>
+            <upperValue value="1" xmi:id="VDM.929" xmi:type="uml:LiteralInteger"/>
+            <type xmi:idref="VDM.46"/>
+          </ownedEnd>
+          <memberEnd xmi:idref="VDM.927"/>
+        </ownedMember>
+        <ownedMember isAbstract="false" isDerived="false" isLeaf="false" name="" xmi:id="VDM.930" xmi:type="uml:Association">
+          <ownedEnd aggregation="none" association="VDM.930" isNavigable="false" name="" visibility="private" xmi:id="VDM.931" xmi:type="uml:Property">
+            <type xmi:idref="VDM.36"/>
+          </ownedEnd>
+          <memberEnd xmi:idref="VDM.931"/>
+          <ownedEnd aggregation="none" association="VDM.930" isNavigable="true" name="sIDカード" visibility="public" xmi:id="VDM.932" xmi:type="uml:Property" isOrdered="false" isStatic="false">
+            <lowerValue value="1" xmi:id="VDM.933" xmi:type="uml:LiteralInteger"/>
+            <upperValue value="1" xmi:id="VDM.934" xmi:type="uml:LiteralInteger"/>
+            <type xmi:idref="VDM.18"/>
+          </ownedEnd>
+          <memberEnd xmi:idref="VDM.932"/>
+        </ownedMember>
+        <ownedMember isAbstract="false" isDerived="false" isLeaf="false" name="" xmi:id="VDM.935" xmi:type="uml:Association">
+          <ownedEnd aggregation="none" association="VDM.935" isNavigable="false" name="" visibility="private" xmi:id="VDM.936" xmi:type="uml:Property">
+            <type xmi:idref="VDM.61"/>
+          </ownedEnd>
+          <memberEnd xmi:idref="VDM.936"/>
+          <ownedEnd aggregation="none" association="VDM.935" isNavigable="true" name="ガードコマンド集合" visibility="protected" xmi:id="VDM.937" xmi:type="uml:Property" isOrdered="false" isStatic="false">
+            <lowerValue value="0" xmi:id="VDM.938" xmi:type="uml:LiteralInteger"/>
+            <upperValue value="*" xmi:id="VDM.939" xmi:type="uml:LiteralString"/>
+            <type xmi:idref="VDM.26"/>
+          </ownedEnd>
+          <memberEnd xmi:idref="VDM.937"/>
+        </ownedMember>
+        <ownedMember isAbstract="false" isDerived="false" isLeaf="false" name="" xmi:id="VDM.940" xmi:type="uml:Association">
+          <ownedEnd aggregation="none" association="VDM.940" isNavigable="false" name="" visibility="private" xmi:id="VDM.941" xmi:type="uml:Property">
+            <type xmi:idref="VDM.36"/>
+          </ownedEnd>
+          <memberEnd xmi:idref="VDM.941"/>
+          <ownedEnd aggregation="none" association="VDM.940" isNavigable="true" name="s前にいた場所" visibility="public" xmi:id="VDM.942" xmi:type="uml:Property" isOrdered="false" isStatic="false">
+            <lowerValue value="0" xmi:id="VDM.943" xmi:type="uml:LiteralInteger"/>
+            <upperValue value="1" xmi:id="VDM.944" xmi:type="uml:LiteralInteger"/>
+            <type xmi:idref="VDM.71"/>
+          </ownedEnd>
+          <memberEnd xmi:idref="VDM.942"/>
+        </ownedMember>
+        <ownedMember isAbstract="false" isDerived="false" isLeaf="false" name="" xmi:id="VDM.945" xmi:type="uml:Association">
+          <ownedEnd aggregation="none" association="VDM.945" isNavigable="false" name="" visibility="private" xmi:id="VDM.946" xmi:type="uml:Property">
+            <type xmi:idref="VDM.40"/>
+          </ownedEnd>
+          <memberEnd xmi:idref="VDM.946"/>
+          <ownedEnd aggregation="none" association="VDM.945" isNavigable="true" name="failures" visibility="private" xmi:id="VDM.947" xmi:type="uml:Property" isOrdered="true" isStatic="false">
+            <lowerValue value="0" xmi:id="VDM.948" xmi:type="uml:LiteralInteger"/>
+            <upperValue value="*" xmi:id="VDM.949" xmi:type="uml:LiteralString"/>
+            <type xmi:idref="VDM.27"/>
+          </ownedEnd>
+          <memberEnd xmi:idref="VDM.947"/>
+        </ownedMember>
+        <ownedMember isAbstract="false" isDerived="false" isLeaf="false" name="" xmi:id="VDM.950" xmi:type="uml:Association">
+          <ownedEnd aggregation="none" association="VDM.950" isNavigable="false" name="" visibility="private" xmi:id="VDM.951" xmi:type="uml:Property">
+            <type xmi:idref="VDM.55"/>
+          </ownedEnd>
+          <memberEnd xmi:idref="VDM.951"/>
+          <ownedEnd aggregation="none" association="VDM.950" isNavigable="true" name="s場所ID" visibility="public" xmi:id="VDM.952" xmi:type="uml:Property" isOrdered="false" isStatic="false">
+            <lowerValue value="1" xmi:id="VDM.953" xmi:type="uml:LiteralInteger"/>
+            <upperValue value="1" xmi:id="VDM.954" xmi:type="uml:LiteralInteger"/>
+            <type xmi:idref="VDM.71"/>
+          </ownedEnd>
+          <memberEnd xmi:idref="VDM.952"/>
+        </ownedMember>
+        <ownedMember isAbstract="false" isDerived="false" isLeaf="false" name="" xmi:id="VDM.955" xmi:type="uml:Association">
+          <ownedEnd aggregation="none" association="VDM.955" isNavigable="false" name="" visibility="private" xmi:id="VDM.956" xmi:type="uml:Property">
+            <type xmi:idref="VDM.76"/>
+          </ownedEnd>
+          <memberEnd xmi:idref="VDM.956"/>
+          <ownedEnd aggregation="none" association="VDM.955" isNavigable="true" name="tests" visibility="private" xmi:id="VDM.957" xmi:type="uml:Property" isOrdered="true" isStatic="false">
+            <lowerValue value="0" xmi:id="VDM.958" xmi:type="uml:LiteralInteger"/>
+            <upperValue value="*" xmi:id="VDM.959" xmi:type="uml:LiteralString"/>
+            <type xmi:idref="VDM.32"/>
+          </ownedEnd>
+          <memberEnd xmi:idref="VDM.957"/>
+        </ownedMember>
+        <ownedMember isAbstract="false" isDerived="false" isLeaf="false" name="" xmi:id="VDM.960" xmi:type="uml:Association">
+          <ownedEnd aggregation="none" association="VDM.960" isNavigable="false" name="" visibility="private" xmi:id="VDM.961" xmi:type="uml:Property">
+            <type xmi:idref="VDM.84"/>
+          </ownedEnd>
+          <memberEnd xmi:idref="VDM.961"/>
+          <ownedEnd aggregation="none" association="VDM.960" isNavigable="true" name="ガードコマンド集合" visibility="protected" xmi:id="VDM.962" xmi:type="uml:Property" isOrdered="false" isStatic="false">
+            <lowerValue value="0" xmi:id="VDM.963" xmi:type="uml:LiteralInteger"/>
+            <upperValue value="*" xmi:id="VDM.964" xmi:type="uml:LiteralString"/>
+            <type xmi:idref="VDM.26"/>
+          </ownedEnd>
+          <memberEnd xmi:idref="VDM.962"/>
+        </ownedMember>
+        <ownedMember isAbstract="false" isDerived="false" isLeaf="false" name="" xmi:id="VDM.965" xmi:type="uml:Association">
+          <ownedEnd aggregation="none" association="VDM.965" isNavigable="false" name="" visibility="private" xmi:id="VDM.966" xmi:type="uml:Property">
+            <type xmi:idref="VDM.37"/>
+          </ownedEnd>
+          <memberEnd xmi:idref="VDM.966"/>
+          <ownedEnd aggregation="none" association="VDM.965" isNavigable="true" name="s端末型" visibility="public" xmi:id="VDM.967" xmi:type="uml:Property" isOrdered="false" isStatic="false">
+            <lowerValue value="1" xmi:id="VDM.968" xmi:type="uml:LiteralInteger"/>
+            <upperValue value="1" xmi:id="VDM.969" xmi:type="uml:LiteralInteger"/>
+            <type xmi:idref="VDM.47"/>
+          </ownedEnd>
+          <memberEnd xmi:idref="VDM.967"/>
+        </ownedMember>
+        <ownedMember isAbstract="false" isDerived="false" isLeaf="false" name="" xmi:id="VDM.970" xmi:type="uml:Association">
+          <ownedEnd aggregation="none" association="VDM.970" isNavigable="false" name="" visibility="private" xmi:id="VDM.971" xmi:type="uml:Property">
+            <type xmi:idref="VDM.36"/>
+          </ownedEnd>
+          <memberEnd xmi:idref="VDM.971"/>
+          <ownedEnd aggregation="none" association="VDM.970" isNavigable="true" name="s到着時間" visibility="public" xmi:id="VDM.972" xmi:type="uml:Property" isOrdered="false" isStatic="false">
+            <lowerValue value="1" xmi:id="VDM.973" xmi:type="uml:LiteralInteger"/>
+            <upperValue value="1" xmi:id="VDM.974" xmi:type="uml:LiteralInteger"/>
+            <type xmi:idref="VDM.59"/>
+          </ownedEnd>
+          <memberEnd xmi:idref="VDM.972"/>
+        </ownedMember>
+        <ownedMember isAbstract="false" isDerived="false" isLeaf="false" name="" xmi:id="VDM.975" xmi:type="uml:Association">
+          <ownedEnd aggregation="none" association="VDM.975" isNavigable="false" name="" visibility="private" xmi:id="VDM.976" xmi:type="uml:Property">
+            <type xmi:idref="VDM.74"/>
+          </ownedEnd>
+          <memberEnd xmi:idref="VDM.976"/>
+          <ownedEnd aggregation="none" association="VDM.975" isNavigable="true" name="s人が居る位置" visibility="public" xmi:id="VDM.977" xmi:type="uml:Property" isOrdered="false" isStatic="false">
+            <lowerValue value="1" xmi:id="VDM.978" xmi:type="uml:LiteralInteger"/>
+            <upperValue value="1" xmi:id="VDM.979" xmi:type="uml:LiteralInteger"/>
+            <type xmi:idref="VDM.14"/>
+          </ownedEnd>
+          <memberEnd xmi:idref="VDM.977"/>
+        </ownedMember>
+        <ownedMember isAbstract="false" isDerived="false" isLeaf="false" name="" xmi:id="VDM.980" xmi:type="uml:Association">
+          <ownedEnd aggregation="none" association="VDM.980" isNavigable="false" name="" visibility="private" xmi:id="VDM.981" xmi:type="uml:Property">
+            <type xmi:idref="VDM.86"/>
+          </ownedEnd>
+          <memberEnd xmi:idref="VDM.981"/>
+          <ownedEnd aggregation="none" association="VDM.980" isNavigable="true" name="s現在時間" visibility="public" xmi:id="VDM.982" xmi:type="uml:Property" isOrdered="false" isStatic="true">
+            <lowerValue value="1" xmi:id="VDM.983" xmi:type="uml:LiteralInteger"/>
+            <upperValue value="1" xmi:id="VDM.984" xmi:type="uml:LiteralInteger"/>
+            <type xmi:idref="VDM.59"/>
+          </ownedEnd>
+          <memberEnd xmi:idref="VDM.982"/>
+        </ownedMember>
+        <ownedMember isAbstract="false" isDerived="false" isLeaf="false" name="" xmi:id="VDM.985" xmi:type="uml:Association">
+          <ownedEnd aggregation="none" association="VDM.985" isNavigable="false" name="" visibility="private" xmi:id="VDM.986" xmi:type="uml:Property">
+            <type xmi:idref="VDM.37"/>
+          </ownedEnd>
+          <memberEnd xmi:idref="VDM.986"/>
+          <ownedEnd aggregation="none" association="VDM.985" isNavigable="true" name="sID端末位置" visibility="public" xmi:id="VDM.987" xmi:type="uml:Property" isOrdered="false" isStatic="false">
+            <lowerValue value="1" xmi:id="VDM.988" xmi:type="uml:LiteralInteger"/>
+            <upperValue value="1" xmi:id="VDM.989" xmi:type="uml:LiteralInteger"/>
+            <type xmi:idref="VDM.87"/>
+          </ownedEnd>
+          <memberEnd xmi:idref="VDM.987"/>
+        </ownedMember>
+        <ownedMember isAbstract="false" isDerived="false" isLeaf="false" name="" xmi:id="VDM.990" xmi:type="uml:Association">
+          <ownedEnd aggregation="none" association="VDM.990" isNavigable="false" name="" visibility="private" xmi:id="VDM.991" xmi:type="uml:Property">
+            <type xmi:idref="VDM.36"/>
+          </ownedEnd>
+          <memberEnd xmi:idref="VDM.991"/>
+          <ownedEnd aggregation="none" association="VDM.990" isNavigable="true" name="s躊躇する最大時間" visibility="public" xmi:id="VDM.992" xmi:type="uml:Property" isOrdered="false" isStatic="false">
+            <lowerValue value="1" xmi:id="VDM.993" xmi:type="uml:LiteralInteger"/>
+            <upperValue value="1" xmi:id="VDM.994" xmi:type="uml:LiteralInteger"/>
+            <type xmi:idref="VDM.59"/>
+          </ownedEnd>
+          <memberEnd xmi:idref="VDM.992"/>
+        </ownedMember>
+        <ownedMember isAbstract="false" isDerived="false" isLeaf="false" name="" xmi:id="VDM.995" xmi:type="uml:Association">
+          <ownedEnd aggregation="none" association="VDM.995" isNavigable="false" name="" visibility="private" xmi:id="VDM.996" xmi:type="uml:Property">
+            <type xmi:idref="VDM.18"/>
+          </ownedEnd>
+          <memberEnd xmi:idref="VDM.996"/>
+          <ownedEnd aggregation="none" association="VDM.995" isNavigable="true" name="sIDカード状態" visibility="public" xmi:id="VDM.997" xmi:type="uml:Property" isOrdered="false" isStatic="false">
+            <lowerValue value="1" xmi:id="VDM.998" xmi:type="uml:LiteralInteger"/>
+            <upperValue value="1" xmi:id="VDM.999" xmi:type="uml:LiteralInteger"/>
+            <type xmi:idref="VDM.50"/>
+          </ownedEnd>
+          <memberEnd xmi:idref="VDM.997"/>
+        </ownedMember>
+        <ownedMember isAbstract="false" isDerived="false" isLeaf="false" name="" xmi:id="VDM.1000" xmi:type="uml:Association">
+          <ownedEnd aggregation="none" association="VDM.1000" isNavigable="false" name="" visibility="private" xmi:id="VDM.1001" xmi:type="uml:Property">
+            <type xmi:idref="VDM.75"/>
+          </ownedEnd>
+          <memberEnd xmi:idref="VDM.1001"/>
+          <ownedEnd aggregation="none" association="VDM.1000" isNavigable="true" name="s利用者" visibility="public" xmi:id="VDM.1002" xmi:type="uml:Property" isOrdered="false" isStatic="false">
+            <lowerValue value="1" xmi:id="VDM.1003" xmi:type="uml:LiteralInteger"/>
+            <upperValue value="1" xmi:id="VDM.1004" xmi:type="uml:LiteralInteger"/>
+            <type xmi:idref="VDM.36"/>
+          </ownedEnd>
+          <memberEnd xmi:idref="VDM.1002"/>
+        </ownedMember>
+        <ownedMember isAbstract="false" isDerived="false" isLeaf="false" name="" xmi:id="VDM.1005" xmi:type="uml:Association">
+          <ownedEnd aggregation="none" association="VDM.1005" isNavigable="false" name="" visibility="private" xmi:id="VDM.1006" xmi:type="uml:Property">
+            <type xmi:idref="VDM.37"/>
+          </ownedEnd>
+          <memberEnd xmi:idref="VDM.1006"/>
+          <ownedEnd aggregation="none" association="VDM.1005" isNavigable="true" name="sID端末状態" visibility="public" xmi:id="VDM.1007" xmi:type="uml:Property" isOrdered="false" isStatic="false">
+            <lowerValue value="1" xmi:id="VDM.1008" xmi:type="uml:LiteralInteger"/>
+            <upperValue value="1" xmi:id="VDM.1009" xmi:type="uml:LiteralInteger"/>
+            <type xmi:idref="VDM.63"/>
+          </ownedEnd>
+          <memberEnd xmi:idref="VDM.1007"/>
+        </ownedMember>
+        <ownedMember isAbstract="false" isDerived="false" isLeaf="false" name="" xmi:id="VDM.1010" xmi:type="uml:Association">
+          <ownedEnd aggregation="none" association="VDM.1010" isNavigable="false" name="" visibility="private" xmi:id="VDM.1011" xmi:type="uml:Property">
+            <type xmi:idref="VDM.36"/>
+          </ownedEnd>
+          <memberEnd xmi:idref="VDM.1011"/>
+          <ownedEnd aggregation="none" association="VDM.1010" isNavigable="true" name="s利用者ID" visibility="public" xmi:id="VDM.1012" xmi:type="uml:Property" isOrdered="false" isStatic="false">
+            <lowerValue value="1" xmi:id="VDM.1013" xmi:type="uml:LiteralInteger"/>
+            <upperValue value="1" xmi:id="VDM.1014" xmi:type="uml:LiteralInteger"/>
+            <type xmi:idref="VDM.20"/>
+          </ownedEnd>
+          <memberEnd xmi:idref="VDM.1012"/>
+        </ownedMember>
+        <packagedElement xmi:type="uml:Dependency" visibility="public" xmi:id="VDM.1015" supplier="VDM.52" client="VDM.77"/>
+        <packagedElement xmi:type="uml:Dependency" visibility="public" xmi:id="VDM.1016" supplier="VDM.52" client="VDM.13"/>
+        <packagedElement xmi:type="uml:Dependency" visibility="public" xmi:id="VDM.1017" supplier="VDM.65" client="VDM.82"/>
+        <packagedElement xmi:type="uml:Dependency" visibility="public" xmi:id="VDM.1018" supplier="VDM.53" client="VDM.33"/>
+        <packagedElement xmi:type="uml:Dependency" visibility="public" xmi:id="VDM.1019" supplier="VDM.53" client="VDM.24"/>
+        <packagedElement xmi:type="uml:Dependency" visibility="public" xmi:id="VDM.1020" supplier="VDM.53" client="VDM.57"/>
+        <packagedElement xmi:type="uml:Dependency" visibility="public" xmi:id="VDM.1021" supplier="VDM.53" client="VDM.16"/>
+        <packagedElement xmi:type="uml:Dependency" visibility="public" xmi:id="VDM.1022" supplier="VDM.48" client="VDM.54"/>
+        <packagedElement xmi:type="uml:Dependency" visibility="public" xmi:id="VDM.1023" supplier="VDM.48" client="VDM.41"/>
+        <packagedElement xmi:type="uml:Dependency" visibility="public" xmi:id="VDM.1024" supplier="VDM.48" client="VDM.71"/>
+        <packagedElement xmi:type="uml:Dependency" visibility="public" xmi:id="VDM.1025" supplier="VDM.48" client="VDM.62"/>
+        <packagedElement xmi:type="uml:Dependency" visibility="public" xmi:id="VDM.1026" supplier="VDM.48" client="VDM.64"/>
+        <packagedElement xmi:type="uml:Dependency" visibility="public" xmi:id="VDM.1027" supplier="VDM.18" client="VDM.50"/>
+        <packagedElement xmi:type="uml:Dependency" visibility="public" xmi:id="VDM.1028" supplier="VDM.18" client="VDM.83"/>
+        <packagedElement xmi:type="uml:Dependency" visibility="public" xmi:id="VDM.1029" supplier="VDM.36" client="VDM.20"/>
+        <packagedElement xmi:type="uml:Dependency" visibility="public" xmi:id="VDM.1030" supplier="VDM.28" client="VDM.59"/>
+        <packagedElement xmi:type="uml:Dependency" visibility="public" xmi:id="VDM.1031" supplier="VDM.28" client="VDM.78"/>
+        <packagedElement xmi:type="uml:Dependency" visibility="public" xmi:id="VDM.1032" supplier="VDM.37" client="VDM.87"/>
+        <packagedElement xmi:type="uml:Dependency" visibility="public" xmi:id="VDM.1033" supplier="VDM.37" client="VDM.63"/>
+        <packagedElement xmi:type="uml:Dependency" visibility="public" xmi:id="VDM.1034" supplier="VDM.37" client="VDM.47"/>
+        <packagedElement xmi:type="uml:Dependency" visibility="public" xmi:id="VDM.1035" supplier="VDM.46" client="VDM.9"/>
+        <packagedElement xmi:type="uml:Dependency" visibility="public" xmi:id="VDM.1036" supplier="VDM.46" client="VDM.30"/>
+        <packagedElement xmi:type="uml:Dependency" visibility="public" xmi:id="VDM.1037" supplier="VDM.46" client="VDM.79"/>
+        <packagedElement xmi:type="uml:Dependency" visibility="public" xmi:id="VDM.1038" supplier="VDM.74" client="VDM.45"/>
+        <packagedElement xmi:type="uml:Dependency" visibility="public" xmi:id="VDM.1039" supplier="VDM.74" client="VDM.14"/>
+        <packagedElement xmi:type="uml:Dependency" visibility="public" xmi:id="VDM.1040" supplier="VDM.86" client="VDM.19"/>
+      </ownedMember>
+    </uml:Model>
+    <xmi:Extension extender="Enterprise Architect" extenderID="6.5">
+      <elements/>
+      <diagrams/>
+      <connectors>
+        <connector xmi:idref="VDM.986">
+          <properties ea_type="Association" direction="Unspecified"/>
+        </connector>
+        <connector xmi:idref="VDM.876">
+          <properties ea_type="Association" direction="Unspecified"/>
+        </connector>
+        <connector xmi:idref="VDM.966">
+          <properties ea_type="Association" direction="Unspecified"/>
+        </connector>
+        <connector xmi:idref="VDM.941">
+          <properties ea_type="Association" direction="Unspecified"/>
+        </connector>
+        <connector xmi:idref="VDM.871">
+          <properties ea_type="Association" direction="Unspecified"/>
+        </connector>
+        <connector xmi:idref="VDM.981">
+          <properties ea_type="Association" direction="Unspecified"/>
+        </connector>
+        <connector xmi:idref="VDM.926">
+          <properties ea_type="Association" direction="Unspecified"/>
+        </connector>
+        <connector xmi:idref="VDM.896">
+          <properties ea_type="Association" direction="Unspecified"/>
+        </connector>
+        <connector xmi:idref="VDM.906">
+          <properties ea_type="Association" direction="Unspecified"/>
+        </connector>
+        <connector xmi:idref="VDM.791">
+          <properties ea_type="Association" direction="Unspecified"/>
+        </connector>
+        <connector xmi:idref="VDM.961">
+          <properties ea_type="Association" direction="Unspecified"/>
+        </connector>
+        <connector xmi:idref="VDM.1006">
+          <properties ea_type="Association" direction="Unspecified"/>
+        </connector>
+        <connector xmi:idref="VDM.921">
+          <properties ea_type="Association" direction="Unspecified"/>
+        </connector>
+        <connector xmi:idref="VDM.891">
+          <properties ea_type="Association" direction="Unspecified"/>
+        </connector>
+        <connector xmi:idref="VDM.946">
+          <properties ea_type="Association" direction="Unspecified"/>
+        </connector>
+        <connector xmi:idref="VDM.796">
+          <properties ea_type="Association" direction="Unspecified"/>
+        </connector>
+        <connector xmi:idref="VDM.841">
+          <properties ea_type="Association" direction="Unspecified"/>
+        </connector>
+        <connector xmi:idref="VDM.806">
+          <properties ea_type="Association" direction="Unspecified"/>
+        </connector>
+        <connector xmi:idref="VDM.991">
+          <properties ea_type="Association" direction="Unspecified"/>
+        </connector>
+        <connector xmi:idref="VDM.821">
+          <properties ea_type="Association" direction="Unspecified"/>
+        </connector>
+        <connector xmi:idref="VDM.901">
+          <properties ea_type="Association" direction="Unspecified"/>
+        </connector>
+        <connector xmi:idref="VDM.996">
+          <properties ea_type="Association" direction="Unspecified"/>
+        </connector>
+        <connector xmi:idref="VDM.801">
+          <properties ea_type="Association" direction="Unspecified"/>
+        </connector>
+        <connector xmi:idref="VDM.1001">
+          <properties ea_type="Association" direction="Unspecified"/>
+        </connector>
+        <connector xmi:idref="VDM.826">
+          <properties ea_type="Association" direction="Unspecified"/>
+        </connector>
+        <connector xmi:idref="VDM.861">
+          <properties ea_type="Association" direction="Unspecified"/>
+        </connector>
+        <connector xmi:idref="VDM.866">
+          <properties ea_type="Association" direction="Unspecified"/>
+        </connector>
+        <connector xmi:idref="VDM.846">
+          <properties ea_type="Association" direction="Unspecified"/>
+        </connector>
+        <connector xmi:idref="VDM.976">
+          <properties ea_type="Association" direction="Unspecified"/>
+        </connector>
+        <connector xmi:idref="VDM.786">
+          <properties ea_type="Association" direction="Unspecified"/>
+        </connector>
+        <connector xmi:idref="VDM.956">
+          <properties ea_type="Association" direction="Unspecified"/>
+        </connector>
+        <connector xmi:idref="VDM.931">
+          <properties ea_type="Association" direction="Unspecified"/>
+        </connector>
+        <connector xmi:idref="VDM.951">
+          <properties ea_type="Association" direction="Unspecified"/>
+        </connector>
+        <connector xmi:idref="VDM.916">
+          <properties ea_type="Association" direction="Unspecified"/>
+        </connector>
+        <connector xmi:idref="VDM.881">
+          <properties ea_type="Association" direction="Unspecified"/>
+        </connector>
+        <connector xmi:idref="VDM.971">
+          <properties ea_type="Association" direction="Unspecified"/>
+        </connector>
+        <connector xmi:idref="VDM.936">
+          <properties ea_type="Association" direction="Unspecified"/>
+        </connector>
+        <connector xmi:idref="VDM.886">
+          <properties ea_type="Association" direction="Unspecified"/>
+        </connector>
+        <connector xmi:idref="VDM.911">
+          <properties ea_type="Association" direction="Unspecified"/>
+        </connector>
+        <connector xmi:idref="VDM.831">
+          <properties ea_type="Association" direction="Unspecified"/>
+        </connector>
+        <connector xmi:idref="VDM.1011">
+          <properties ea_type="Association" direction="Unspecified"/>
+        </connector>
+        <connector xmi:idref="VDM.814">
+          <properties ea_type="Association" direction="Unspecified"/>
+        </connector>
+        <connector xmi:idref="VDM.851">
+          <properties ea_type="Association" direction="Unspecified"/>
+        </connector>
+        <connector xmi:idref="VDM.817">
+          <properties ea_type="Association" direction="Unspecified"/>
+        </connector>
+        <connector xmi:idref="VDM.836">
+          <properties ea_type="Association" direction="Unspecified"/>
+        </connector>
+        <connector xmi:idref="VDM.856">
+          <properties ea_type="Association" direction="Unspecified"/>
+        </connector>
+        <connector xmi:idref="VDM.865">
+          <target xmi:idref="VDM.48">
+            <constraints qualifier="String"/>
+          </target>
+        </connector>
+        <connector xmi:idref="VDM.1028">
+          <source xmi:idref="VDM.83"/>
+          <target xmi:idref="VDM.18"/>
+          <properties ea_type="Nesting" direction="Source -&gt; Destination"/>
+        </connector>
+        <connector xmi:idref="VDM.1029">
+          <source xmi:idref="VDM.20"/>
+          <target xmi:idref="VDM.36"/>
+          <properties ea_type="Nesting" direction="Source -&gt; Destination"/>
+        </connector>
+        <connector xmi:idref="VDM.1024">
+          <source xmi:idref="VDM.71"/>
+          <target xmi:idref="VDM.48"/>
+          <properties ea_type="Nesting" direction="Source -&gt; Destination"/>
+        </connector>
+        <connector xmi:idref="VDM.1025">
+          <source xmi:idref="VDM.62"/>
+          <target xmi:idref="VDM.48"/>
+          <properties ea_type="Nesting" direction="Source -&gt; Destination"/>
+        </connector>
+        <connector xmi:idref="VDM.1026">
+          <source xmi:idref="VDM.64"/>
+          <target xmi:idref="VDM.48"/>
+          <properties ea_type="Nesting" direction="Source -&gt; Destination"/>
+        </connector>
+        <connector xmi:idref="VDM.1027">
+          <source xmi:idref="VDM.50"/>
+          <target xmi:idref="VDM.18"/>
+          <properties ea_type="Nesting" direction="Source -&gt; Destination"/>
+        </connector>
+        <connector xmi:idref="VDM.1021">
+          <source xmi:idref="VDM.16"/>
+          <target xmi:idref="VDM.53"/>
+          <properties ea_type="Nesting" direction="Source -&gt; Destination"/>
+        </connector>
+        <connector xmi:idref="VDM.1020">
+          <source xmi:idref="VDM.57"/>
+          <target xmi:idref="VDM.53"/>
+          <properties ea_type="Nesting" direction="Source -&gt; Destination"/>
+        </connector>
+        <connector xmi:idref="VDM.1023">
+          <source xmi:idref="VDM.41"/>
+          <target xmi:idref="VDM.48"/>
+          <properties ea_type="Nesting" direction="Source -&gt; Destination"/>
+        </connector>
+        <connector xmi:idref="VDM.1022">
+          <source xmi:idref="VDM.54"/>
+          <target xmi:idref="VDM.48"/>
+          <properties ea_type="Nesting" direction="Source -&gt; Destination"/>
+        </connector>
+        <connector xmi:idref="VDM.1015">
+          <source xmi:idref="VDM.77"/>
+          <target xmi:idref="VDM.52"/>
+          <properties ea_type="Nesting" direction="Source -&gt; Destination"/>
+        </connector>
+        <connector xmi:idref="VDM.1016">
+          <source xmi:idref="VDM.13"/>
+          <target xmi:idref="VDM.52"/>
+          <properties ea_type="Nesting" direction="Source -&gt; Destination"/>
+        </connector>
+        <connector xmi:idref="VDM.1039">
+          <source xmi:idref="VDM.14"/>
+          <target xmi:idref="VDM.74"/>
+          <properties ea_type="Nesting" direction="Source -&gt; Destination"/>
+        </connector>
+        <connector xmi:idref="VDM.1040">
+          <source xmi:idref="VDM.19"/>
+          <target xmi:idref="VDM.86"/>
+          <properties ea_type="Nesting" direction="Source -&gt; Destination"/>
+        </connector>
+        <connector xmi:idref="VDM.1019">
+          <source xmi:idref="VDM.24"/>
+          <target xmi:idref="VDM.53"/>
+          <properties ea_type="Nesting" direction="Source -&gt; Destination"/>
+        </connector>
+        <connector xmi:idref="VDM.1037">
+          <source xmi:idref="VDM.79"/>
+          <target xmi:idref="VDM.46"/>
+          <properties ea_type="Nesting" direction="Source -&gt; Destination"/>
+        </connector>
+        <connector xmi:idref="VDM.1038">
+          <source xmi:idref="VDM.45"/>
+          <target xmi:idref="VDM.74"/>
+          <properties ea_type="Nesting" direction="Source -&gt; Destination"/>
+        </connector>
+        <connector xmi:idref="VDM.1017">
+          <source xmi:idref="VDM.82"/>
+          <target xmi:idref="VDM.65"/>
+          <properties ea_type="Nesting" direction="Source -&gt; Destination"/>
+        </connector>
+        <connector xmi:idref="VDM.1035">
+          <source xmi:idref="VDM.9"/>
+          <target xmi:idref="VDM.46"/>
+          <properties ea_type="Nesting" direction="Source -&gt; Destination"/>
+        </connector>
+        <connector xmi:idref="VDM.1018">
+          <source xmi:idref="VDM.33"/>
+          <target xmi:idref="VDM.53"/>
+          <properties ea_type="Nesting" direction="Source -&gt; Destination"/>
+        </connector>
+        <connector xmi:idref="VDM.1036">
+          <source xmi:idref="VDM.30"/>
+          <target xmi:idref="VDM.46"/>
+          <properties ea_type="Nesting" direction="Source -&gt; Destination"/>
+        </connector>
+        <connector xmi:idref="VDM.1034">
+          <source xmi:idref="VDM.47"/>
+          <target xmi:idref="VDM.37"/>
+          <properties ea_type="Nesting" direction="Source -&gt; Destination"/>
+        </connector>
+        <connector xmi:idref="VDM.1033">
+          <source xmi:idref="VDM.63"/>
+          <target xmi:idref="VDM.37"/>
+          <properties ea_type="Nesting" direction="Source -&gt; Destination"/>
+        </connector>
+        <connector xmi:idref="VDM.1032">
+          <source xmi:idref="VDM.87"/>
+          <target xmi:idref="VDM.37"/>
+          <properties ea_type="Nesting" direction="Source -&gt; Destination"/>
+        </connector>
+        <connector xmi:idref="VDM.1031">
+          <source xmi:idref="VDM.78"/>
+          <target xmi:idref="VDM.28"/>
+          <properties ea_type="Nesting" direction="Source -&gt; Destination"/>
+        </connector>
+        <connector xmi:idref="VDM.1030">
+          <source xmi:idref="VDM.59"/>
+          <target xmi:idref="VDM.28"/>
+          <properties ea_type="Nesting" direction="Source -&gt; Destination"/>
+        </connector>
+      </connectors>
+    </xmi:Extension>
+  </xmi:XMI>

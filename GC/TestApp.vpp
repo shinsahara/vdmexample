@@ -1,0 +1,24 @@
+\section{TestAppクラス}
+
+\begin{vdm_al}
+class TestApp
+
+operations
+static public Execute : () ==> ()
+Execute() == (
+	dcl ts : TestSuite := new TestSuite();
+	--ts.AddTest(new TestCaseST0010("TestCaseST0010:利用者の一人が場所5で認証されていない。"));
+	ts.AddTest(new TestCaseST0009("TestCaseST0009:利用者の一人が場所4で認証されていない。"));
+	--ts.AddTest(new TestCaseST0008("TestCaseST0008:利用者3人が場所9,4,2から、順次、気まぐれに移動するが、利用者3は移動しないので、仮想世界で認知されない。"));
+	ts.AddTest(new TestCaseST0007("TestCaseST0007:利用者3人が場所0から、順次、気まぐれに移動する"));
+	ts.AddTest(new TestCaseST0006("TestCaseST0006:利用者1人が場所7から、気まぐれに移動する"));
+	ts.AddTest(new TestCaseST0005("TestCaseST0005:利用者3人が場所1, 4,７から、それぞれ認証されて気まぐれに移動する"));
+	ts.AddTest(new TestCaseST0004("TestCaseST0004:案内表示に従って利用者2人が、場所2から4または7へ移動する"));
+	ts.AddTest(new TestCaseST0003("TestCaseST0003:利用者3人が場所1, 4,７から、それぞれ2, 5, 8へ認証されて移動し、ドアを閉める"));
+	ts.AddTest(new TestCaseST0002("TestCaseST0002:利用者が場所1から2へ認証されて移動し、ドアを閉める"));
+	ts.AddTest(new TestCaseST0001("TestCaseST0001:案内無しに利用者が場所0から1へ移動する"));
+	ts.Run()
+);
+  
+end TestApp
+\end{vdm_al}

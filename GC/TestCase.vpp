@@ -1,0 +1,624 @@
+\section{TestCaseSクラス}
+
+\begin{vdm_al}
+class TestCaseS is subclass of TestCase, オブジェクト
+
+instance variables
+protected sスケジューラ : スケジューラ := new スケジューラ();
+protected s大域黒板 : 黒板 := 
+	new 黒板({
+		mk_token("実際の利用者居場所") |-> {|->},
+		mk_token("仮想世界利用者居場所") |-> {|->},
+		mk_token("案内表示") |-> {|->},
+		mk_token("ドア")	|-> 
+			{mk_(0, 1) |-> new 仮想ドア(mk_(0, 1)),
+			 mk_(1, 2) |-> new 入口ドア(mk_(1, 2), <ロック>, <閉>),  
+			 mk_(2, 3) |-> new 仮想ドア(mk_(2, 3)), 
+			 mk_(2, 4) |-> new 仮想ドア(mk_(2, 4)),
+			 mk_(2, 7) |-> new 仮想ドア(mk_(2, 7)),
+			 mk_(3, 0) |-> new 出口ドア(mk_(3, 0), <アンロック>, <閉>), 		--鍵はない
+			 mk_(4, 5) |-> new 入口ドア(mk_(4, 5), <ロック>, <閉>), 
+			 mk_(5, 6) |-> new 仮想ドア(mk_(5, 6)), 
+			 mk_(6, 2) |-> new 出口ドア(mk_(6, 2), <アンロック>, <閉>),  		--鍵はない
+			 mk_(7, 8) |-> new 入口ドア(mk_(7, 8), <ロック>, <閉>), 
+			 mk_(8, 9) |-> new 仮想ドア(mk_(8, 9)), 
+			 mk_(9, 2) |-> new 出口ドア(mk_(9, 2), <アンロック>, <閉>)}, 		--鍵はない
+		mk_token("ID端末") |-> 
+			{1 |-> new ID端末 (1, <α>),
+			 4 |-> new ID端末 (4, <β>),
+			 7 |-> new ID端末 (7, <β>),
+			 5 |-> new ID端末 (5, <γ>),	
+			 8 |-> new ID端末 (8, <γ>)},
+		mk_token("タッチパネル")	|-> 
+			{5 |-> new タッチパネル (5, <入力不可能>),
+			 8 |-> new タッチパネル (8, <入力不可能>) },
+		mk_token("IDカード")	|-> 
+			{1 |-> new IDカード(1, <有効>), 2 |-> new IDカード(2, <有効>), 
+			 3 |-> new IDカード(3, <有効>), 4 |-> new IDカード(4, <有効>),
+			 5 |-> new IDカード(5, <無効>)},
+		mk_token("センサー") |-> 
+			let センサー2 = new センサー(2, {2, 3, 4, 7}, <人は居ない>),
+				センサー5 = new センサー(5, {5, 6}, <人は居ない>),
+				センサー8 = new センサー(8, {8, 9}, <人は居ない>) in
+			{2 |-> センサー2, 3 |-> センサー2, 4 |-> センサー2, 7 |-> センサー2,
+			 5 |-> センサー5, 6 |-> センサー5,
+			 8 |-> センサー8, 9 |-> センサー8}
+		});
+protected ガードコマンド集合 : set of ガードコマンド := 
+		def mk_(w黒板属性DB, -) = s大域黒板.得る();
+			wID端末DB = w黒板属性DB(mk_token("ID端末")) in
+		{
+		new ガードコマンド_センサー_仮想世界(2), new ガードコマンド_センサー_仮想世界(3),
+		new ガードコマンド_センサー_仮想世界(4), new ガードコマンド_センサー_仮想世界(5),
+		new ガードコマンド_センサー_仮想世界(6), new ガードコマンド_センサー_仮想世界(7),
+		new ガードコマンド_センサー_仮想世界(8), new ガードコマンド_センサー_仮想世界(9),
+		new ガードコマンド_センサー(2), new ガードコマンド_センサー(3), new ガードコマンド_センサー(4),
+		new ガードコマンド_センサー(5), new ガードコマンド_センサー(6), new ガードコマンド_センサー(7),
+		new ガードコマンド_センサー(8), new ガードコマンド_センサー(9),
+		new ガードコマンド_利用者案内無し移動(0), new ガードコマンド_利用者案内無し移動(1),
+		new ガードコマンド_利用者案内無し移動(3), new ガードコマンド_利用者案内無し移動(4),
+		new ガードコマンド_利用者案内無し移動(5), new ガードコマンド_利用者案内無し移動(6),
+		new ガードコマンド_利用者案内無し移動(7), new ガードコマンド_利用者案内無し移動(8),
+		new ガードコマンド_利用者案内無し移動(9), new ガードコマンド_利用者案内有移動(2),
+		new ガードコマンド_ID端末_OK(wID端末DB(1)), new ガードコマンド_ID端末_NG(wID端末DB(1)),
+		new ガードコマンド_ID端末_OK(wID端末DB(4)), new ガードコマンド_ID端末_NG(wID端末DB(4)),
+		new ガードコマンド_ID端末_OK(wID端末DB(7)), new ガードコマンド_ID端末_NG(wID端末DB(7)),
+		new ガードコマンド_ID端末_OK_仮想世界(wID端末DB(1)), new ガードコマンド_ID端末_OK_仮想世界(wID端末DB(4)),
+		new ガードコマンド_ID端末_OK_仮想世界(wID端末DB(7)),
+		new ガードコマンド_ID端末γ_OK(wID端末DB(5)), new ガードコマンド_ID端末γ_NG(wID端末DB(5)),
+		new ガードコマンド_ID端末γ_OK(wID端末DB(8)), new ガードコマンド_ID端末γ_NG(wID端末DB(8)),
+		new ガードコマンド_ID端末γ_OK_仮想世界(wID端末DB(5)), new ガードコマンド_ID端末γ_OK_仮想世界(wID端末DB(8)),
+		new ガードコマンド_利用者_ドアを開ける(1), new ガードコマンド_利用者_ドアを開ける(3), 
+		new ガードコマンド_利用者_ドアを開ける(4), new ガードコマンド_利用者_ドアを開ける(6),  
+		new ガードコマンド_利用者_ドアを開ける(7), new ガードコマンド_利用者_ドアを開ける(9),
+		new ガードコマンド_利用者_ドアを閉める(0), new ガードコマンド_利用者_ドアを閉める(2),
+		new ガードコマンド_利用者_ドアを閉める(5), new ガードコマンド_利用者_ドアを閉める(8),
+		new ガードコマンド_利用者_認証_仮想世界(1), new ガードコマンド_利用者_認証_仮想世界(4),
+		new ガードコマンド_利用者_認証_仮想世界(5), new ガードコマンド_利用者_認証_仮想世界(7),
+		new ガードコマンド_利用者_認証_仮想世界(8),
+		new ガードコマンド_利用者_認証(1), new ガードコマンド_利用者_認証(4), 
+		new ガードコマンド_利用者_認証(5), new ガードコマンド_利用者_認証(7), 
+		new ガードコマンド_利用者_認証(8),
+		new ガードコマンド_案内(2)
+	};
+
+operations
+protected SetUp : () ==> ()
+SetUp() == ( 
+	MATH`srand(10);
+	skip
+);
+
+protected TearDown: () ==> ()
+TearDown () == skip;
+
+end TestCaseS
+\end{vdm_al}
+--------------------------------------------------------------------------
+\section{TestCaseST0001クラス}
+
+\begin{vdm_al}
+class TestCaseST0001 is subclass of TestCaseS
+
+instance variables
+protected ガードコマンド集合 : set of ガードコマンド := {
+	new ガードコマンド_利用者案内無し移動(0)
+	};
+
+operations
+public TestCaseST0001 : seq of char ==> TestCaseST0001
+TestCaseST0001(nm) == TestCase(nm);
+
+protected RunTest : () ==> ()
+RunTest() == (
+	s現在時間 := 100;
+	def wIDカード = s大域黒板.黒板属性を得る()(mk_token("IDカード"));
+		利用者1 = new 利用者(1, wIDカード(1), s現在時間, 10) 
+	in (
+	s大域黒板.initialize({
+		mk_token("実際の利用者居場所") |-> 
+			{利用者1 |-> 0}
+		});
+	for i = 125 to 210 by 25 do (
+		sスケジューラ.doOneCycle(s大域黒板, ガードコマンド集合);
+		s現在時間 := i
+	);
+	let mk_(w大域黒板属性DB, -) = s大域黒板.得る(),
+		w利用者のいる場所DB = w大域黒板属性DB(mk_token("実際の利用者居場所")) in
+	AssertTrue(
+		let {w利用者} = dom w利用者のいる場所DB,
+			{w場所} = rng w利用者のいる場所DB
+		in
+		w利用者.IDを得る() = 1 and w場所 = 1 and w利用者.前にいた場所を得る() = 0
+	); --AssertTrue
+	) --def in
+);
+end TestCaseST0001
+\end{vdm_al}
+
+--------------------------------------------------------------------------
+\section{TestCaseST0002クラス}
+
+\begin{vdm_al}
+class TestCaseST0002 is subclass of TestCaseS
+
+instance variables
+protected ガードコマンド集合 : set of ガードコマンド := 
+	def mk_(w黒板属性DB, -) = s大域黒板.得る();
+		wID端末DB = w黒板属性DB(mk_token("ID端末")) in {
+	new ガードコマンド_センサー(2),
+	new ガードコマンド_利用者_認証(1),
+	new ガードコマンド_利用者_認証_仮想世界(1),
+	new ガードコマンド_利用者_ドアを開ける(1),
+	new ガードコマンド_利用者_ドアを閉める(2),
+	new ガードコマンド_ID端末_OK(wID端末DB(1)),
+	new ガードコマンド_ID端末_OK_仮想世界(wID端末DB(1)),
+	new ガードコマンド_ID端末_NG(wID端末DB(1)),
+	new ガードコマンド_利用者案内無し移動(1)
+};
+
+operations
+public TestCaseST0002 : seq of char ==> TestCaseST0002
+TestCaseST0002(nm) == TestCase(nm);
+
+protected RunTest : () ==> ()
+RunTest() == (
+	s現在時間 := 100;
+	def wIDカード = s大域黒板.黒板属性を得る()(mk_token("IDカード"));
+		利用者1 = new 利用者(1, wIDカード(1), s現在時間, 10)
+	in (
+	s大域黒板.initialize({
+		mk_token("実際の利用者居場所") |-> 
+			{利用者1 |-> 1}
+		});
+	for i = 125 to 300 by 25 do (
+		sスケジューラ.doOneCycle(s大域黒板, ガードコマンド集合);
+		s現在時間 := i
+	);
+	let mk_(w大域黒板属性DB, -) = s大域黒板.得る(),
+		w利用者のいる場所DB = w大域黒板属性DB(mk_token("実際の利用者居場所")),
+		w仮想利用者のいる場所DB = w大域黒板属性DB(mk_token("仮想世界利用者居場所")) 
+	in (
+	AssertTrue(
+		let {w利用者} = dom w利用者のいる場所DB,
+			{w場所} = rng w利用者のいる場所DB,
+			{w仮想利用者} = dom w仮想利用者のいる場所DB,
+			{w仮想場所} = rng w仮想利用者のいる場所DB
+		in
+		s大域黒板.実際と仮想の利用者居場所が等しい(w利用者のいる場所DB, w仮想利用者のいる場所DB) and
+		w利用者.IDを得る() = 1 and w場所 = 2 and w利用者.前にいた場所を得る() = nil and
+		w仮想利用者.IDを得る() = 1 and w仮想場所 = 2 and w利用者.前にいた場所を得る() = nil
+	); --AssertTrue
+	) --def in
+	) --def in
+);
+end TestCaseST0002
+\end{vdm_al}
+
+--------------------------------------------------------------------------
+\section{TestCaseST0003クラス}
+
+\begin{vdm_al}
+class TestCaseST0003 is subclass of TestCaseS
+
+instance variables
+protected ガードコマンド集合 : set of ガードコマンド := 
+	def mk_(w黒板属性DB, -) = s大域黒板.得る();
+		wID端末DB = w黒板属性DB(mk_token("ID端末")) in {
+	new ガードコマンド_センサー_仮想世界(2), new ガードコマンド_センサー_仮想世界(3),
+	new ガードコマンド_センサー_仮想世界(4), new ガードコマンド_センサー_仮想世界(5),
+	new ガードコマンド_センサー_仮想世界(6), new ガードコマンド_センサー_仮想世界(7),
+	new ガードコマンド_センサー_仮想世界(8), new ガードコマンド_センサー_仮想世界(9),
+	new ガードコマンド_センサー(2), new ガードコマンド_センサー(3),
+	new ガードコマンド_センサー(4), new ガードコマンド_センサー(5),
+	new ガードコマンド_センサー(6), new ガードコマンド_センサー(7),
+	new ガードコマンド_センサー(8), new ガードコマンド_センサー(9),
+	new ガードコマンド_利用者_認証(1), new ガードコマンド_利用者_認証(4), 
+	new ガードコマンド_利用者_認証(7),
+	new ガードコマンド_利用者_認証_仮想世界(1), new ガードコマンド_利用者_認証_仮想世界(4),
+	new ガードコマンド_利用者_認証_仮想世界(7),
+	new ガードコマンド_利用者_ドアを開ける(1), new ガードコマンド_利用者_ドアを開ける(4), 
+	new ガードコマンド_利用者_ドアを開ける(7), new ガードコマンド_利用者_ドアを閉める(2),
+	new ガードコマンド_利用者_ドアを閉める(5), new ガードコマンド_利用者_ドアを閉める(8),
+	new ガードコマンド_ID端末_OK(wID端末DB(1)), new ガードコマンド_ID端末_NG(wID端末DB(1)),
+	new ガードコマンド_ID端末_OK(wID端末DB(4)), new ガードコマンド_ID端末_NG(wID端末DB(4)),
+	new ガードコマンド_ID端末_OK(wID端末DB(7)), new ガードコマンド_ID端末_NG(wID端末DB(7)),
+	new ガードコマンド_ID端末_OK_仮想世界(wID端末DB(1)), new ガードコマンド_ID端末_OK_仮想世界(wID端末DB(4)),
+	new ガードコマンド_ID端末_OK_仮想世界(wID端末DB(7)),
+	new ガードコマンド_利用者案内無し移動(1), new ガードコマンド_利用者案内無し移動(4),
+	new ガードコマンド_利用者案内無し移動(7)
+};
+
+operations
+public TestCaseST0003 : seq of char ==> TestCaseST0003
+TestCaseST0003(nm) == TestCase(nm);
+
+protected RunTest : () ==> ()
+RunTest() == (
+	s現在時間 := 100;
+	def wIDカード = s大域黒板.黒板属性を得る()(mk_token("IDカード"));
+		利用者1 = new 利用者(1, wIDカード(1), s現在時間, 10);
+		利用者2 = new 利用者(2, wIDカード(2), s現在時間, 10);
+		利用者3 = new 利用者(3, wIDカード(3), s現在時間, 10)
+	in (
+	s大域黒板.initialize({
+		mk_token("実際の利用者居場所") |-> 
+			{利用者1 |-> 1, 利用者2 |-> 4, 利用者3 |-> 7}
+		});
+	for i = 125 to 200 by 25 do (
+		sスケジューラ.doOneCycle(s大域黒板, ガードコマンド集合);
+		s現在時間 := i
+	);
+	let mk_(w大域黒板属性DB, -) = s大域黒板.得る(),
+		w利用者のいる場所DB = w大域黒板属性DB(mk_token("実際の利用者居場所")),
+		w仮想利用者のいる場所DB = w大域黒板属性DB(mk_token("仮想世界利用者居場所")) in
+	AssertTrue(
+		let {w利用者1} = dom (w利用者のいる場所DB :> {2}),
+			{w利用者2} = dom (w利用者のいる場所DB :> {5}),
+			{w利用者3} = dom (w利用者のいる場所DB :> {8}),
+			利用者ID1 = w利用者1.IDを得る(),
+			利用者ID2 = w利用者2.IDを得る(),
+			利用者ID3 = w利用者3.IDを得る(),
+			{w仮想利用者1} = dom (w仮想利用者のいる場所DB :> {1}),
+			{w仮想利用者2} = dom (w仮想利用者のいる場所DB :> {4}),
+			{w仮想利用者3} = dom (w仮想利用者のいる場所DB :> {7}),
+			仮想利用者ID1 = w仮想利用者1.IDを得る(),
+			仮想利用者ID2 = w仮想利用者2.IDを得る(),
+			仮想利用者ID3 = w仮想利用者3.IDを得る()
+		in
+		利用者ID1 = 1 and 利用者ID2 = 2 and 利用者ID3 = 3 and
+		w利用者1.前にいた場所を得る() = 1 and w利用者2.前にいた場所を得る() = 4 and w利用者3.前にいた場所を得る() = 7 and
+		仮想利用者ID1 = 1 and 仮想利用者ID2 = 2 and 仮想利用者ID3 = 3 and
+		w仮想利用者1.前にいた場所を得る() = nil and w仮想利用者2.前にいた場所を得る() = nil and w仮想利用者3.前にいた場所を得る() = nil
+	); --AssertTrue
+	) --def in
+);
+end TestCaseST0003
+\end{vdm_al}
+--------------------------------------------------------------------------
+\section{TestCaseST0004クラス}
+
+\begin{vdm_al}
+class TestCaseST0004 is subclass of TestCaseS
+
+instance variables
+protected ガードコマンド集合 : set of ガードコマンド :=  {
+	new ガードコマンド_利用者案内有移動(2),
+	new ガードコマンド_案内(2)
+};
+
+operations
+public TestCaseST0004 : seq of char ==> TestCaseST0004
+TestCaseST0004(nm) == TestCase(nm);
+
+protected RunTest : () ==> ()
+RunTest() == (
+	s現在時間 := 100;
+	def wIDカード = s大域黒板.黒板属性を得る()(mk_token("IDカード"));
+		利用者1 = new 利用者(1, wIDカード(1), s現在時間, 10);
+		利用者2 = new 利用者(2, wIDカード(2), s現在時間, 10)
+	in (
+	s大域黒板.initialize({
+		mk_token("実際の利用者居場所") |-> 
+			{利用者1 |-> 2, 利用者2 |-> 2}
+		});
+	for i = 125 to 300 by 25 do (
+		sスケジューラ.doOneCycle(s大域黒板, ガードコマンド集合);
+		s現在時間 := i
+	);
+	let mk_(w大域黒板属性DB, -) = s大域黒板.得る(),
+		w利用者のいる場所DB = w大域黒板属性DB(mk_token("実際の利用者居場所")) in
+	AssertTrue(
+		let {w利用者a} = dom (w利用者のいる場所DB :> {4}),
+			{w利用者b} = dom (w利用者のいる場所DB :> {7}),
+			利用者IDa = w利用者a.IDを得る(),
+			利用者IDb = w利用者b.IDを得る()
+		in
+		利用者IDa in set {1,2} and 利用者IDb in set {1, 2} and 利用者IDa <> 利用者IDb and
+		w利用者a.前にいた場所を得る() = 2 and w利用者b.前にいた場所を得る() = 2
+	); --AssertTrue
+	) --def in
+);
+end TestCaseST0004
+\end{vdm_al}
+
+--------------------------------------------------------------------------
+\section{TestCaseST0005クラス}
+このテストケースは、vdmjの乱数生成に依存している。
+
+\begin{vdm_al}
+class TestCaseST0005 is subclass of TestCaseS
+
+operations
+public TestCaseST0005 : seq of char ==> TestCaseST0005
+TestCaseST0005(nm) == TestCase(nm);
+
+protected RunTest : () ==> ()
+RunTest() == (
+	s現在時間 := 100;
+	def wIDカード = s大域黒板.黒板属性を得る()(mk_token("IDカード"));
+		利用者1 = new 利用者(1, wIDカード(1), s現在時間+100, 25);
+		利用者2 = new 利用者(2, wIDカード(2), s現在時間+125, 50);
+		利用者3 = new 利用者(3, wIDカード(3), s現在時間+150, 75)
+	in (
+	s大域黒板.initialize({
+		mk_token("実際の利用者居場所") |-> 
+			{利用者1 |-> 1, 利用者2 |-> 4, 利用者3 |-> 7}
+		});
+	for i = 125 to 300 by 25 do (
+		sスケジューラ.doOneCycle(s大域黒板, ガードコマンド集合);
+		s現在時間 := i
+	);
+	let mk_(w大域黒板属性DB, -) = s大域黒板.得る(),
+		w利用者のいる場所DB = w大域黒板属性DB(mk_token("実際の利用者居場所")),
+		w仮想利用者のいる場所DB = w大域黒板属性DB(mk_token("仮想世界利用者居場所")) in
+	AssertTrue(
+		let {w利用者1} = dom (w利用者のいる場所DB :> {2}),
+			{w利用者2} = dom (w利用者のいる場所DB :> {5}),
+			{w利用者3} = dom (w利用者のいる場所DB :> {8}),
+			利用者ID1 = w利用者1.IDを得る(),
+			利用者ID2 = w利用者2.IDを得る(),
+			利用者ID3 = w利用者3.IDを得る(),
+			{w仮想利用者1} = dom (w仮想利用者のいる場所DB :> {2}),
+			{w仮想利用者2} = dom (w仮想利用者のいる場所DB :> {4}),
+			{w仮想利用者3} = dom (w仮想利用者のいる場所DB :> {7}),
+			仮想利用者ID1 = w仮想利用者1.IDを得る(),
+			仮想利用者ID2 = w仮想利用者2.IDを得る(),
+			仮想利用者ID3 = w仮想利用者3.IDを得る()
+		in
+		利用者ID1 = 1 and 利用者ID2 = 2 and 利用者ID3 = 3 and
+		w利用者1.前にいた場所を得る() = nil and w利用者2.前にいた場所を得る() = 4 and w利用者3.前にいた場所を得る() = 7 and
+		仮想利用者ID1 = 1 and 仮想利用者ID2 = 2 and 仮想利用者ID3 = 3 and
+		w仮想利用者1.前にいた場所を得る() = 1 and w仮想利用者2.前にいた場所を得る() = nil and w仮想利用者3.前にいた場所を得る() = nil
+	); --AssertTrue
+	) --def in
+);
+end TestCaseST0005
+\end{vdm_al}
+
+--------------------------------------------------------------------------
+\section{TestCaseST0006クラス}
+
+\begin{vdm_al}
+class TestCaseST0006 is subclass of TestCaseS
+
+operations
+public TestCaseST0006 : seq of char ==> TestCaseST0006
+TestCaseST0006(nm) == TestCase(nm);
+
+protected RunTest : () ==> ()
+RunTest() == (
+	s現在時間 := 100;
+	def wIDカード = s大域黒板.黒板属性を得る()(mk_token("IDカード"));
+		利用者1 = new 利用者(1, wIDカード(1), s現在時間+100, 25)
+	in (
+	s大域黒板.initialize({
+		mk_token("実際の利用者居場所") |-> 
+			{利用者1 |-> 7}
+		});
+	for i = 125 to 300 by 25 do (
+		sスケジューラ.doOneCycle(s大域黒板, ガードコマンド集合);
+		s現在時間 := i
+	);
+	let mk_(w大域黒板属性DB, -) = s大域黒板.得る(),
+		w利用者のいる場所DB = w大域黒板属性DB(mk_token("実際の利用者居場所")),
+		w仮想利用者のいる場所DB = w大域黒板属性DB(mk_token("仮想世界利用者居場所")) in
+	AssertTrue(
+		let {w利用者1} = dom (w利用者のいる場所DB :> {9}),
+			利用者ID1 = w利用者1.IDを得る(),
+			{w仮想利用者1} = dom (w仮想利用者のいる場所DB :> {8}),
+			仮想利用者ID1 = w仮想利用者1.IDを得る()
+		in
+		利用者ID1 = 1 and w利用者1.前にいた場所を得る() = 8 and
+		仮想利用者ID1 = 1 and w仮想利用者1.前にいた場所を得る() = 7
+	); --AssertTrue
+	) --def in
+);
+end TestCaseST0006
+\end{vdm_al}
+--------------------------------------------------------------------------
+\section{TestCaseST0007クラス}
+
+\begin{vdm_al}
+class TestCaseST0007 is subclass of TestCaseS
+
+operations
+public TestCaseST0007 : seq of char ==> TestCaseST0007
+TestCaseST0007(nm) == TestCase(nm);
+
+protected RunTest : () ==> ()
+RunTest() == (
+	s現在時間 := 100;
+	def wIDカード = s大域黒板.黒板属性を得る()(mk_token("IDカード"));
+		利用者1 = new 利用者(1, wIDカード(1), s現在時間+100, 25);
+		利用者2 = new 利用者(2, wIDカード(2), s現在時間+125, 50);
+		利用者3 = new 利用者(3, wIDカード(3), s現在時間+150, 75)
+	in (
+	s大域黒板.initialize({
+		mk_token("実際の利用者居場所") |-> 
+			{利用者1 |-> 0, 利用者2 |-> 0, 利用者3 |-> 0}
+		});
+	for i = 125 to 750 by 25 do (
+		sスケジューラ.doOneCycle(s大域黒板, ガードコマンド集合);
+		s現在時間 := i
+	);
+	let mk_(w大域黒板属性DB, -) = s大域黒板.得る(),
+		w利用者のいる場所DB = w大域黒板属性DB(mk_token("実際の利用者居場所")),
+		w仮想利用者のいる場所DB = w大域黒板属性DB(mk_token("仮想世界利用者居場所")) in
+	AssertTrue(
+		let {w利用者1} = dom (w利用者のいる場所DB :> {4}),
+			{w利用者2} = dom (w利用者のいる場所DB :> {2}),
+			{w利用者3} = dom (w利用者のいる場所DB :> {7}),
+			利用者ID1 = w利用者1.IDを得る(),
+			利用者ID2 = w利用者2.IDを得る(),
+			利用者ID3 = w利用者3.IDを得る(),
+			{w仮想利用者1} = dom (w仮想利用者のいる場所DB :> {4}),
+			{w仮想利用者2} = dom (w仮想利用者のいる場所DB :> {9}),
+			{w仮想利用者3} = dom (w仮想利用者のいる場所DB :> {8}),
+			仮想利用者ID1 = w仮想利用者1.IDを得る(),
+			仮想利用者ID2 = w仮想利用者2.IDを得る(),
+			仮想利用者ID3 = w仮想利用者3.IDを得る()
+		in
+		利用者ID1 = 1 and 利用者ID2 = 2 and 利用者ID3 = 3 and
+		w利用者1.前にいた場所を得る() = 2 and w利用者2.前にいた場所を得る() = nil and  w利用者3.前にいた場所を得る() = 2 and
+		仮想利用者ID1 = 1 and 仮想利用者ID2 = 2 and 仮想利用者ID3 = 3 and
+		w仮想利用者1.前にいた場所を得る() = 2 and w仮想利用者2.前にいた場所を得る() = 8 and  w仮想利用者3.前にいた場所を得る() = 7
+	); --AssertTrue
+	) --def in
+);
+end TestCaseST0007
+\end{vdm_al}
+
+--------------------------------------------------------------------------
+\section{TestCaseST0008クラス}
+
+\begin{vdm_al}
+class TestCaseST0008 is subclass of TestCaseS
+
+operations
+public TestCaseST0008 : seq of char ==> TestCaseST0008
+TestCaseST0008(nm) == TestCase(nm);
+
+protected RunTest : () ==> ()
+RunTest() == (
+	s現在時間 := 100;
+	def wIDカード = s大域黒板.黒板属性を得る()(mk_token("IDカード"));
+		利用者1 = new 利用者(1, wIDカード(1), s現在時間+100, 25);
+		利用者2 = new 利用者(2, wIDカード(2), s現在時間+125, 50);
+		利用者3 = new 利用者(3, wIDカード(3), s現在時間+150, 75)
+	in (
+	s大域黒板.initialize({
+		mk_token("実際の利用者居場所") |-> 
+			{利用者1 |-> 9, 利用者2 |-> 4, 利用者3 |-> 2}
+		});
+	for i = 125 to 325 by 25 do (
+		sスケジューラ.doOneCycle(s大域黒板, ガードコマンド集合);
+		s現在時間 := i
+	);
+	let mk_(w大域黒板属性DB, -) = s大域黒板.得る(),
+		w利用者のいる場所DB = w大域黒板属性DB(mk_token("実際の利用者居場所")),
+		w仮想利用者のいる場所DB = w大域黒板属性DB(mk_token("仮想世界利用者居場所")) 
+	in (
+	AssertTrue(
+		let {w利用者1} = dom (w利用者のいる場所DB :> {7}),
+			{w利用者2} = dom (w利用者のいる場所DB :> {6}),
+			{w利用者3} = dom (w利用者のいる場所DB :> {2}),
+			利用者ID1 = w利用者1.IDを得る(),
+			利用者ID2 = w利用者2.IDを得る(),
+			利用者ID3 = w利用者3.IDを得る(),
+			{w仮想利用者1} = dom (w仮想利用者のいる場所DB :> {7}),
+			{w仮想利用者2} = dom (w仮想利用者のいる場所DB :> {5}),
+			仮想利用者ID1 = w仮想利用者1.IDを得る(),
+			仮想利用者ID2 = w仮想利用者2.IDを得る()
+		in
+		利用者ID1 = 1 and 利用者ID2 = 2 and 利用者ID3 = 3 and
+		w利用者1.前にいた場所を得る() = 2 and w利用者2.前にいた場所を得る() = 5 and  w利用者3.前にいた場所を得る() = nil and
+		仮想利用者ID1 = 1 and 仮想利用者ID2 = 2 and
+		w仮想利用者1.前にいた場所を得る() = 2 and w仮想利用者2.前にいた場所を得る() = 4
+	); --AssertTrue
+	if not s大域黒板.実際と仮想の利用者居場所が等しい(w利用者のいる場所DB, w仮想利用者のいる場所DB) then
+		s大域黒板.実際と仮想の利用者居場所を比較表示する(w利用者のいる場所DB, w仮想利用者のいる場所DB)
+	) --def in
+	) --let in
+);
+end TestCaseST0008
+\end{vdm_al}
+--------------------------------------------------------------------------
+\section{TestCaseST0009クラス}
+
+\begin{vdm_al}
+class TestCaseST0009 is subclass of TestCaseS
+
+operations
+public TestCaseST0009 : seq of char ==> TestCaseST0009
+TestCaseST0009(nm) == TestCase(nm);
+
+protected RunTest : () ==> ()
+RunTest() == (
+	s現在時間 := 100;
+	def wIDカード = s大域黒板.黒板属性を得る()(mk_token("IDカード"));
+		利用者1 = new 利用者(1, wIDカード(1), s現在時間+100, 25);
+		利用者2 = new 利用者(2, wIDカード(5), s現在時間+125, 50);
+		利用者3 = new 利用者(3, wIDカード(3), s現在時間+150, 75)
+	in (
+	s大域黒板.initialize({
+		mk_token("実際の利用者居場所") |-> 
+			{利用者1 |-> 9, 利用者2 |-> 4, 利用者3 |-> 2}
+		});
+	for i = 125 to 325 by 25 do (
+		sスケジューラ.doOneCycle(s大域黒板, ガードコマンド集合);
+		s現在時間 := i
+	);
+	let mk_(w大域黒板属性DB, -) = s大域黒板.得る(),
+		w利用者のいる場所DB = w大域黒板属性DB(mk_token("実際の利用者居場所")),
+		w仮想利用者のいる場所DB = w大域黒板属性DB(mk_token("仮想世界利用者居場所")) in
+	AssertTrue(
+		let {w利用者1} = dom (w利用者のいる場所DB :> {7}),
+			{w利用者2} = dom (w利用者のいる場所DB :> {4}),
+			{w利用者3} = dom (w利用者のいる場所DB :> {2}),
+			利用者ID1 = w利用者1.IDを得る(),
+			利用者ID2 = w利用者2.IDを得る(),
+			利用者ID3 = w利用者3.IDを得る(),
+			{w仮想利用者1} = dom (w仮想利用者のいる場所DB :> {7}),
+			{w仮想利用者2} = dom (w仮想利用者のいる場所DB :> {4}),
+			仮想利用者ID1 = w仮想利用者1.IDを得る(),
+			仮想利用者ID2 = w仮想利用者2.IDを得る()
+		in
+		利用者ID1 = 1 and 利用者ID2 = 2 and 利用者ID3 = 3 and
+		w利用者1.前にいた場所を得る() = 2 and w利用者2.前にいた場所を得る() = nil and  w利用者3.前にいた場所を得る() = nil and
+		仮想利用者ID1 = 1 and 仮想利用者ID2 = 2 and
+		w仮想利用者1.前にいた場所を得る() = 2 and w仮想利用者2.前にいた場所を得る() = nil
+	); --AssertTrue
+	) --def in
+);
+end TestCaseST0009
+\end{vdm_al}
+--------------------------------------------------------------------------
+\section{TestCaseST0010クラス}
+
+\begin{vdm_al}
+class TestCaseST0010 is subclass of TestCaseS
+
+operations
+public TestCaseST0010 : seq of char ==> TestCaseST0010
+TestCaseST0010(nm) == TestCase(nm);
+
+protected RunTest : () ==> ()
+RunTest() == (
+	s現在時間 := 100;
+	def wIDカード = s大域黒板.黒板属性を得る()(mk_token("IDカード"));
+		利用者1 = new 利用者(1, wIDカード(1), s現在時間+100, 25);
+		利用者2 = new 利用者(2, wIDカード(5), s現在時間+125, 50);
+		利用者3 = new 利用者(3, wIDカード(3), s現在時間+150, 75)
+	in (
+	s大域黒板.initialize({
+		mk_token("実際の利用者居場所") |-> 
+			{利用者1 |-> 9, 利用者2 |-> 5, 利用者3 |-> 2}
+		});
+	for i = 125 to 325 by 25 do (
+		sスケジューラ.doOneCycle(s大域黒板, ガードコマンド集合);
+		s現在時間 := i
+	);
+	let mk_(w大域黒板属性DB, -) = s大域黒板.得る(),
+		w利用者のいる場所DB = w大域黒板属性DB(mk_token("実際の利用者居場所")),
+		w仮想利用者のいる場所DB = w大域黒板属性DB(mk_token("仮想世界利用者居場所")) in
+	AssertTrue(
+		let {w利用者1} = dom (w利用者のいる場所DB :> {7}),
+			{w利用者2, w利用者3} = dom (w利用者のいる場所DB :> {2}),
+			利用者ID1 = w利用者1.IDを得る(),
+			利用者ID2 = w利用者2.IDを得る(),
+			利用者ID3 = w利用者3.IDを得る(),
+			{w仮想利用者1} = dom (w仮想利用者のいる場所DB :> {7}),
+			{w仮想利用者2} = dom (w仮想利用者のいる場所DB :> {5}),
+			仮想利用者ID1 = w仮想利用者1.IDを得る(),
+			仮想利用者ID2 = w仮想利用者2.IDを得る()
+		in
+		{利用者ID1, 利用者ID2} = {1, 2} and 利用者ID3 = 3 and
+		{w利用者1.前にいた場所を得る(), w利用者2.前にいた場所を得る()} = {2, 6} and  w利用者3.前にいた場所を得る() = nil and
+		仮想利用者ID1 = 1 and 仮想利用者ID2 = 2 and
+		w仮想利用者1.前にいた場所を得る() = 2 and w仮想利用者2.前にいた場所を得る() = nil
+	); --AssertTrue
+	) --def in
+);
+end TestCaseST0010
+\end{vdm_al}

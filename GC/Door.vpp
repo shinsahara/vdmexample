@@ -1,0 +1,62 @@
+\section{ドアクラス}
+実際のドアと仮想のドア（実際にはドアはないが、移動する場所の間にあるとみなし、処理を統一化するために存在する）両方を表す。
+内側から通る時と外側から通る時では、異なるドアとしている。
+
+\begin{vdm_al}
+class ドア  is subclass of オブジェクト
+values
+public タイムアウト時間 = 5;
+
+types 
+public ドア型 = 仮想ドア | 入口ドア | 出口ドア;
+public ドア開閉状態 = <開> | <閉>;
+public ドア錠状態 = <ロック> | <アンロック>;
+public ドア位置 = 場所グラフ`場所ID * 場所グラフ`場所ID ; 
+
+instance variables
+public sドア位置 : 場所グラフ`場所ID * 場所グラフ`場所ID;
+public sドア開閉状態 : ドア開閉状態:= <開>;
+public sドア錠状態 : ドア錠状態 := <アンロック>;
+public sドアが開いた時間 : [時間];	--ドア開閉状態が<閉>または<仮想ドア>の時はnil
+
+operations
+public タイムアウトである : () ==> bool
+タイムアウトである() == is subclass responsibility;
+
+public 通過可能である : () ==> bool
+通過可能である() == is subclass responsibility;
+
+public 施錠する : () ==> ()
+施錠する() == sドア錠状態 := <ロック>;
+
+public 施錠されている : () ==> bool
+施錠されている() == return sドア錠状態 = <ロック>;
+
+public 解錠する : () ==> ()
+解錠する() == sドア錠状態 := <アンロック>;
+
+public 解錠されている :() ==> bool
+解錠されている() == return sドア錠状態 = <アンロック>;
+
+public 開ける : () ==> ()
+開ける() == sドア開閉状態 := <開>;
+
+public 閉める : () ==> ()
+閉める() == is subclass responsibility;
+
+public 開いている : () ==> bool
+開いている() ==
+	return sドア開閉状態 = <開>;
+	
+public 閉まっている : () ==> bool 
+閉まっている() ==
+	return sドア開閉状態 = <閉>;
+
+public 位置を得る : () ==> 場所グラフ`場所ID * 場所グラフ`場所ID
+位置を得る() == return sドア位置;
+
+public IDを得る : () ==> 場所グラフ`場所ID * 場所グラフ`場所ID
+IDを得る() == return 位置を得る();
+
+end ドア
+\end{vdm_al}
