@@ -11,7 +11,7 @@
 	\index{ようしよう@陽仕様}
 
 関数や操作の本体のVDM++による記述は、陰仕様で定義された「仕様」を検証するための記述である。
-したがって、設計時や実装時にこの記述をそのまま使う必要はない。
+従って、設計時や実装時にこの記述をそのまま使う必要はない。
 「仕様」は、あくまでも陰仕様で記述された部分である。
 
 ここで、スーパークラスの図書館RDは、図書館のドメイン知識を持つクラスであり、後述する。
@@ -24,21 +24,14 @@ public v最大蔵書数 = 10000;
 public v最大貸出数 = 3;
 \end{vdm_al}
 
-\subsection{型定義}
-
-\begin{vdm_al}
-types
-public 蔵書 = map 蔵書ID to 本
-inv w蔵書 == card dom w蔵書 <= v最大蔵書数;
-\end{vdm_al}
-
 \subsection{インスタンス変数定義}
 
 \begin{vdm_al}
 instance variables
 private i蔵書 : 蔵書 := {|->};
+inv
+  card dom i蔵書 <= v最大蔵書数;
 private i貸出 : 貸出 := {|->};
---inv 蔵書に存在する(merge rng i貸出, i蔵書);
 \end{vdm_al}
 
 \subsection{操作定義}
@@ -88,10 +81,10 @@ public 本を検索する: (題名 | 著者 | 分野) ==> 蔵書
 pre
 	検索キーが空でない(a検索キー)
 post
-	forall book in set rng RESULT & 
-		(book.f題名 = a検索キー or 
-		book.f著者 = a検索キー or 
-		a検索キー in set book.f分野集合);
+	RESULT = {id |-> i蔵書(id) | id in set dom i蔵書 & 
+			(i蔵書(id).f題名 = a検索キー or 
+			i蔵書(id).f著者 = a検索キー or 
+			a検索キー in set i蔵書(id).f分野集合)};
 \end{vdm_al}
 
 \subsubsection{本を貸す}
@@ -103,7 +96,7 @@ post
 インスタンス変数「i貸出」の定義域集合を得る演算子が dom なので、
 得られた定義域の利用者集合に含まれているかを in set という集合の演算子を使って判定する。
 
-すでに借りたことがある場合は、すでに借りている本と、新たな貸出本の併合を行って、
+すでに借りたことがある場合は、すでに借りている本と、新たな貸出本の併合を行なって、
 貸出の写像のうち、利用者の貸出部分を上書き演算子"++"
 	\index{++}
 で書き換える。

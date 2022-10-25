@@ -57,6 +57,7 @@ post
 	貸出から削除されている(a返却本, i貸出, i貸出~);
 \end{vdm_al}
 
+
 \subsection{貸出の状態に関する関数}
 	\index{かしだしのじょうたいにかんするかんすう@貸出の状態に関する関数}
 \begin{vdm_al}
@@ -73,7 +74,7 @@ public 貸出から削除されている : 書庫`蔵書 * 貸出 * 貸出 +> bo
 	貸出に存在する(a削除本, a貸出旧値) and
 	貸出に存在しない(a削除本, a貸出);
 	
-static public 貸出に存在する : 書庫`蔵書 * 貸出 +> bool
+public 貸出に存在する : 書庫`蔵書 * 貸出 +> bool
 貸出に存在する(a貸出本, a貸出) == 
 	let	w蔵書 = merge rng a貸出 in
 	forall id in set dom a貸出本 & id in set dom w蔵書;
@@ -96,14 +97,14 @@ public 貸出可能でない : 利用者 * 書庫`蔵書 * 貸出 * 書庫`蔵�
 	not 貸出可能である(a利用者, a蔵書, a貸出, a図書館蔵書, a最大貸出数);
 \end{vdm_al}
 
-\subsubsection{最大貸出数を超えていない}
+\subsubsection{最大貸出数を超えている}
 \begin{vdm_al}
 public 最大貸出数を超えていない : 利用者 * 書庫`蔵書 * 貸出 * nat1  +> bool
 最大貸出数を超えていない(a利用者, a貸出本, a貸出, a最大貸出数) ==
 	if a利用者 not in set dom a貸出 then
 		card dom a貸出本 <= a最大貸出数
 	else
-		card dom a貸出(a利用者) + card dom a貸出本 <= a最大貸出数;
+		card dom a貸出(a利用者) + card dom a貸出本 < a最大貸出数;
 \end{vdm_al}
 
 \begin{vdm_al}

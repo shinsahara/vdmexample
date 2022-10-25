@@ -14,7 +14,7 @@ VPPDE = $(VPPHOME)/bin/vppde
 CODE = UTF8
 
 # TeX commands
-TEXDIR = /usr/local/texlive/2018/bin/x86_64-darwin
+TEXDIR = /usr/local/texlive/2021/bin/universal-darwin
 PLATEX = $(TEXDIR)/platex
 #BIBTEX=jbibtex
 BIBTEX=pbibtex --kanji=$(C0DE)
@@ -32,7 +32,7 @@ OUTDOC = Library
 
 # VDM files
 VPPFILES = \
-	TestApp.vdmpp	UseLibrary.vdmpp	Library.vdmpp		io.vpp
+	TestApp.vdmpp	UseLibrary.vdmpp	Library.vdmpp		lib/IO.vdmpp
 
 # Test script name
 TESTSCRIPT = test.script
@@ -72,7 +72,7 @@ makevdmtex:
 
 # run VDMJ
 vdmj:
-	vdmj_UTF8 -r classic -exceptions -e "run()" $(VPPFILES)
+	vdmj_UTF8 -r classic -exceptions -e "run()" -default "TestApp" $(VPPFILES)
 	echo  "you have to type 'latex' and 'q'"
 	vdmj_UTF8 -r classic -exceptions $(VPPFILES)
 

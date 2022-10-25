@@ -14,7 +14,7 @@ VPPDE = $(VPPHOME)/bin/vppde
 CODE = UTF8
 
 # TeX commands
-TEXDIR = /usr/local/texlive/2016/bin/x86_64-darwin
+TEXDIR = /usr/local/texlive/2022/bin/universal-darwin
 PLATEX = $(TEXDIR)/platex --kanji=$(C0DE)
 #BIBTEX=jbibtex
 BIBTEX=pbibtex --kanji=$(C0DE)

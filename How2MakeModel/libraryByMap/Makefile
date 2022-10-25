@@ -14,7 +14,7 @@ VPPDE = $(VPPHOME)/bin/vppde
 CODE = UTF8
 
 # TeX commands
-TEXDIR = /usr/local/texlive/2016/bin/x86_64-darwin
+TEXDIR = /usr/local/texlive/2022/bin/universal-darwin
 PLATEX = $(TEXDIR)/platex --kanji=$(C0DE)
 #BIBTEX=jbibtex
 BIBTEX=pbibtex --kanji=$(C0DE)
@@ -74,7 +74,7 @@ $(OUTDOC):  testAndPDF
 
 # run VDMTools and Pretty print
 testAndPDF:
-	rmvdmtc.sh
+	zsh rmvdmtc.sh
 	# Read & Syntax check
 	LANG=ja_JP.$(CODE) $(VPPDE) -p $(VPPFILES1) $(RQFILE) $(UTILITYFILES)
 	# Type check
@@ -89,14 +89,14 @@ testAndPDF:
 	# Run Interpreter with TESTSCRIPT
 	LANG=ja_JP.$(CODE) $(VPPDE) -y -i -D -I -P -Q -R vdm2.tc $(TESTSCRIPT2) $(VPPFILES2) $(RQFILE) $(UTILITYFILES)
 	# merge test coverage data
-	mergetc vdm1.tc vdm2.tc > vdm.tc
+	./mergetc vdm1.tc vdm2.tc > vdm.tc
 	# Pretty print
 	LANG=ja_JP.$(CODE) $(VPPDE)  -l -r $(VPPFILES)
 
 
 # run VDMTools
 vdmtools:
-	rmvdmtc.sh
+	./rmvdmtc.sh
 	# Read & Syntax check
 	LANG=ja_JP.$(CODE) $(VPPDE) -p $(VPPFILES1) $(RQFILE) $(UTILITYFILES)
 	# Type check

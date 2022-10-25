@@ -13,7 +13,7 @@ operations
 回帰テストケースをTestSuiteに追加し、実行し、成功したか判定する。
 
 \begin{vdm_al}
-static public run : () ==> ()
+public run : () ==> ()
 run() == (
       dcl ts : TestSuite := new TestSuite("図書館2:オブジェクト指向図書館貸し出しモデルの回帰テスト\n"),
           tr : TestResult := new TestResult();

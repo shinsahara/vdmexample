@@ -10,8 +10,7 @@ public v最大蔵書数 = 10000;
 
 types
 public 蔵書ID = token;
-public 蔵書 = map 蔵書ID to 本
-inv w蔵書 == card dom w蔵書 <= v最大蔵書数;
+public 蔵書 = map 蔵書ID to 本;
 
 instance variables
 protected i最大蔵書数 : nat;
@@ -59,12 +58,10 @@ public 本を検索する: (本`題名 | 著者 | 分野) ==> 蔵書
 pre
 	検索キーが空でない(a検索キー)
 post
-	RESULT =
-		{id |-> i蔵書(id) | id in set dom i蔵書 & 
-			(i蔵書(id).題名を得る() = a検索キー or 
-			i蔵書(id).著者を得る().名前を得る() = a検索キー or 
-			a検索キー in set {f.分野名を得る() | f in set i蔵書(id).分野集合を得る()})
-		};
+	forall book in set rng RESULT & 
+		(book.題名を得る() = a検索キー or 
+		book.著者を得る().名前を得る() = a検索キー or 
+		a検索キー in set{f.分野名を得る() | f in set book.分野集合を得る()});
 \end{vdm_al}
 
 \subsection{蔵書の状態に関する関数}

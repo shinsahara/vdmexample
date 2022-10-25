@@ -8,7 +8,7 @@
 #encode
 CODE=UTF8
 # TeX commands
-TEXDIR = /usr/local/texlive/2015/bin/x86_64-darwin
+TEXDIR = /usr/local/texlive/2022/bin/universal-darwin
 #TEXDIR = /usr/bin  # Ubuntu 10.10
 # PLATEX = platex
 #PLATEX = dotexshop
