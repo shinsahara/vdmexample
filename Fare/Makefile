@@ -8,7 +8,9 @@
 #encode
 CODE=UTF8
 # TeX commands
-TEXDIR = /usr/local/texlive/2018/bin/x86_64-darwin
+# TEXDIR = /usr/local/texlive/2020/bin/x86_64-darwin
+# TEXDIR = /usr/local/texlive/2021/bin/universal-darwin
+TEXDIR = /usr/local/texlive/2022/bin/universal-darwin
 PLATEX = $(TEXDIR)/platex
 #BIBTEX=jbibtex
 BIBTEX=pbibtex --kanji=$(C0DE)
