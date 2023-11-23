@@ -1,0 +1,61 @@
+\section{ガードコマンドクラス}
+ガード条件が満たされた場合に、指定された処理を行うオブジェクトを定義した、
+ガードコマンドクラスの抽象クラス。
+
+\begin{vdm_al}
+class ガードコマンド  is subclass of オブジェクト
+instance variables
+protected s局所黒板 : 黒板 := new 黒板();
+
+operations 
+
+public check : 黒板 ==> () 
+check (-) == is subclass responsibility;
+
+public update : 黒板 ==> ()
+update(-) == is subclass responsibility;
+\end{vdm_al}
+
+\subsubsection{ある場所の利用者を次の場所へ移動させる}
+利用者を移動させ、移動後、利用者の移動意志を無くす。
+
+\begin{vdm_al}
+public ある場所の利用者を次の場所へ移動させる : 
+	場所グラフ`利用者のいる場所DB * 利用者 * 場所グラフ`場所ID * 場所グラフ`場所ID * 
+	seq of char * seq of char * seq of char ==> ()
+ある場所の利用者を次の場所へ移動させる(
+	a利用者のいる場所DB, a利用者, a居場所ID, a次の場所ID, aオブジェクト型, aクラス名, aメッセージ) == (
+	dcl w更新利用者 : 利用者 := a利用者.コピーする(aクラス名);
+	def a場所グラフ = s局所黒板.場所グラフを得る() in
+	if a場所グラフ.利用者が移動可能である(a利用者のいる場所DB, a次の場所ID) then (
+		w更新利用者.前にいた場所を設定する(a居場所ID);
+		s局所黒板.更新黒板属性を設定する(mk_token(aオブジェクト型), {w更新利用者.到着時間を更新する() |-> a次の場所ID});
+		def - = debug >= 5 => new IO().echo(
+				"\n" ^ aメッセージ ^
+				VDMUtil`val2seq_of_char[利用者 * 場所グラフ`場所ID * 場所グラフ`場所ID]	
+					(mk_(w更新利用者, a居場所ID, a次の場所ID)) ^
+				"\n")
+		in skip
+	)
+	else
+		def - = debug >= 5 => new IO().echo(
+				"\n利用者が移動できません!!!" ^
+				VDMUtil`val2seq_of_char[利用者 * 場所グラフ`場所ID * 場所グラフ`場所ID]
+					(mk_(w更新利用者, a居場所ID, a次の場所ID)) ^
+				"\n") 
+		in skip
+); 
+
+functions
+public 利用者集合に含まれている : set of 利用者 * 利用者 -> bool
+利用者集合に含まれている(a利用者集合, a利用者) == 
+	let	w利用者ID集合 = {w利用者.IDを得る() | w利用者 in set a利用者集合},
+		w利用者ID = a利用者.IDを得る()
+	in w利用者ID in set w利用者ID集合;
+
+end ガードコマンド
+\end{vdm_al}
+
+\begin{rtinfo}
+{vdm.tc}[ガードコマンド]
+\end{rtinfo}

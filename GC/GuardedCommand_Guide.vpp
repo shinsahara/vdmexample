@@ -1,0 +1,78 @@
+\section{案内ガードコマンドクラス}
+利用者を案内するアルゴリズムを持つ。
+
+本来は、ID認証やセンサーから得られる情報だけで構築した、
+仮想世界の利用者居場所の情報から案内すべきであるが、
+正しい位置情報を得ることが非常に困難であるため、
+適切に案内ができないので、
+実際の利用者居場所の情報から案内を作成している。
+
+\begin{vdm_al}
+class ガードコマンド_案内 is subclass of ガードコマンド
+
+instance variables
+public s場所ID : 場所グラフ`場所ID;
+
+operations
+public ガードコマンド_案内 : 場所グラフ`場所ID ==> ガードコマンド_案内
+ガードコマンド_案内(a場所ID) == (
+	s場所ID := a場所ID
+);
+\end{vdm_al}
+
+\subsection{ガードコマンド\_案内のcheck}
+場所に一番早く来た利用者を案内し、移動させる。
+
+移動結果は、局所黒板の更新黒板属性に設定する。
+
+\begin{vdm_al}
+public check : 黒板 ==> ()
+check (a大域黒板) == ( 
+	def mk_(w黒板属性DB, w更新黒板属性DB) = a大域黒板.得る() in
+	s局所黒板.全属性を設定する(w黒板属性DB, w更新黒板属性DB);
+	def mk_(w黒板属性DB, -) = s局所黒板.得る();
+			w場所グラフ = s局所黒板.s場所グラフ;
+			w利用者のいる場所DB = w黒板属性DB(mk_token("実際の利用者居場所"));
+			w利用者の居場所ID = s場所ID;
+			w利用者集合 = dom (w利用者のいる場所DB :> {w利用者の居場所ID}) --この場所(w利用者の居場所ID)にいる利用者の集合
+	in (
+	if w利用者集合 <> {} then
+		def 
+			w選択した一人の利用者  = 利用者`到着時間が一番早い利用者を選ぶ(w利用者集合);
+			w移動場所ID = w場所グラフ.案内可能な次の場所IDを得る(w利用者のいる場所DB) 
+		in (
+		if w移動場所ID = nil 
+		then return
+		else (
+			dcl w更新案内表示 : 案内表示 := new 案内表示(w利用者の居場所ID, w選択した一人の利用者, w移動場所ID);
+			s局所黒板.更新黒板属性を設定する(mk_token("案内表示"), {w利用者の居場所ID |-> w更新案内表示});
+			def - = debug >= 5 => new IO().echo(
+				"\n利用者が、案内表示を作成しました。" ^
+				VDMUtil`val2seq_of_char[利用者 * 場所グラフ`場所ID * 案内表示]
+					(mk_(w選択した一人の利用者, w利用者の居場所ID, w更新案内表示)) ^
+				"\n")
+			in skip;
+		) -- if
+		) --def in
+	); -- def in
+)
+;
+\end{vdm_al}
+
+\subsection{ガードコマンド\_案内のupdate}
+局所黒板の案内表示DBを大域黒板に設定する。
+
+\begin{vdm_al}
+public update : 黒板 ==> ()
+update(a大域黒板) == 
+	def w更新黒板属性DB = s局所黒板.更新黒板属性を得る();
+		w更新案内表示DB = w更新黒板属性DB(mk_token("案内表示"))
+	in
+	a大域黒板.設定する(mk_token("案内表示"), w更新案内表示DB);
+	
+end ガードコマンド_案内 
+\end{vdm_al}
+
+\begin{rtinfo}
+{vdm.tc}[ガードコマンド_案内]
+\end{rtinfo}

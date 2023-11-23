@@ -1,0 +1,10 @@
+{
+ "VDMUtil",  "IO", "Character", "Sequence", "String", 
+ "VDMToolsWizard", "AS", "CI", "REP",  
+ "GetRoutineName","AnalysedObject","Analyser", "AnalyserCommon",
+ "T", "Test", "TestApp", "TestCase", "TestCaseS", "TestSuite", "TestResult", "MATH",
+ "TestCaseST0001", "TestCaseST0002", "TestCaseST0003", "TestCaseST0004", 
+ "TestCaseST0005", "TestCaseST0006", "TestCaseST0007", "TestCaseST0008", 
+ "TestCaseST0009", "TestCaseST0010",
+ "C1", "C2",  "C0", "C3", "C4", "C5", "C6", "C7", "C8"
+ }

@@ -1,0 +1,114 @@
+/*
+-----------------------------------------------
+- VPPUnit - VDM++ Unit test library
+-
+- Copyright (c) , Peter Gorm Larsen, Hiroshi Sako
+- 
+- All rights reserved.
+-----------------------------------------------
+*/
+class Test
+
+  operations
+
+    public Run: TestResult ==> ()
+    Run (-) == is subclass responsibility;
+
+    public Print : seq of char ==> ()
+    Print (s) ==
+      def - = new IO().echo(s) in skip;
+
+end Test
+
+-- --------------------------------------------
+class TestSuite is subclass of Test
+
+  instance variables
+
+    tests : seq of Test := [];
+
+  operations
+
+    public Run : () ==> ()
+    Run () ==
+      (dcl tr : TestResult := new TestResult();
+       Run(tr);
+       tr.Show());
+
+    public Run: TestResult ==> ()
+    Run(result) ==
+      for test in tests do
+        test.Run(result);
+
+    public AddTest: Test ==> ()
+    AddTest(test) ==
+      tests := tests ^ [test];
+
+end TestSuite
+
+-- --------------------------------------------
+class TestCase is subclass of Test
+
+  instance variables
+    protected name : seq of char
+
+  operations
+    public TestCase : seq of char ==> TestCase
+    TestCase(nm) == name := nm;
+
+    public GetName : () ==> seq of char
+    GetName () == return name;
+
+    protected AssertTrue : bool ==> ()
+    AssertTrue (b) == if not b then exit <FAILURE>;
+
+    protected AssertFalse : bool ==> ()
+    AssertFalse (b) == if b then exit <FAILURE>;
+
+    public Run : TestResult ==> ()
+    Run (tr) ==
+      trap <FAILURE>
+        with
+          tr.AddFailure(self)
+        in
+          (SetUp();
+           Print("Testing ...<<" ^ name ^ ">>");
+           RunTest();
+           Print("      Done <<" ^ name ^ ">>.\n");
+           Print(" \n");
+           TearDown());
+
+    protected SetUp : () ==> ()
+    SetUp() == is subclass responsibility;
+
+    protected RunTest : () ==> ()
+    RunTest() == is subclass responsibility;
+
+    protected TearDown : () ==> ()
+    TearDown() == is subclass responsibility;
+
+end TestCase
+
+-- --------------------------------------------
+class TestResult
+
+  instance variables
+    failures : seq of TestCase := []
+
+  operations
+    public AddFailure: TestCase ==> ()
+    AddFailure (test) == failures := failures ^ [test];
+
+    public Print : seq of char ==> ()
+    Print (s) ==
+      def - = new IO().echo(s ^ "\n") in skip;
+
+    public Show : () ==> ()
+    Show () ==
+      if failures = [] then
+        Print ("*** All Tests Passed. ***")
+      else
+        for failure in failures do
+          Print ("*** FAILED: " ^ failure.GetName())
+
+end TestResult

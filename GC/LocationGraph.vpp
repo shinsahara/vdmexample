@@ -1,0 +1,194 @@
+\section{場所グラフクラス}
+利用者が居る場所のグラフである。
+
+\begin{vdm_al}
+class 場所グラフ is subclass of オブジェクト	----地図情報
+values
+public 外部の場所の最大許容人数 = 3;
+public 案内表示を見る場所の最大許容人数 = 2; 
+public ひとりだけ = 1; 
+public 案内可能な場所集合 = {4, 7};
+
+types
+public 場所ID = ID
+inv 
+	w場所ID == w場所ID in set {0,...,9}; 
+public 場所 = <外部> | <前室> | <閲覧室A> | <閲覧室B> ; --多分、最終的にはオブジェクトにする 
+public 場所情報 ::
+	場所 : 場所
+	許容人数 : nat;
+public 場所DB = map 場所ID  to  場所情報 ; 
+public 利用者のいる場所DB = map 利用者  to  場所ID;
+\end{vdm_al}
+
+\subsection{インスタンス変数　s場所DB}
+s場所DBは、ある場所と対応する場所の情報を持つ。
+
+\begin{vdm_al}
+instance variables
+s場所DB : 場所DB := {
+	0 |-> mk_場所情報 (<外部>, 外部の場所の最大許容人数), 
+	1 |-> mk_場所情報 (<外部>, ひとりだけ), 
+	2 |-> mk_場所情報 (<前室>,  案内表示を見る場所の最大許容人数), 
+	3 |-> mk_場所情報 (<前室>, ひとりだけ),
+	4 |-> mk_場所情報 (<前室>, ひとりだけ),
+	5 |-> mk_場所情報 (<閲覧室A>, ひとりだけ),
+	6 |-> mk_場所情報 (<閲覧室A>, ひとりだけ),
+	7 |-> mk_場所情報 (<前室>, ひとりだけ),
+	8 |-> mk_場所情報 (<閲覧室B>, ひとりだけ),
+	9 |-> mk_場所情報 (<閲覧室B>, ひとりだけ)
+};
+\end{vdm_al}
+
+\subsection{インスタンス変数　s移動可能場所集合}
+s移動可能場所集合は、ある場所から移動できる先の場所の集合を持つ。
+
+\begin{vdm_al}
+instance variables
+public s移動可能場所集合 : map 場所ID  to  set of 場所ID:= { 
+	0 |-> {1},
+	1 |-> {2},
+	2 |-> {3, 4, 7},
+	3 |-> {0},
+	4 |-> {5},
+	5 |-> {6},
+	6 |-> {2},
+	7 |-> {8},
+	8 |-> {9},
+	9 |-> {2}
+};
+\end{vdm_al}
+
+\subsection{構成子}
+\begin{vdm_al}
+operations
+public 場所グラフ : 場所DB * map 場所ID to set of 場所ID ==> 場所グラフ
+場所グラフ(a場所DB, a移動可能場所集合) == atomic (
+	s場所DB := a場所DB;
+	s移動可能場所集合 := a移動可能場所集合
+);
+\end{vdm_al}
+
+\subsection{場所に関する操作群}
+
+\begin{vdm_al}
+public 案内可能な次の場所IDを得る : 利用者のいる場所DB ==> [場所ID]
+案内可能な次の場所IDを得る(a利用者のいる場所DB) == (
+	def w案内可能な場所集合 = 場所グラフ`案内可能な場所集合 in
+	return 案内可能な次の場所IDを得る補助(a利用者のいる場所DB, w案内可能な場所集合)
+);
+
+public 案内可能な次の場所IDを得る補助 : 利用者のいる場所DB * set of 場所ID ==> [場所ID]
+案内可能な次の場所IDを得る補助(a利用者のいる場所DB, a場所ID集合) == (
+	if a場所ID集合 = {} then return nil;
+	def w場所 = 気まぐれに次の移動場所を得る(a場所ID集合) in 
+	if 利用者が移動可能である(a利用者のいる場所DB, w場所) then 
+		return w場所 
+	else 	
+		return 案内可能な次の場所IDを得る補助(a利用者のいる場所DB, a場所ID集合 \ {w場所})
+);
+
+public 移動可能な次の場所IDを得る : 利用者のいる場所DB * 場所ID ==> [場所ID]
+移動可能な次の場所IDを得る(a利用者のいる場所DB, a居場所ID) == (
+	for all w次の場所ID候補 in set s移動可能場所集合(a居場所ID) do
+		if 利用者が移動可能である(a利用者のいる場所DB, w次の場所ID候補) then
+			return w次の場所ID候補
+		else
+			skip;
+	return nil
+)
+pre
+	a居場所ID in set dom s移動可能場所集合;
+
+public 次の場所IDを得る : 場所ID ==> 場所ID
+次の場所IDを得る(a場所ID) == (
+	def w次の場所ID候補集合 = s移動可能場所集合(a場所ID) in
+	let s場所ID in set w次の場所ID候補集合 in 	--場所IDの選定方法は今後追加する
+	return s場所ID
+)
+pre
+	a場所ID in set dom s移動可能場所集合 and
+	let w次の場所ID候補集合 = s移動可能場所集合(a場所ID) in
+	w次の場所ID候補集合 <> {};
+\end{vdm_al}
+
+
+\begin{vdm_al}
+public 利用者のいる場所IDを得る : 利用者のいる場所DB * 利用者 ==> 場所ID 
+利用者のいる場所IDを得る(a利用者のいる場所DB, a利用者) == (
+	def w居場所集合 = rng ({a利用者} <: a利用者のいる場所DB) in
+	let {e} = w居場所集合 in return e
+)
+pre
+	let w居場所集合 = rng ({a利用者} <: a利用者のいる場所DB) in
+	exists e in set w居場所集合 & {e} = w居場所集合; 
+
+public ある場所の許容人数を得る : 場所ID ==> nat
+ある場所の許容人数を得る(a場所ID) == (
+	let mk_場所情報(-, w許容人数) = s場所DB(a場所ID) in
+	return w許容人数
+);
+
+public ある場所の人数を得る : 利用者のいる場所DB * 場所ID ==> nat
+ある場所の人数を得る(a利用者のいる場所DB, a場所ID) == (
+	return card ある場所の利用者集合を得る(a利用者のいる場所DB, a場所ID)
+);
+
+public ある場所の利用者集合を得る : 利用者のいる場所DB * 場所ID  ==>  set of 利用者 
+ある場所の利用者集合を得る (a利用者のいる場所DB, a場所ID) == ( 
+	return dom (a利用者のいる場所DB :> {a場所ID})
+);
+
+public 移動可能場所を得る : 場所ID ==> set of 場所ID
+移動可能場所を得る(a場所ID) == (
+	return s移動可能場所集合(a場所ID)
+)
+pre
+	a場所ID in set dom s移動可能場所集合;
+
+public 案内表示装置がある : 場所ID ==> bool
+案内表示装置がある(a場所ID) == (
+	return a場所ID = 2
+);
+
+public ID端末がある : 場所ID ==> bool
+ID端末がある(a場所ID) == (
+	return a場所ID in set {1, 4, 5, 7, 8}
+);
+
+public 利用者が移動可能である : 利用者のいる場所DB * 場所ID ==> bool
+利用者が移動可能である(a利用者のいる場所DB, a次の場所ID) == 
+	def w許容人数 = ある場所の許容人数を得る(a次の場所ID);
+		w人数 = ある場所の人数を得る(a利用者のいる場所DB, a次の場所ID)
+	in
+	if w人数 < w許容人数 then return true else return false;
+
+operations
+static public 気まぐれに次の移動場所を得る : set of 場所ID ==> 場所ID
+気まぐれに次の移動場所を得る(a場所ID集合) == (
+	def 移動場所候補列 = VDMUtil`set2seq[場所ID](a場所ID集合);
+		w乱数 = MATH`rand(card a場所ID集合);
+		wVDMJを考慮した乱数 = if w乱数 = -1 then 0 else w乱数;
+		w添字 = wVDMJを考慮した乱数 + 1;
+		--w添字 = w乱数 + 1;
+		w移動先 = 移動場所候補列(w添字)
+	in (
+	def - = 
+		debug >= 9 => new IO().echo(
+			"\n「気まぐれに次の移動場所を得る」で生成された乱数とrandの引数=" ^
+			VDMUtil`val2seq_of_char[int * int](mk_(w乱数, card a場所ID集合)) ^
+			"\n"
+		)
+	in return w移動先
+	) -- def in
+)
+pre
+	a場所ID集合 <> {};
+
+
+end 場所グラフ
+\end{vdm_al}
+
+\begin{rtinfo}
+{vdm.tc}[場所グラフ]
+\end{rtinfo}

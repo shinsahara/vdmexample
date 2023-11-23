@@ -1,0 +1,40 @@
+\section{センサークラス}
+
+\begin{vdm_al}
+class センサー  is subclass of オブジェクト
+
+types 
+public センサー検知状態 = <人が居る>  |  <人は居ない>; 
+public 人が居る位置 = set of 場所グラフ`場所ID; 
+
+instance variables
+public sセンサーID : ID;
+public s人が居る位置 : 人が居る位置;
+public sセンサー検知状態 : センサー検知状態:= <人は居ない>;
+
+operations
+public センサー : ID * 人が居る位置  *  センサー検知状態 ==> センサー 
+センサー (anID, a人が居る位置, aセンサー検知状態) == atomic (
+	sセンサーID := anID;
+	s人が居る位置 := a人が居る位置;
+	sセンサー検知状態 := aセンサー検知状態
+);
+
+public コピーする : ID ==> センサー
+コピーする(anID) == 
+	return new センサー(anID, s人が居る位置, sセンサー検知状態);
+
+public 人が居る位置を得る : () ==> 人が居る位置
+人が居る位置を得る() == return s人が居る位置;
+
+public センサー検知状態を設定する : センサー検知状態 ==> ()
+センサー検知状態を設定する(aセンサー検知状態) == sセンサー検知状態 := aセンサー検知状態;
+
+public 人は居ない : () ==> bool
+人は居ない() == return sセンサー検知状態 = <人は居ない>;
+
+public IDを得る : () ==> ID
+IDを得る() == return sセンサーID;
+
+end センサー
+\end{vdm_al}

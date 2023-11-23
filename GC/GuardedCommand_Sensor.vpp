@@ -1,0 +1,78 @@
+\section{ガードコマンド\_センサークラス}
+センサーのガードコマンド。
+
+\begin{vdm_al}
+class ガードコマンド_センサー is subclass of ガードコマンド
+
+instance variables
+public s場所ID : 場所グラフ`場所ID;
+
+operations
+public ガードコマンド_センサー : 場所グラフ`場所ID ==> ガードコマンド_センサー
+ガードコマンド_センサー(a場所ID) == (
+	s場所ID := a場所ID
+);
+\end{vdm_al}
+
+\subsection{ガードコマンド\_センサーのcheck}
+センサーに反応がない場所に居るはずの利用者を、仮想世界利用者居場所DBから削除する。
+
+\begin{vdm_al}
+public check : 黒板 ==> ()
+check (a大域黒板) == (
+	def mk_(w黒板属性DB, w更新黒板属性DB) = a大域黒板.得る() in
+	s局所黒板.全属性を設定する(w黒板属性DB, w更新黒板属性DB);
+	def mk_(w黒板属性DB, -) = s局所黒板.得る();
+		w利用者のいる場所DB = w黒板属性DB(mk_token("実際の利用者居場所"));
+		w利用者の居場所ID = s場所ID;
+		wセンサーDB = w黒板属性DB(mk_token("センサー"));
+		wセンサー = wセンサーDB(w利用者の居場所ID);
+		w利用者の居場所ID集合 = wセンサー.人が居る位置を得る();
+		w利用者集合 = dom (w利用者のいる場所DB :> w利用者の居場所ID集合) --この場所集合(w利用者の居場所ID集合)にいる利用者の集合
+	in (
+	dcl w更新センサー : センサー := wセンサー.コピーする(w利用者の居場所ID);
+	if w利用者集合 = {} then (
+		w更新センサー.センサー検知状態を設定する(<人は居ない>);
+		def - = debug >= 9 => new IO().echo(
+				"\nセンサーに反応がありませんでした。" ^
+				VDMUtil`val2seq_of_char[map 利用者 to 場所グラフ`場所ID]
+					(w利用者のいる場所DB) ^
+				"\n") 
+		in skip
+	)
+	else (
+		w更新センサー.センサー検知状態を設定する(<人が居る>);
+		def - = debug >= 9 => new IO().echo(
+				"\nセンサーで、利用者を関知しました。" ^
+				VDMUtil`val2seq_of_char[map 利用者 to 場所グラフ`場所ID]
+					(w利用者のいる場所DB) ^
+				"\n") 
+		in skip
+	);
+	s局所黒板.更新黒板属性を設定する(mk_token("センサー"), {w更新センサー.IDを得る() |-> w更新センサー});
+	skip
+	) -- block
+);
+\end{vdm_al}
+
+\subsection{ガードコマンド\_センサーのupdate}
+局所黒板のセンサーDBと仮想世界利用者居場所DBを大域黒板に設定する。
+
+\begin{vdm_al}
+public update : 黒板 ==> ()
+update(a大域黒板) == 
+	def w更新黒板属性DB = s局所黒板.更新黒板属性を得る();
+		wセンサーDB = w更新黒板属性DB(mk_token("センサー"));
+		w仮想世界利用者居場所DB = w更新黒板属性DB(mk_token("仮想世界利用者居場所"))
+	in (
+	a大域黒板.設定する(mk_token("センサー"), wセンサーDB);
+	a大域黒板.設定する(mk_token("センサー"), w仮想世界利用者居場所DB);
+	skip
+);
+
+end ガードコマンド_センサー
+\end{vdm_al}
+
+\begin{rtinfo}
+{vdm.tc}[ガードコマンド_センサー]
+\end{rtinfo}

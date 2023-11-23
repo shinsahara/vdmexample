@@ -1,0 +1,76 @@
+\section{ID端末クラス}
+
+\begin{vdm_al}
+class ID端末  is subclass of オブジェクト
+
+types 
+public ID端末位置 = 場所グラフ`場所ID; 
+public ID端末状態 = <利用可能>  |  <利用不可能>; 
+public 端末型 = <α> | <β> | <γ>;
+
+instance variables
+public sID端末位置 : ID端末位置;
+public s端末型 : 端末型;
+public sID端末状態 : ID端末状態:= <利用可能>;
+public s利用者 : [利用者] := nil;
+
+operations
+public ID端末 : ID端末位置 * 端末型 ==> ID端末 
+ID端末 (aID端末位置, a端末型) == atomic (
+	sID端末位置 := aID端末位置;
+	s端末型 := a端末型
+);
+
+public ID端末 : ID端末位置 * 端末型 * ID端末状態 * [利用者] ==> ID端末 
+ID端末 (aID端末位置, a端末型, aID端末状態, a利用者) == atomic (
+	sID端末位置 := aID端末位置;
+	s端末型 := a端末型;
+	sID端末状態 := aID端末状態;
+	s利用者 := a利用者
+);
+
+public コピーする : ID端末位置 ==> ID端末
+コピーする(aID端末位置) == (
+	return new ID端末 (aID端末位置, s端末型, sID端末状態, s利用者)
+);
+
+public 認証依頼する : 利用者 ==> ()
+認証依頼する(a利用者) == (
+	利用不可能にする();
+	s利用者 := a利用者
+);
+
+public 既に認証依頼している : 利用者 ==> bool
+既に認証依頼している(a利用者) ==
+	return s利用者 <> nil and a利用者.IDを得る() = s利用者.IDを得る();
+
+public 認証依頼された : () ==> bool
+認証依頼された() == return s利用者 <> nil;
+
+public 正当な利用者から認証依頼された : () ==> bool
+正当な利用者から認証依頼された() == return 認証依頼された() and s利用者.有効なIDを持っている();
+
+public 利用不可能にする : () ==> ()
+利用不可能にする() == 
+	sID端末状態 := <利用不可能>;
+
+public 利用可能にする : () ==> ()
+利用可能にする() == 
+	sID端末状態 := <利用可能>;
+	
+public 利用可能である : () ==> bool
+利用可能である() == 
+	return sID端末状態 = <利用可能>;
+
+public 利用不可能である : () ==> bool
+利用不可能である() == 
+	return sID端末状態 = <利用不可能>;
+	
+public 位置を得る : () ==> ID端末位置
+位置を得る() == return sID端末位置;
+
+public IDを得る : () ==> ID端末位置
+IDを得る() == return 位置を得る();
+
+end ID端末
+\end{vdm_al}

@@ -1,0 +1,16 @@
+\section{共通定義クラス}
+本モデルで共通に使用する型である、IDと時間、及び、
+デバッグ用のログを出すか否かを示す静的インスタンス変数debugを定義する。
+debugの値が大きい方が、より詳細なログを出力する。
+
+\begin{vdm_al}
+class 共通定義 
+types
+public ID = nat;
+public 時間 = int;
+
+instance variables
+static public debug : nat := 5;
+
+end 共通定義
+\end{vdm_al}

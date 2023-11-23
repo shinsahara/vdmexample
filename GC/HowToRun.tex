@@ -1,0 +1,239 @@
+\documentclass[a4paper,8pt]{jsarticle}
+%\documentclass[a4paper,10pt]{jsbook}
+
+\usepackage[dvipdfmx]{graphicx, color}
+%\usepackage{folha}
+\graphicspath{{image/}}
+
+\usepackage{color}
+\usepackage{array}
+\usepackage{longtable}
+\usepackage{alltt}
+\usepackage{graphics}
+\usepackage{vpp-nms}
+%\usepackage{vpp}
+\usepackage{makeidx}
+
+\usepackage{colortbl}
+
+\usepackage[dvipdfmx,bookmarks=true,bookmarksnumbered=true,colorlinks,plainpages=true]{hyperref}
+
+%\AtBeginDvi{\special{pdf:tounicode 90ms-RKSJ-UCS2}}
+\AtBeginDvi{\special{pdf:tounicode EUC-UCS2}}
+
+
+\definecolor{covered}{rgb}{0,0,0}      %black
+\definecolor{not-covered}{rgb}{1,0,0}  %red
+
+\setcounter{secnumdepth}{6}
+\makeatletter
+\renewcommand{\paragraph}{\@startsection{paragraph}{4}{\z@}%
+  {1.5\Cvs \@plus.5\Cdp \@minus.2\Cdp}%
+  {.5\Cvs \@plus.3\Cdp}%
+  {\reset@font\normalsize\bfseries}}
+\makeatother
+
+\renewcommand{\sf}{\sffamily \color{blue}}
+
+\newcommand{\syou}{\texttt{<}}
+\newcommand{\dai}{\texttt{>}}
+
+%\include{Title}
+
+%\pagestyle{empty}
+\usepackage{fancyhdr}
+\usepackage{lastpage} 
+  \pagestyle{fancy} 
+   \let\origtitle\title 
+  \renewcommand{\title}[1]{\lfoot{#1}\origtitle{#1}}
+
+  \rfoot{\today}
+  \rhead{[\ \scshape\oldstylenums{\thepage}\ / %
+      \scshape\oldstylenums{\pageref{LastPage}}\ ]}
+  \cfoot{}
+
+
+\begin{document}
+
+% the title page
+\title{入退出管理システム：モデルの動かし方}
+\author{佐原　伸\\\\
+タオベアーズ\\
+}
+%\institute{\pgldk \and \chessnl}
+\date{\mbox{}}
+\maketitle
+
+%\TaoReport{ガードコマンド・モデル}{\today}{タオベアーズ}{佐原伸}
+%\setlength{\baselineskip}{12pt plus .1pt}
+%\tolerance 10000
+\tableofcontents
+%\thispagestyle{empty} 
+
+\newpage
+
+\section {VDMTools GUI版による動かし方}
+\label{runFromGUI}
+
+以下の手順に従って、モデルを動かす。
+なお、VDMToolsの起動方法自体は、ユーザーズマニュアル\cite{VDMManual}を参照のこと。
+
+\begin{enumerate}
+	\item vppgdeをダブルクリックして、VDMTools GUI版を起動する
+	\item VDMToolsのプロジェクトファイル gc.prj を読み込む
+	\item i とタイプしてインタープリタを初期化する
+	\item debug new T().r() とタイプして、回帰テストを起動する
+\end{enumerate}
+
+以下のようにモデルが動く。
+
+\begin{verbatim}
+>>  i
+Initializing specification ... done
+done
+>> debug new T().r()
+Testing ...<<TestCaseST0010:利用者の一人が場所5で認証されていない。>>
+利用者が、案内表示を作成しました。mk_( objref2386(利用者):
+  < オブジェクト`s現在時間(S) = 100,
+    共通定義`debug(S) = 5,
+    利用者`sIDカード = objref79,
+    利用者`s作成者名 = [  ],
+    利用者`s利用者ID = 3,
+    利用者`s到着時間 = 250,
+    利用者`s前にいた場所 = nil,
+    利用者`s躊躇する最大時間 = 75 >, 2, objref2387(案内表示):
+  < オブジェクト`s現在時間(S) = 100,
+    共通定義`debug(S) = 5,
+    案内表示`sガイドする場所ID = 4,
+    案内表示`s案内する利用者 = objref2386,
+    案内表示`s案内表示ID = 2 > )
+...中略
+Parsing "BlackBoard.vpp" (Latex) ... done
+Parsing "GardedCommand_UserDoorClose.vpp" (Latex) ... done
+Parsing "Common.vpp" (Latex) ... done
+Parsing "GardedCommand_UserDoorOpen.vpp" (Latex) ... done
+Parsing "Door.vpp" (Latex) ... done
+Parsing "GardedCommand_UserGuidedMove.vpp" (Latex) ... done
+Parsing "Door_Real_Enter.vpp" (Latex) ... done
+Parsing "GardedCommand_UserMove.vpp" (Latex) ... done
+
+...中略
+利用者が、移動しました。mk_( objref3600(利用者):
+  < オブジェクト`s現在時間(S) = 125,
+    共通定義`debug(S) = 5,
+    利用者`sIDカード = objref2183,
+    利用者`s作成者名 = "ガードコマンド_利用者案内無し移動",
+    利用者`s利用者ID = 1,
+    利用者`s到着時間 = 125,
+    利用者`s前にいた場所 = 0,
+    利用者`s躊躇する最大時間 = 10 >, 0, 1 )
+
+現在時間=125のすべてのガードコマンドupdateを完了しました。
+
+現在時間=150のすべてのガードコマンドupdateを完了しました。
+
+現在時間=175のすべてのガードコマンドupdateを完了しました。
+      Done <<TestCaseST0001:案内無しに利用者が場所0から1へ移動する>>.
+ 
+*** All Tests Passed. ***
+(no return value)
+\end{verbatim}
+
+\section {VDMTools コマンド版による動かし方}
+\label{runFromCygwin}
+VDMTools コマンド版を、下記の手順で、
+cygwin
+\footnote{http://cygwin.com/cygwin-ug-net/cygwin-ug-net.html}
+からmakeコマンドで動かすことにより、
+回帰テストを簡単に行うことができる。
+
+\begin{enumerate}
+	\item cygwinを起動する
+	\item モデルのあるフォルダーに移る
+	\item make test とタイプして、回帰テストを起動する
+\end{enumerate}
+
+以下のようにモデルが動く。
+
+\begin{verbatim}
+$ make test
+...中略
+Parsing "BlackBoard.vpp" (Latex) ... done
+Parsing "GardedCommand_UserDoorClose.vpp" (Latex) ... done
+Parsing "Common.vpp" (Latex) ... done
+Parsing "GardedCommand_UserDoorOpen.vpp" (Latex) ... done
+Parsing "Door.vpp" (Latex) ... done
+Parsing "GardedCommand_UserGuidedMove.vpp" (Latex) ... done
+Parsing "Door_Real_Enter.vpp" (Latex) ... done
+Parsing "GardedCommand_UserMove.vpp" (Latex) ... done
+
+...中略
+利用者が、移動しました。mk_( objref3600(利用者):
+  < オブジェクト`s現在時間(S) = 125,
+    共通定義`debug(S) = 5,
+    利用者`sIDカード = objref2183,
+    利用者`s作成者名 = "ガードコマンド_利用者案内無し移動",
+    利用者`s利用者ID = 1,
+    利用者`s到着時間 = 125,
+    利用者`s前にいた場所 = 0,
+    利用者`s躊躇する最大時間 = 10 >, 0, 1 )
+
+現在時間=125のすべてのガードコマンドupdateを完了しました。
+
+現在時間=150のすべてのガードコマンドupdateを完了しました。
+
+現在時間=175のすべてのガードコマンドupdateを完了しました。
+      Done <<TestCaseST0001:案内無しに利用者が場所0から1へ移動する>>.
+ 
+*** All Tests Passed. ***
+(no return value)
+\end{verbatim}
+
+\section {ドキュメントの作成方法}
+\label{makeDoc}
+本ドキュメント、モデルの考察、および注釈付きソースコードの各ドキュメントは、
+下記の手順で\ref{runFromCygwin}節と同様に簡単に作成できる。
+
+\begin{enumerate}
+	\item cygwinを起動する
+	\item モデルのあるフォルダーに移る
+	\item make all とタイプする
+\end{enumerate}
+
+なお、make allを行った場合、vppdeコマンドが見つからないというエラーが出た場合は、
+vppdeコマンドのPATH設定が行われていない可能性があるので、下記のように
+ホーム・ディレクトリの .bashrc ファイルにPATH設定を行う。
+
+\begin{verbatim}
+export PATH=/cygdrive/c/vpp/bin/:$PATH
+\end{verbatim}
+
+Windows 7では、最初にvppdeを起動した時、vppdeが何の応答も返さなくなることがあるが、
+下記のように、一時ファイル・ディレクトリを .bashrc ファイルに指定することで、動くはずである。
+
+\begin{verbatim}
+export TMPDIR=C:/cygwin/tmp
+\end{verbatim}
+
+また、 I didn't find a database entry for "VDMManual"といったエラーメッセージが出た時は、
+HowToRun.texファイルの下記箇所を、納入されたファイルを格納したディレクトリに変更すれば、
+参考文献が正しくドキュメント上に表示される。
+
+\begin{verbatim}
+\bibliography{/Users/sahara/bib/sahara}
+\end{verbatim}
+
+%\begin{thebibliography}{9}
+\section{参考文献等}
+
+\bibliographystyle{jplain}
+%\bibliography{/Users/sahara/svnw/sahara}
+\bibliography{/Users/sahara/Dropbox/bib/saharaUTF8}
+
+%\end{thebibliography}
+
+%\newpage
+%\addcontentsline{toc}{section}{Index}
+%\printindex
+
+\end{document}

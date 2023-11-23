@@ -1,0 +1,18 @@
+\section{ガードコマンド\_ID端末}
+ID端末ガードコマンドの抽象クラス。
+
+\begin{vdm_al}
+class ガードコマンド_ID端末 is subclass of ガードコマンド
+
+instance variables
+public s利用者 : 利用者;
+public sID端末 : ID端末;
+
+operations
+
+end ガードコマンド_ID端末
+\end{vdm_al}
+
+\begin{rtinfo}
+{vdm.tc}[ガードコマンド_ID端末]
+\end{rtinfo}
